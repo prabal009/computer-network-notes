@@ -4,6 +4,11 @@
     box-sizing:border-box;
 }
 
+html, body{
+    width:100%;
+    min-height:100%;
+}
+
 body{
 
     background-image:url("4234166.jpg");
@@ -14,7 +19,7 @@ body{
 
     background-repeat:no-repeat;
 
-    background-attachment:fixed;
+    background-attachment:scroll;
 
     font-family:Arial, Helvetica, sans-serif;
 
@@ -24,9 +29,9 @@ body{
 
 .overlay{
 
-    background:rgba(0,0,0,0.55);
-
     min-height:100vh;
+
+    background:rgba(0,0,0,0.55);
 
     padding:40px;
 
@@ -92,9 +97,9 @@ header p{
 
 }
 
-/* ---------- Tablets ---------- */
+/* Tablets */
 
-@media (max-width:992px){
+@media screen and (max-width:992px){
 
     .overlay{
 
@@ -124,15 +129,21 @@ header p{
 
 }
 
-/* ---------- Phones ---------- */
+/* Phones */
 
-@media (max-width:768px){
+@media screen and (max-width:768px){
 
     body{
 
-        background-attachment:scroll;
+        background-image:url("4234166.jpg");
 
-        background-position:center center;
+        background-size:cover;
+
+        background-position:center;
+
+        background-repeat:no-repeat;
+
+        background-attachment:scroll;
 
     }
 
@@ -174,9 +185,15 @@ header p{
 
 }
 
-/* ---------- Small Phones ---------- */
+/* Small Phones */
 
-@media (max-width:480px){
+@media screen and (max-width:480px){
+
+    .overlay{
+
+        padding:10px;
+
+    }
 
     header h1{
 
