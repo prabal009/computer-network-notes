@@ -1,0 +1,3446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>COMPUTER NETWORKS</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <pre class="content">
+
+Network Devices
+Network Devices are the devices required for communication between computers on a computer network.
+
+
+Enable communication by transmitting and receiving data between devices.
+Allow devices to connect to networks efficiently and securely.
+Improve network performance by reducing congestion and managing traffic.
+Extend network coverage and solve signal loss
+
+Layer 1 Devices: Physical Layer
+
+These devices deal with raw electrical  signals (bits). These devices don't understand IP addresses or MAC addresses.
+
+1. Hub
+
+It is a central connection point for devices in a LAN.
+It takes an incoming signal on one port and blindly broadcasts it to all other ports
+High network traffic collisions and security risks (everyone sees everyone's data).
+
+2. Repeater
+
+It regenerates signals to extend the range of a network.
+It receives a weak signal (due to attenuation over long cables), amplifies it, and retransmits it.
+Extending WiFi range beyond 100 meters.
+
+
+3. Modem (Modulator-Demodulator)
+
+This bridges the gap between digital computer data and analog signals, allowing devices to connect to the internet via telephone, cable, or fiber lines.
+
+Connects your home network to the ISP (Internet Service Provider).
+Converts digital signals from your computer into analog signals for telephone/cable lines
+
+
+
+Layer 2 Devices: Data Link Layer
+
+These devices work with MAC Addresses (Physical Addresses). They are smarter than hubs.
+
+4. Switch
+
+A switch is a high-speed networking device that connects devices (computers, printers, servers) within a Local Area Network (LAN),
+Unlike hub, switch learns the MAC address of every connected device.
+It sends data only to the specific port
+Reduces collisions and improves security and speed.
+
+5. Bridge
+
+This connects two separate LAN segments to make them appear as one.
+Filters traffic based on MAC addresses to keep local traffic local, reducing congestion
+
+6. Access Point (AP)
+
+It is a networking hardware device that allows Wi-Fi-enabled devices, such as laptops and smartphones, to connect to a wired network.
+Acts as a bridge between wired Ethernet and wireless Wi-Fi devices.
+An AP only provides Wi-Fi signal and it does not route traffic or assign IP addresses.
+
+Layer 3 Devices: Network Layer
+These devices work with IP Addresses (Logical Addresses) and connect different networks together.
+
+7. Router
+
+It is a networking device that connects multiple networks and directs data packets between them using IP addresses.
+It uses IP Addresses to determine the best path for data packets to travel
+Routers stop broadcast traffic, isolating networks from each other.
+
+8. Brouter (Bridging Router)
+
+It is a networking device combining bridge and router functions, operating at both the Data Link and Network layers of the OSI model.
+It can route known protocols (like TCP/IP).
+It bridge unknown protocols and rarely used nowadays.
+
+Layer 4-7 Devices: Advanced Processing
+
+9. Gateway
+
+It is a hardware device or software node that acts as an entry/exit point between two distinct networks using different protocols,
+It can convert protocols, data formats,
+An Internet Gateway translates your private LAN requests into public internet requests.
+
+10. Firewall
+
+It is a network security system, comprising hardware, software, or both that monitors and controls incoming and outgoing network traffic based on predetermined security rules
+
+Hub vs. Switch vs. Router
+
+Feature	          Hub	                     Switch	              Router
+Layer	      Layer 1 (Physical)	          Layer 2 (Data Link)	        Layer 3 (Network)
+Address Type	None (Bits)	MAC Address	IP Address
+Data Flow	Broadcast (to all)	Unicast (to destination)	Route (best path)
+Intelligence	      Dumb	             Smart	                       Smarter
+Used For	Obsolete	Connecting Devices (LAN)	Connecting Networks (WAN)
+
+
+Types of Computer Networks
+
+
+Computer networks can be classified based on three factors:
+
+Geographical Area (How large the network is)
+Transmission Medium (How data is transmitted)
+Ownership and Access Control (Who owns and can access the network)
+
+1. Classification Based on Geographical Area
+
+This classification depends on how much physical area the network covers.
+
+A) Personal Area Network (PAN)
+A Personal Area Network (PAN) is the smallest type of network. It connects personal devices within a very short distance around a single person.
+Coverage: 1–10 meters
+
+Technologies Used:
+
+Bluetooth
+NFC (Near Field Communication)
+Infrared
+
+Example
+Smartphone connected to wireless earbuds
+Smartwatch connected to a phone
+
+When Used
+Whenever personal devices need to communicate over a short distance.
+
+B) Local Area Network (LAN)
+A Local Area Network (LAN) connects computers and devices within a small area such as a home, office, school, or building.
+Coverage: One room, building, or small campus
+
+Technologies Used:
+Ethernet
+Wi-Fi
+
+Example
+Home Wi-Fi
+School computer lab
+Office network
+
+When Used
+To share:
+Internet
+Files
+Printers
+Software
+
+within a local location.
+
+C) Campus Area Network (CAN)
+Definition
+
+A Campus Area Network (CAN) connects multiple LANs within the same campus or organization.
+
+Coverage: University, hospital, or corporate campus
+
+Technologies Used:
+
+Ethernet
+Fiber Optics
+Example
+
+A university where:
+
+Library LAN
+Hostel LAN
+Administration LAN
+
+are connected together.
+
+When Used
+
+To connect different buildings belonging to the same organization.
+
+D) Metropolitan Area Network (MAN)
+Definition
+
+A Metropolitan Area Network (MAN) connects networks across a city or metropolitan area.
+
+Coverage: Entire city
+
+Technologies Used
+
+Fiber Optics
+Metro Ethernet
+Microwave
+
+Example
+City-wide Internet Service Provider (ISP)
+Cable TV network
+When Used
+
+To provide high-speed networking across a city.
+
+E) Wide Area Network (WAN)
+Definition
+
+A Wide Area Network (WAN) connects networks across countries or continents.
+
+Coverage: Country, continent, or worldwide
+
+Technologies Used
+
+Internet
+Satellite
+Leased Lines
+
+Example
+
+The Internet
+Bank networks connecting branches across India
+Railway reservation system
+
+When Used
+
+Whenever long-distance communication is required.
+
+2. Classification Based on Transmission Medium
+
+This classification depends on how data travels between devices.
+
+There are two types.
+
+A) Broadcast Network
+Definition
+
+A Broadcast Network uses one shared communication channel for all devices.
+
+When one device sends data:
+
+Every device receives it.
+Only the intended receiver accepts and processes it.
+Others ignore it.
+
+Characteristics
+One shared communication medium
+One-to-many communication
+No dedicated path
+
+Examples
+Bus Ethernet
+Wi-Fi
+
+B) Point-to-Point Network
+Definition
+
+A Point-to-Point Network provides a dedicated path between sender and receiver
+
+Characteristics
+One-to-one communication
+Dedicated links
+Routing algorithms decide the best path
+More secure and efficient
+
+Examples
+Internet
+Telephone network
+
+3. Classification Based on Ownership and Access Control
+
+This classification depends on who owns the network and who can use it.
+
+A) Private Network
+Definition
+
+A Private Network is owned and managed by a person or organization.
+
+Only authorized users can access it.
+
+Features
+High security
+Requires login
+Internal communication
+Controlled by one organization
+
+Examples
+Company LAN
+Corporate intranet
+Private cloud
+
+B) Public Network
+Definition
+
+A Public Network is available for everyone.
+
+Usually owned by:
+
+Internet Service Providers (ISPs)
+Government
+Telecom companies
+Features
+Open access
+Large number of users
+Less secure
+Can be wired or wireless
+
+Examples
+Internet
+Public Wi-Fi
+Mobile network
+
+C) Hybrid Network
+Definition
+
+A Hybrid Network combines private and public networks.
+
+Some resources are private while others are accessible over the public Internet.
+
+Features
+Combines security and accessibility
+Supports external users securely
+Common in modern organizations
+
+Examples
+Company network connected to the Internet
+Online banking systems
+
+Intranet
+Definition
+
+An Intranet is a private network used only inside an organization.
+
+Only employees or authorized users can access it.
+
+Features
+Private
+Login required
+Internal communication
+Secure
+
+Uses
+Employee portal
+
+Examples
+University portal
+
+Extranet
+Definition
+
+An Extranet is an extension of an intranet that allows trusted external users (such as partners, suppliers, vendors, or customers) to access specific resources securely.
+
+Features
+Partially private
+Secure login required
+Uses VPN or secure web access
+Supports collaboration with external organizations
+
+Uses
+Customer portals
+Supplier management
+Partner collaboration
+Online banking
+
+Examples
+Vendor access portal
+banking portal
+
+Network Models
+
+Computer networks rely on these foundational frameworks to standardize communication. It explains the layered structures of the OSI and TCP/IP models and highlights how they organize network functions for efficient data flow.
+OSI MODEL
+Layers of OSI Model
+
+The OSI (Open Systems Interconnection) Model is a 7-layer conceptual model that explains how data travels from one computer to another over a network. Each layer has a specific responsibility, making network communication organized
+
+7. Application
+6. Presentation
+5. Session
+4. Transport
+3. Network
+2. Data Link
+1. Physical
+
+Layer 1: Physical Layer
+
+This is the lowest layer of the OSI model. It is responsible for transmitting raw bits (0s and 1s) over a physical medium such as cables, fiber optics, or wireless signals. It defines how devices are physically connected and the speed of data transmission. Devices like hubs, repeaters, modems, and cables work at this layer.
+
+Example
+When you plug an Ethernet cable into your laptop, the Physical Layer sends electrical signals through the cable.
+
+Layer 2: Data Link Layer (DLL)
+
+The Data Link Layer provides reliable communication between two directly connected devices. It adds MAC (physical) addresses, detects transmission errors, controls the flow of data, Devices such as switches and bridges operate at this layer.
+
+Example
+
+When your laptop sends data to your Wi-Fi router, the Data Link Layer ensures the packets of data reaches the correct device using MAC addresses.
+
+Layer 3: Network Layer
+
+The Network Layer is responsible for moving data between different networks. It assigns IP addresses, determines the best route for data, and forwards packets through routers. This is the layer that makes communication across the Internet possible.
+
+Example
+
+When you open www.google.com, the Network Layer routes your data through multiple routers until it reaches Google's server.
+
+Device: Router
+
+PDU: Packets
+
+Layer 4: Transport Layer
+
+The Transport Layer provides end-to-end communication between applications. It breaks large messages into smaller segments, reassembles them at the destination, ensures reliable delivery with TCP, or provides faster but less reliable delivery with UDP
+
+Example
+
+When watching YouTube, video streaming often uses UDP for speed, while downloading a file uses TCP to ensure every part arrives correctly.
+
+Layer 5: Session Layer
+
+The Session Layer manages the communication session between two applications. It establishes, maintains, synchronizes, and terminates sessions, and can insert checkpoints so interrupted transfers can resume instead of restarting.
+
+Example
+
+During a video call on Zoom or Google Meet, this layer helps maintain the communication session until the call ends.
+
+PDU: Data
+
+Layer 6: Presentation Layer
+
+The Presentation Layer is often called the Translation Layer. It formats data performs encryption/decryption, and compresses/decompresses data so that different systems can understand each other.
+
+Example
+
+When you access a secure website using HTTPS, encryption (TLS/SSL) happens at this layer.
+
+PDU: Data
+
+Layer 7: Application Layer
+
+The Application Layer is the topmost layer and is the one users interact with directly. It provides network services to applications such as web browsers, email clients, and file transfer software. Common protocols include HTTP, HTTPS, SMTP, FTP, DNS, and DHCP.
+
+Example
+
+When you open Chrome and visit a website
+
+How Data Flows Through the OSI Model
+
+Suppose you send an email to a friend.
+
+Application Layer: You type the email and click Send.
+Presentation Layer: The email is formatted and encrypted.
+Session Layer: A communication session with the mail server is established.
+Transport Layer: The email is divided into smaller segments.
+Network Layer: IP addresses are added, and the best route is chosen.
+Data Link Layer: Packets are converted into frames, and MAC addresses are added.
+Physical Layer: Frames are converted into electrical, optical, or wireless signals and transmitted.
+
+At the receiver's end, the process happens in reverse until the email is displayed in the recipient's inbox
+
+TCP/IP Model
+
+The TCP/IP (Transmission Control Protocol/Internet Protocol) Model is the networking model used by the Internet. It explains how data is sent from one device to another using 4 layers.
+Unlike the OSI model (7 layers), TCP/IP has only 4 layers, making it simpler and more practical for real-world networking.
+
+Why is it called TCP/IP?
+
+It is named after its two most important protocols:
+
+TCP (Transmission Control Protocol) → Ensures reliable communication.
+IP (Internet Protocol) → Finds the destination and routes the data
+
+Layers of TCP/IP Model
++---------------------------+
+| Application Layer         |
++---------------------------+
+| Transport Layer           |
++---------------------------+
+| Internet Layer            |
++---------------------------+
+| Network Access Layer      |
++---------------------------+
+
+1. Application Layer
+
+This is the top layer.
+It is the layer where users interact with the network.
+
+Examples:
+Chrome
+Firefox
+Gmail
+Outlook
+WhatsApp
+
+Responsibilities
+Creates data
+Provides services to applications
+Handles formatting
+Manages sessions
+Provides encryption
+
+Protocols
+HTTP
+HTTPS
+FTP
+SMTP
+DNS
+
+Example
+
+You open Chrome and search:
+
+www.google.com
+
+Chrome sends an HTTP request using the Application Layer.
+
+1. HTTP (HyperText Transfer Protocol)
+Definition
+
+HTTP is the protocol used to transfer web pages between a web browser and a web server.
+
+It allows your browser to request a webpage and the server to send it back.
+
+How HTTP Works
+You type:
+www.google.com
+
+        │
+        ▼
+Browser sends HTTP Request
+        │
+        ▼
+Google Web Server
+        │
+        ▼
+Server sends HTTP Response
+        │
+        ▼
+Browser displays webpage
+
+Characteristics
+Used for websites
+Works on a request-response model
+
+Advantages
+Fast
+Simple
+Lightweight
+
+Disadvantages
+No encryption
+Passwords and data can be intercepted
+
+2. HTTPS (HyperText Transfer Protocol Secure)
+Definition
+
+HTTPS is the secure version of HTTP.
+
+It encrypts all communication between the browser and the server.
+
+How HTTPS Works
+Browser
+     │
+Encrypted Request 🔒
+     │
+     ▼
+Secure Web Server
+     │
+Encrypted Response 🔒
+     ▼
+Browser
+
+Characteristics
+Uses SSL/TLS encryption
+Secure communication
+Protects passwords and banking information
+Default Port: 443
+
+Example
+https://www.amazon.com
+https://www.google.com
+https://bankofbaroda.in
+
+Notice the lock icon (🔒) in the browser.
+
+Uses
+Online banking
+Shopping websites
+Email services
+Login pages
+
+What is SSL/TLS Encryption?
+
+SSL (Secure Sockets Layer) and TLS (Transport Layer Security) are security protocols that encrypt data sent between a client (browser) and a server (website).
+TLS is the newer and more secure version of SSL. Although SSL has been replaced by TLS, people still commonly say "SSL certificate" or "SSL encryption."
+The main purpose of SSL/TLS is to make sure that no one can read, modify, or impersonate the communication between you and a website.
+Encryption converts readable information (plaintext) into unreadable information (ciphertext) using a mathematical algorithm and a key.
+
+Public Key and Private Key
+
+SSL/TLS uses asymmetric encryption initially.
+
+There are two keys:
+
+Public Key
+Can be shared with everyone.
+Used to encrypt data.
+Private Key
+Secret and stored securely on the server.
+Used to decrypt data encrypted with the matching public key.
+
+Example:
+
+Public Key
+      │
+Encrypt Data
+      │
+      ▼
+Encrypted Data
+      │
+      ▼
+Private Key
+      │
+Decrypt Data
+      ▼
+Original Data
+
+Why Doesn't TLS Use Public-Key Encryption for Everything?
+
+Public-key encryption is secure but slow.
+After the browser and server securely exchange a shared secret, they switch to symmetric encryption, where both sides use the same secret key. Symmetric encryption is much faster and is used for the rest of the session.
+
+3. FTP (File Transfer Protocol)
+Definition
+
+FTP is used to transfer files between computers over a network.
+
+You can:
+
+Upload files
+Download files
+Rename files
+Delete files
+How FTP Works
+
+Your Computer
+      │
+ Upload/Download Files
+      │
+      ▼
+FTP Server
+
+Example
+
+A web developer uploads a website to a hosting server using FTP.
+
+Characteristics
+Transfers files
+Can upload and download
+Username and password may be required
+
+Default Ports:
+21 (control connection)
+20 (data transfer)
+
+Uses
+Website hosting
+File backup
+Sharing large files
+
+Disadvantages
+Normal FTP is not encrypted, so secure alternatives like SFTP or FTPS are often preferred.
+
+4. SMTP (Simple Mail Transfer Protocol)
+Definition
+
+SMTP is the protocol used to send emails.
+
+It transfers emails from:
+
+Sender → Mail server
+Mail server → Mail server
+How SMTP Works
+
+You
+ │
+ ▼
+Gmail
+ │
+SMTP
+ │
+ ▼
+Receiver's Mail Server
+ │
+ ▼
+Receiver
+
+Example
+
+When you send an email:
+
+To: friend@gmail.com
+Subject: Hello
+
+SMTP sends the email to Gmail's mail server, which then forwards it to the recipient's mail server.
+
+Characteristics
+Used only for sending emails
+Reliable
+Uses mail servers
+
+Common Ports:
+25
+587
+465 (secure)
+
+Important
+
+SMTP does not retrieve emails.
+
+Receiving emails is done using:
+
+POP3
+IMAP
+
+IMAP (Internet Message Access Protocol)
+Definition
+
+IMAP (Internet Message Access Protocol) is an email protocol used to access and manage emails directly on the mail server.
+
+Unlike POP3, IMAP does not download and remove emails by default. Instead, it keeps the emails on the server and synchronizes all your devices.
+
+How IMAP Works
+               Mail Server
+              /     |      \
+             /      |       \
+        Laptop   Phone   Tablet
+
+All devices connect to the same mailbox.
+
+Characteristics
+Emails remain on the server.
+Synchronizes emails across multiple devices.
+Read, unread, deleted, and folder changes are reflected everywhere.
+Requires an Internet connection to view and sync emails
+
+Advantages
+Supports multiple devices.
+Keeps emails backed up on the server.
+
+Disadvantages
+Requires more server storage.
+Usually needs an Internet connection for full functionality.
+Slightly more complex than POP3.
+
+POP3 (Post Office Protocol Version 3)
+Definition
+
+POP3 (Post Office Protocol Version 3) is an email protocol used to receive (download) emails from a mail server to your device.
+
+Characteristics
+Downloads emails from the server.
+Mainly stores emails locally on your device.
+Can delete emails from the server after download.
+Best suited for one device.
+Requires an Internet connection only while downloading.
+
+Default Ports
+110 → POP3
+995 → Secure POP3 (POP3S using SSL/TLS)
+Example
+
+Suppose you receive an email.
+
+Friend
+   │
+SMTP
+   ▼
+Gmail Server
+   │
+POP3
+   ▼
+Your Laptop
+
+The email is downloaded to your laptop. If you later check your phone, the email may not be there if it was removed from the server.
+
+Advantages
+Fast and simple.
+Emails are available offline after downloading.
+Uses less server storage.
+
+Disadvantages
+Poor support for multiple devices.
+Emails may be removed from the server.
+Folders and read/unread status are not synchronized across devices.
+
+5. DNS (Domain Name System)
+Definition
+DNS is known as the Internet's Phonebook.
+It converts domain names into IP addresses.
+
+Why is DNS Needed?
+Humans remember names:
+www.google.com
+Computers communicate using IP addresses:
+142.250.xxx.xxx
+DNS converts the name into the corresponding IP address.
+
+How DNS Works
+You type:
+
+www.google.com
+
+        │
+        ▼
+DNS Server
+
+        │
+Converts Name
+        │
+        ▼
+
+142.250.xxx.xxx
+
+        │
+        ▼
+Browser connects to Google Server
+
+Characteristics
+Converts domain names into IP addresses
+Makes websites easy to access
+Essential for web browsing
+
+Default Port: 53
+Example
+
+Instead of remembering:
+142.250.195.78
+you simply type:
+www.google.com
+DNS finds the correct IP address automatically.
+
+2. Transport Layer
+
+This layer ensures that data reaches the destination correctly.
+
+Its responsibilities are:
+
+Break data into segments
+Reassemble data
+Error checking
+
+It uses two protocols:
+
+TCP
+UDP
+
+TCP (Transmission Control Protocol)
+
+TCP is used when accuracy is more important than speed.
+Imagine sending an important assignment to your professor.
+
+You want:
+
+Nothing missing
+Correct order
+Error-free delivery
+
+TCP provides this.
+
+Examples
+Website loading
+File download
+Email
+Internet banking
+
+UDP (User Datagram Protocol)
+
+UDP is used when speed is more important than perfect accuracy.
+Imagine watching a live cricket match.
+
+If one video frame is lost,
+you don't want the stream to pause waiting for it.
+It simply continues.
+
+Features
+✔ Fast
+✔ Connectionless
+✔ No retransmission
+
+Examples
+Online games
+Video calls
+Voice calls
+Live streaming
+
+3. Internet Layer
+
+This layer is responsible for delivering packets to the correct destination.
+
+Its responsibilities are:
+
+IP addressing
+Routing
+Packet forwarding
+Finding the best path
+
+Protocols
+IP
+ICMP
+ARP
+
+Example
+
+Suppose:
+
+Laptop
+↓
+Wi-Fi Router
+↓
+ISP
+↓
+Google Server
+
+The Internet Layer decides the best route.
+Think of it like Google Maps.
+
+1. IP (Internet Protocol)
+Definition
+
+IP (Internet Protocol) is the protocol responsible for addressing and routing data packets from the sender to the correct destination across one or more networks.
+
+Think of IP as the GPS of the Internet.
+
+Why is IP Needed?
+
+Every device connected to a network has an IP address.
+
+Example:
+
+Laptop          : 192.168.1.10
+Router          : 192.168.1.1
+Google Server   : 142.250.xxx.xxx
+
+When you visit Google:
+
+Your Laptop
+      │
+      ▼
+Router
+      │
+      ▼
+Internet
+      │
+      ▼
+Google Server
+
+IP ensures the packet reaches the correct destination.
+
+Functions of IP
+Assigns IP addresses
+Identifies sender and receiver
+Routes packets
+Delivers packets across networks
+
+2. ICMP (Internet Control Message Protocol)
+Definition
+
+ICMP (Internet Control Message Protocol) is used for error reporting
+Unlike IP, ICMP does not carry user data (such as webpages or emails). Instead, it carries control and error messages about network conditions.
+
+Why is ICMP Needed?
+
+Suppose you try to visit a website.
+
+Laptop
+   │
+   ▼
+Router
+   │
+❌ Destination Unreachable
+
+The router sends an ICMP message back saying:
+
+Destination Unreachable
+
+This helps identify network problems.
+
+Example
+
+When you run:
+
+ping google.com
+
+Your computer sends:
+
+Echo Request
+
+Google replies:
+
+Echo Reply
+
+If replies are received, the network connection is working.
+
+Characteristics
+Error reporting
+Network diagnostics
+
+3. ARP (Address Resolution Protocol)
+Definition
+
+ARP (Address Resolution Protocol) is used to find the MAC address of a device when its IP address is already known.
+
+Remember:
+
+IP Address → Identifies a device on the network.
+MAC Address → Identifies the network interface on the local LAN.
+Why is ARP Needed?
+
+Suppose your computer wants to send data to the router.
+
+It knows the router's IP:
+
+192.168.1.1
+
+But to send the frame on the local network, it needs the router's MAC address.
+
+How ARP Works
+Step 1
+
+Computer knows:
+
+Router IP = 192.168.1.1
+
+It doesn't know:
+
+Router MAC = ?
+Step 2
+
+The computer broadcasts an ARP Request:
+
+Who has IP address 192.168.1.1?
+Tell 192.168.1.20
+
+Every device on the LAN receives this request.
+
+Step 3
+
+Only the router responds:
+
+I have IP 192.168.1.1
+
+My MAC Address is
+
+AA:BB:CC:DD:EE:FF
+Step 4
+
+The computer stores the MAC address in its ARP cache and uses it to send frames.
+
+Laptop
+   │
+Destination MAC:
+AA:BB:CC:DD:EE:FF
+   │
+Router
+
+Characteristics
+Converts IP Address → MAC Address
+Works only on the local network (LAN)
+Uses broadcasts for ARP Requests
+
+4. Network Access Layer (Link Layer)
+
+This is the lowest layer.
+
+It sends data over:
+
+Ethernet cable
+Wi-Fi
+Fiber
+Wireless
+
+Responsibilities:
+
+Converts packets into frames
+Uses MAC addresses
+Detects transmission errors
+
+Working of TCP/IP
+
+Suppose you open www.youtube.com.
+
+Step 1 — Application Layer
+
+You type:
+
+www.youtube.com
+
+The browser creates an HTTP request.
+
+↓
+
+Step 2 — Transport Layer
+
+TCP breaks the request into smaller segments.
+
+It adds:
+
+Port number
+
+Step 3 — Internet Layer
+
+IP adds:
+
+Source IP
+Destination IP
+
+It chooses the best route.
+
+↓
+
+Step 4 — Network Access Layer
+
+Packets become frames.
+
+MAC addresses are added.
+
+The data is sent through:
+
+Wi-Fi
+Ethernet
+Fiber
+
+↓
+
+Internet
+
+↓
+
+Server
+
+At the Server
+
+The process happens in reverse.
+
+Network Access
+↓
+
+Internet
+
+↓
+
+Transport
+
+↓
+
+Application
+
+Finally,
+
+YouTube sends the webpage back
+
+Advantages
+1. Widely Used
+The entire Internet uses TCP/IP.
+2. Platform Independent
+
+Works on:
+Windows
+Linux
+macOS
+Android
+iPhone
+
+3. Reliable
+TCP ensures:
+No missing data
+Correct order
+Error detection
+Error correction
+
+4. Scalable
+Can work for:
+Home Wi-Fi
+
+Disadvantages
+
+1. Complex
+There are many protocols to learn.
+
+2. Layer Boundaries
+Unlike the OSI model, some responsibilities overlap between layers.
+
+4. Security
+Basic TCP/IP doesn't include strong built-in security.
+Extra protocols are needed:
+
+HTTPS
+TLS
+SSL
+
+Why is TCP/IP Preferred Over OSI?
+Simpler: Only 4 layers instead of 7.
+Practical: Built around protocols that are actually used on the Internet.
+Flexible: Works across different hardware and network technologies.
+Open Standard: Free and universally adopted.
+Real-World Use: The Internet and most modern networks are based on TCP/IP
+
+Physical Layer (Layer 1) of the OSI Model
+
+The Physical Layer is the first (lowest) layer of the OSI model. It is responsible for transmitting raw bits (0s and 1s) from one device to another through a physical medium such as cables, fiber optics, or wireless signals.
+It does not understand data like files, emails, or webpages. It only deals with electrical signals.
+
+Functions of the Physical Layer
+1. Transmits Raw Bits
+The Physical Layer transfers only bits (0s and 1s) between devices.
+
+Example:
+
+101101001011010
+It does not know whether these bits represent a photo, email, or video.
+
+2. Encoding and Decoding
+Encoding
+
+The sender converts binary data into signals.
+
+Example:
+
+Binary
+
+10110010
+
+↓
+Electrical Signals
+
+Decoding
+
+The receiver converts the received signals back into binary.
+
+Electrical Signals
+
+↓
+
+10110010
+
+Without encoding and decoding, computers could not understand each other's signals.
+
+3. Modulation and Demodulation
+
+These are mainly used in wireless communication and modems.
+Modulation
+Converts digital data into signals suitable for transmission.
+
+Example:
+
+Computer
+
+↓
+
+Wi-Fi Signal
+
+↓
+
+Router
+
+Demodulation
+Converts the received signal back into digital data.
+
+Router
+
+↓
+
+Computer
+
+4. Controls Data Transmission
+The Physical Layer determines:
+Data transmission speed (bit rate)
+
+Protocols Used in the Physical Layer
+
+The Physical Layer uses standards that define how signals are transmitted.
+
+1. Ethernet (IEEE 802.3)
+Used for wired communication.
+
+Example:
+
+Computer
+   │
+Ethernet Cable
+   │
+Router
+
+Characteristics:
+
+High speed
+Reliable
+Uses RJ-45 connectors
+
+2. Wi-Fi (IEEE 802.11)
+Used for wireless communication.
+
+Example:
+
+Laptop )))))) Router
+
+Characteristics:
+
+No cables
+Uses radio waves
+Common in homes and offices
+
+3. Bluetooth (IEEE 802.15.1)
+Short-range wireless communication.
+
+Examples:
+
+Phone ↔ Earbuds
+Laptop ↔ Mouse
+Keyboard ↔ Computer
+
+Range:
+
+Approximately 10 meters.
+
+4. USB (Universal Serial Bus)
+
+Used to connect devices over short distances.
+
+Examples:
+
+Pendrive
+Keyboard
+
+Need of security in Physical Layer
+Many security attacks happen at the Physical Layer because attackers target the actual hardware or transmission medium.
+
+1. Cable Tapping
+An attacker connects to a network cable and secretly copies transmitted data.
+
+Example:
+
+Computer
+     │
+     │
+Attacker
+     │
+Router
+
+The attacker may capture sensitive information if the data is not encrypted.
+
+2. Physical Access
+
+If someone gains access to a server room, they can:
+
+Steal servers
+Disconnect cables
+Damage equipment
+Install malicious devices
+
+This is why organizations use:
+
+Locked server rooms
+CCTV
+
+3. Wireless Signal Interception
+Attackers may capture Wi-Fi signals from outside a building.
+Using strong Wi-Fi encryption (such as WPA2 or WPA3) helps protect against this.
+
+4. Hardware Manipulation
+An attacker may tamper with devices like:
+
+Routers
+Switches
+USB ports
+
+Example:
+Plugging an infected USB drive into a computer can install malware.
+
+WPA2 and WPA3 Explained
+
+WPA2 and WPA3 are Wi-Fi security protocols used to protect wireless networks from unauthorized access. They encrypt the data transmitted between your device and the Wi-Fi router, making it difficult for attackers to read or steal the information.
+
+WPA2 = Wi-Fi Protected Access 2 (introduced in 2004)
+WPA3 = Wi-Fi Protected Access 3 (introduced in 2018)
+WPA3 is the newer, more secure version of WPA2.
+
+What is WPA2?
+Definition
+
+WPA2 (Wi-Fi Protected Access 2) is a Wi-Fi security standard that uses AES (Advanced Encryption Standard) to encrypt data between devices and the Wi-Fi router.
+
+How WPA2 Works
+You select your Wi-Fi network.
+You enter the Wi-Fi password.
+The router verifies the password.
+If the password is correct, an encrypted connection is established.
+
+Laptop
+   │ Password
+   ▼
+Wi-Fi Router
+   │
+AES Encryption 🔒
+   │
+Internet
+
+Features of WPA2
+Uses AES encryption.
+Requires a Wi-Fi password.
+
+Advantages
+Strong encryption.
+Supported by most routers and devices.
+Easy to configure.
+
+Limitations
+Uses a shared password (Pre-Shared Key) in home networks. If someone learns the password, they can join the network.
+Susceptible to offline password-guessing attacks if users choose weak passwords.
+
+What is WPA3?
+Definition
+
+WPA3 (Wi-Fi Protected Access 3) is the latest Wi-Fi security standard. It improves on WPA2 by providing stronger authentication, better encryption, and increased protection against password-guessing attacks.
+
+How WPA3 Works
+
+The process is similar:
+
+Connect to the Wi-Fi network.
+Enter the password.
+WPA3 uses a stronger authentication method called SAE (Simultaneous Authentication of Equals).
+A secure encrypted connection is established.
+
+Features of WPA3
+Uses stronger authentication (SAE).
+Better protection against brute-force password attacks.
+Improves privacy on public Wi-Fi networks.
+Provides stronger encryption than WPA2.
+
+Advantages
+More secure than WPA2.
+Better resistance to password guessing.
+Improved protection even if users choose weaker passwords.
+More secure public Wi-Fi connections.
+
+Limitations
+Requires newer routers and devices.
+Older hardware may not support WPA3.
+
+Network Topology
+Imagine you have several computers that need to communicate.
+There are different ways to connect them:
+The way these computers are connected is called the network topology.
+
+Types of Network Topology
+
+There are six major physical topologies:
+
+Point-to-Point
+Bus
+Star
+Ring
+Mesh
+Tree
+Hybrid
+
+1. Point-to-Point Topology
+Definition
+
+A Point-to-Point topology directly connects two devices using a dedicated communication link.
+
+Diagram
+Computer A  ───────────  Computer B
+
+Only these two devices use the connection.
+
+Example
+Computer connected to a printer
+Two routers connected by a leased line
+
+Advantages
+Simple to set up
+High speed (dedicated link)
+Secure communication
+No data collisions
+
+Disadvantages
+Only connects two devices
+Expensive for large networks
+If the link breaks, communication stops
+
+2. Bus Topology
+Definition
+
+In a Bus topology, all devices share one main cable, called the backbone cable.
+
+Diagram
+PC1 ---- PC2 ---- PC3 ---- PC4
+        (Single Backbone Cable)
+
+All devices communicate over the same cable.
+
+How It Works
+If PC1 sends data, it travels along the backbone cable. Every device receives the signal, but only the intended recipient accepts it.
+
+Advantages
+Low installation cost
+Uses less cable
+Easy to install for small networks
+
+Disadvantages
+If the backbone cable fails, the entire network fails.
+Performance decreases with heavy traffic.
+Low security.
+
+Example
+
+Small Ethernet LANs (older designs) and cable TV networks.
+
+3. Star Topology
+Definition
+
+In a Star topology, every device connects to a central hub or switch.
+
+Diagram
+          PC1
+           |
+PC2 --- Switch --- PC3
+           |
+          PC4
+How It Works
+
+If PC1 wants to send data to PC3:
+
+PC1
+  │
+  ▼
+Switch
+  │
+  ▼
+PC3
+
+The switch forwards the data to the correct device.
+
+Advantages
+Easy to install and manage.
+Easy to identify faults.
+If one cable fails, only that device is affected.
+High performance.
+
+Disadvantages
+If the central switch/hub fails, the entire network stops.
+Installation cost is higher.
+
+Example
+Home Wi-Fi networks
+Office LANs
+
+4. Ring Topology
+Definition
+
+In a Ring topology, every device is connected to exactly two neighboring devices, forming a closed loop (ring).
+
+Diagram
+PC1 ---- PC2
+ |         |
+PC4 ---- PC3
+How It Works
+
+Data travels around the ring until it reaches the destination.
+Many ring networks use a token, and only the device holding the token can transmit data.
+
+Advantages
+High-speed data transmission.
+Very few collisions.
+Easy to expand.
+
+Disadvantages
+If one device or connection fails, the entire ring may stop working.
+
+Example
+
+Older IBM Token Ring networks.
+
+5. Mesh Topology
+Definition
+
+In a Mesh topology, every device is connected to every other device through dedicated links.
+
+Diagram
+      PC1
+     / | \
+    /  |  \
+ PC2---PC3
+    \  |  /
+     \ | /
+      PC4
+How It Works
+
+Each pair of devices has its own dedicated connection.
+If one link fails, data can travel through another link.
+
+Formula
+
+If there are N devices:
+
+Links = N × (N − 1) / 2
+Ports per device = N − 1
+
+Example:
+
+For 6 devices:
+
+Links = 6 × 5 / 2 = 15
+
+Advantages
+Very reliable.
+High security.
+Easy fault detection.
+Fast communication.
+
+Disadvantages
+Expensive.
+Requires a lot of cabling.
+Difficult to install.
+
+Example
+Internet backbone
+Military communication
+
+6. Tree Topology
+Definition
+
+A Tree topology is a hierarchical structure that combines multiple Star topologies.
+
+Diagram
+          Main Switch
+         /           \
+   Switch A       Switch B
+    /    \          /    \
+  PC1   PC2      PC3   PC4
+How It Works
+
+The central hub connects to secondary hubs, which then connect to end devices.
+
+Advantages
+Easy to expand.
+Suitable for large organizations.
+Better management through hierarchy.
+
+Disadvantages
+If the main hub fails, the whole network is affected.
+Expensive because of extra cabling.
+
+Example
+Universities
+Large companies
+Schools
+
+7. Hybrid Topology
+Definition
+
+A Hybrid topology combines two or more different network topologies into a single network.
+
+Diagram
+Star Network
+      |
+      |
+Bus Backbone
+      |
+      |
+Ring Network
+
+Advantages
+Highly flexible.
+Easy to expand.
+Can combine the strengths of different topologies.
+
+Disadvantages
+Complex to design.
+Expensive.
+Requires more networking devices.
+
+Example
+
+A university campus where:
+
+Buildings are connected in a star topology.
+Individual labs use bus or ring topology.
+
+Physical vs Logical Topology
+
+Physical Topology	                                Logical Topology
+Describes the actual arrangement of cables and devices	Describes how data flows through the network
+Concerned with hardware layout	 			Concerned with communication rules
+Example: Star, Bus, Mesh				Example: Ethernet using CSMA/CD, Token Passing in Ring
+
+What is Ethernet?
+A Local Area Network (LAN) is a high-speed data communication system interconnecting devices within a limited scope such as offices or campuses. While LANs may use wired or wireless media, Ethernet (IEEE 802.3) dominates as the primary wired LAN standard.
+
+Types of Ethernet
+
+1. Fast Ethernet
+Speed: 100 Mbps
+
+2. Gigabit Ethernet
+Speed: 1 Gbps (1000 Mbps)
+
+3. 10 - Gigabit Ethernet
+Speed: 10 Gbps
+
+4. Switch Ethernet
+Uses network switches for dedicated connections
+Each device gets a separate collision domain
+Supports speeds from 10 Mbps to 10 Gbps
+
+Key Features of Ethernet
+Speed: Supports from 10 Mbps to 400 Gbps.
+Reliability: Error detection ensures accurate data transfer.
+Cost - effectiveness: Inexpensive and widely available.
+Interoperability: Standardized under IEEE 802.3, ensuring compatibility.
+Security: Supports encryption and authentication mechanisms.
+
+Carrier Sense Multiple Access (CSMA)
+Definition
+
+Carrier Sense Multiple Access (CSMA) is a Media Access Control (MAC) protocol used to control how multiple devices share the same communication channel.
+Before sending data, a device first listens (carrier sensing) to check whether the communication channel is free.
+
+If the channel is idle (free) → the device sends data.
+If the channel is busy → the device waits until it becomes free.
+
+This reduces the chances of collisions.
+CSMA works at the Data Link Layer (Layer 2) of the OSI Model.
+
+Why is CSMA Needed?
+Imagine 10 computers connected to the same network.
+If all computers send data at the same time:
+
+PC1 ──►
+PC2 ──►
+PC3 ──►
+PC4 ──►
+
+All signals overlap.
+
+This is called a collision.
+The transmitted data gets corrupted and has to be sent again.
+CSMA helps prevent this by making every device listen before transmitting.
+
+How CSMA Works
+
+Suppose four computers share one cable.
+
+PC1 ---- PC2 ---- PC3 ---- PC4
+Step 1
+
+PC1 wants to send data.
+It first checks the cable.
+Cable Busy?
+NO
+
+Step 2
+Since the cable is free,
+PC1 starts transmitting.
+
+PC1 ==========> PC4
+
+Step 3
+Now PC2 also wants to send.
+It checks the cable.
+Cable Busy?
+YES
+So PC2 waits.
+
+Step 4
+After PC1 finishes,
+PC2 checks again.
+Cable Busy?
+NO
+Now PC2 transmits.
+
+Collision
+Sometimes two computers check the cable at almost exactly the same time.
+
+Example:
+
+PC1
+
+Checks → Free
+
+PC2
+
+Checks → Free
+
+Both start sending simultaneously.
+
+PC1 =========>
+
+<========= PC2
+
+Their signals collide.
+This is called a collision.
+
+Vulnerable Time
+Even after sensing the channel, a collision can still happen.
+This is because signals take time to travel.
+This time is called the Propagation Time (Tp).
+
+Example
+Suppose:
+
+PC1 ---------------------- PC2
+Signal travel time = 5 μs
+PC1 starts sending.
+Before PC2 receives PC1's signal,
+PC2 also thinks the channel is free.
+Both transmit simultaneously.
+Collision occurs.
+The short period where this can happen is called the Vulnerable Time
+
+Types of CSMA
+
+There are two major protocols:
+
+CSMA/CD
+CSMA/CA
+
+1. CSMA/CD (Collision Detection)
+
+Full Form:
+Carrier Sense Multiple Access with Collision Detection
+
+Used in:
+Wired Ethernet (IEEE 802.3)
+Working
+
+Step 1
+Listen.
+If channel is free,
+Send data.
+
+Step 2
+While sending,
+keep listening.
+
+Transmit
+
+↓
+
+Listen simultaneously
+
+Step 3
+If collision occurs,
+Stop transmitting immediately.
+
+Step 4
+Wait for a random time.
+
+Step 5
+Transmit again.
+
+Example
+PC1 =========>
+
+<========= PC2
+
+Collision detected.
+Both stop.
+Both wait random time.
+Then retransmit.
+
+Why only in Wired Networks?
+In wired Ethernet,
+a device can
+Send
+Listen
+at the same time.
+Therefore,
+it can detect collisions.
+
+2. CSMA/CA (Collision Avoidance)
+Full Form:
+Carrier Sense Multiple Access with Collision Avoidance
+
+Used in:
+Wi-Fi (IEEE 802.11)
+
+Why Not Collision Detection?
+Suppose your laptop is transmitting Wi-Fi signals.
+Laptop ))))))))))
+The transmitted signal is much stronger than any incoming signal.
+While transmitting,
+the laptop cannot accurately hear another device's transmission.
+So it cannot reliably detect a collision.
+Therefore,
+Wi-Fi avoids collisions instead of detecting them.
+
+Working of CSMA/CA
+Step 1
+Device wants to transmit.
+
+Step 2
+Listen to the channel.
+If busy,
+wait.
+
+Step 3
+When free,
+wait for a short time called
+IFS (Interframe Space).
+
+Step 4
+Check again.
+Still free?
+Proceed.
+
+Step 5
+Choose a random waiting time.
+This is called the Backoff Time.
+Random Wait
+
+Step 6
+Transmit data.
+
+Step 7
+Receiver sends
+ACK (Acknowledgement).
+If ACK received:
+Success.
+If not,
+assume collision.
+Retry.
+
+Why Random Backoff?
+
+Suppose
+PC1 and PC2 both want to transmit.
+Instead of sending immediately,
+they choose random waiting times.
+
+Example:
+
+PC1 waits 2 slots
+
+PC2 waits 8 slots
+
+PC1 sends first.
+
+PC2 waits.
+
+No collision occurs.
+
+RTS/CTS Mechanism
+
+RTS = Request To Send
+CTS = Clear To Send
+Used to solve the Hidden Terminal Problem.
+
+Step 1
+Sender:
+RTS
+"I want to send."
+
+Step 2
+Receiver:
+CTS
+"You may send now."
+
+Step 3
+Other nearby devices hear the CTS and remain silent until the transmission is complete.
+
+Hidden Terminal Problem
+Imagine:
+
+Laptop A      Router      Laptop C
+A and C are both within range of the router, but A and C cannot hear each other.
+Both think the channel is free.
+Both send data.
+Collision occurs at the router.
+
+Using RTS/CTS helps avoid this situation.
+
+Four Access Modes of CSMA
+
+1. 1-Persistent CSMA
+Listen continuously.
+If channel becomes free,
+send immediately.
+Very aggressive.
+Higher collision chance.
+
+2. Non-Persistent CSMA
+Listen once.
+If busy,
+wait a random time.
+Then check again.
+Fewer collisions.
+More delay.
+
+3. P-Persistent CSMA
+Used in slotted systems.
+When channel becomes free:
+Transmit with probability P.
+Wait with probability 1 − P.
+Balances delay and collisions.
+
+4. O-Persistent CSMA
+A central controller assigns each device a transmission order or time slot.
+Devices transmit only during their allocated turn.
+This greatly reduces collisions but requires coordination.
+
+Advantages of CSMA
+Reduces collisions by sensing the channel first.
+Improves network efficiency.
+Simple and inexpensive to implement.
+Works in both wired and wireless networks (with different variants).
+Supports multiple devices sharing the same medium.
+
+Disadvantages of CSMA
+Performance decreases as the number of devices increases.
+Devices may experience delays while waiting for the channel to become free.
+
+Dynamic Host Configuration Protocol (DHCP)
+Definition
+DHCP (Dynamic Host Configuration Protocol) is an Application Layer protocol that automatically assigns IP addresses and other network settings to devices when they join a network.
+Without DHCP, every device would have to be configured manually.
+
+DHCP automatically provides:
+
+IP Address
+Subnet Mask
+Default Gateway
+DNS Server
+
+Why is DHCP Needed?
+Imagine an office with 500 computers.
+Without DHCP:
+The network administrator must manually configure each computer.
+
+Computer 1 → 192.168.1.2
+
+Computer 2 → 192.168.1.3
+
+Computer 3 → 192.168.1.4
+This is time-consuming and can lead to duplicate IP addresses.
+
+With DHCP:
+Simply connect the device to the network.
+Computer
+↓
+
+Router (DHCP Server)
+
+↓
+
+Automatically gets:
+IP Address
+Subnet Mask
+Gateway
+DNS
+Everything is configured automatically.
+
+Information Provided by DHCP
+1. IP Address
+A unique address for the device.
+
+Example:
+192.168.1.15
+
+2. Subnet Mask
+Defines which devices belong to the same network.
+Example:
+255.255.255.0
+
+3. Default Gateway
+The router's IP address used to reach other networks (like the Internet).
+Example:
+192.168.1.1
+
+4. DNS Server
+Converts domain names into IP addresses.
+Example:
+8.8.8.8
+
+Components of DHCP
+1. DHCP Server
+The device that assigns IP addresses.
+
+Usually:
+Router
+Windows Server
+Linux Server
+
+Example:
+Router
+
+↓
+
+Assigns IP addresses
+
+2. DHCP Client
+Any device requesting an IP.
+
+Examples:
+Laptop
+Mobile phone
+Printer
+Smart TV
+
+3. DHCP Relay
+Used when the client and DHCP server are in different networks (subnets).
+It forwards DHCP messages between them.
+
+Example:
+Client
+
+↓
+
+Router (Relay)
+
+↓
+
+DHCP Server
+
+4. IP Address Pool
+A range of IP addresses the server can assign.
+
+Example:
+192.168.1.100
+
+↓
+
+192.168.1.200
+The DHCP server assigns one available IP from this range.
+
+5. Lease
+A lease is the time for which a client is allowed to use an assigned IP address.
+
+Example:
+Lease Time
+24 Hours
+Before the lease expires, the client requests a renewal.
+
+7. Default Gateway
+Allows devices to communicate outside the local network.
+Usually, it is the router's IP.
+
+DHCP Packet Fields (Important Ones)
+A DHCP packet contains information exchanged between the client and server.
+
+Important fields include:
+Transaction ID: Matches requests and replies.
+Client Hardware Address: The client's MAC address.
+Your IP Address (yiaddr): The IP assigned to the client.
+Server IP Address: The DHCP server's address.
+Gateway IP Address:
+
+How DHCP Works (DORA Process)
+DORA = Discover → Offer → Request → Acknowledge
+
+Step 1 – DHCP Discover
+The client has no IP address.
+It broadcasts:
+"Is there any DHCP server available?"
+
+Client
+
+↓
+
+Broadcast
+DHCP Discover
+
+Step 2 – DHCP Offer
+The DHCP server replies:
+"I can give you this IP address."
+The offer includes:
+IP Address
+Subnet Mask
+Gateway
+DNS
+Lease Time
+DHCP Server
+
+↓
+
+DHCP Offer
+
+192.168.1.25
+
+Step 3 – DHCP Request
+The client accepts one offer and requests that IP address.
+It also tells any other DHCP servers that their offers are not being accepted.
+Client
+
+↓
+
+DHCP Request
+
+I want 192.168.1.25
+
+Step 4 – DHCP ACK (Acknowledgment)
+The server confirms the lease.
+DHCP Server
+
+↓
+
+DHCP ACK
+IP Assigned
+The client can now use the network.
+
+Other DHCP Messages
+DHCP NAK (Negative Acknowledgment)
+
+The server rejects the client's request.
+Reasons:
+
+Requested IP is already in use.
+Requested IP is outside the valid range.
+
+DHCP Decline
+The client detects that the offered IP address is already being used (usually using ARP).
+It informs the server:
+"This IP address is already in use."
+The server marks that IP as unavailable.
+
+DHCP Release
+When a device disconnects or shuts down, it can return its IP address to the DHCP server.
+The server places it back into the available pool
+
+DHCP Security Problems
+
+1. DHCP Starvation Attack
+An attacker sends thousands of fake DHCP requests using spoofed MAC addresses.
+
+Fake Device 1
+
+Fake Device 2
+
+Fake Device 3
+The DHCP server assigns all available IP addresses.
+
+Result:
+
+No IP addresses remain for legitimate users.
+
+2. Rogue DHCP Server
+An attacker installs a fake DHCP server on the network.
+Instead of receiving the correct gateway and DNS, clients receive malicious settings.
+This can redirect users to fake websites or route all traffic through the attacker.
+
+3. Man-in-the-Middle (MITM) Attack
+Using a rogue DHCP server, the attacker provides:
+Fake gateway
+Fake DNS
+All network traffic passes through the attacker before reaching its destination.
+
+4. DNS Misuse
+The attacker provides a malicious DNS server.
+When the user types:
+google.com
+the fake DNS may redirect them to a phishing website.
+
+Protection Against DHCP Attacks
+
+1. DHCP Snooping
+Switches allow DHCP responses only from trusted ports connected to legitimate DHCP servers.
+This blocks rogue DHCP servers.
+
+2. Port Security
+Limits the number of MAC addresses allowed on a switch port, helping prevent DHCP starvation attacks.
+
+3. Rate Limiting
+Restricts the number of DHCP requests a device can send in a given time.
+
+4. Monitoring and Logging
+Administrators monitor DHCP lease logs to detect suspicious activity such as abnormal numbers of requests or unauthorized servers.
+
+Advantages of DHCP
+Automatically assigns IP addresses.
+Prevents duplicate IP addresses.
+Reduces manual configuration.
+Simplifies network management.
+
+Disadvantages of DHCP
+If the DHCP server fails, new devices may not receive IP addresses.
+Lacks built-in authentication, making it vulnerable to attacks like rogue DHCP servers.
+
+TRANSIMISSION MODES
+Transmission Modes define how data travels between two devices
+
+They determine:
+Who can send data
+Who can receive data
+Whether communication is one-way or two-way
+Whether both devices can communicate simultaneously
+
+There are three transmission modes:
+
+1. Simplex Mode (One-Way Communication)
+In Simplex Mode, data flows only in one direction.
+One device is always the sender (transmitter).
+The other device is always the receiver.
+The receiver cannot send any response back.
+
+Diagram
+Sender  ───────────► Receiver
+Only one direction of communication is possible.
+
+Example
+Keyboard → Computer
+Keyboard sends data.
+Computer receives it.
+
+Advantages
+Very simple to implement
+Uses the full bandwidth for sending
+Low cost
+
+Disadvantages
+No feedback
+Receiver cannot acknowledge messages
+Errors cannot be reported
+
+2. Half-Duplex Mode (Two-Way, But One at a Time)
+In Half-Duplex Mode, both devices can send and receive data, but not at the same time.
+Only one device transmits while the other waits.
+
+Diagram
+A ─────► B
+(wait)
+
+A ◄───── B
+Communication happens alternately.
+
+Example
+Walkie-talkie
+
+Person A:
+"Hello!"
+Then releases the button.
+Person B:
+"Yes, I'm listening."
+Only one person can talk at a time.
+
+Advantages
+Supports two-way communication
+Cheaper than full duplex
+Uses only one communication channel
+
+Disadvantages
+Cannot transmit simultaneously
+Waiting time exists
+Delay increases with heavy traffic
+
+3. Full-Duplex Mode (Two-Way Simultaneously)
+In Full-Duplex Mode, both devices send and receive data at the same time.
+Nobody has to wait.
+
+Diagram
+A ─────────► B
+A ◄───────── B
+
+Both arrows are active simultaneously.
+Example
+Telephone call
+
+While talking:
+You can speak.
+You can hear the other person.
+Both happen simultaneously.
+
+Other examples:
+Video calls
+
+Advantages
+Fast communication
+No waiting time
+Higher efficiency
+
+Disadvantages
+More expensive
+Requires complex hardware
+Needs more bandwidth
+
+System Bus Design
+System Bus Design (Easy Explanation)
+A System Bus is a set of communication pathways (wires or traces) that connects the CPU, Memory (RAM), and Input/Output (I/O) devices. It allows these components to exchange information.
+
+What is a System Bus?
+A System Bus is a collection of parallel wires.
+
+Each wire carries 1 bit.
+If there are 8 wires, it is an 8-bit bus.
+If there are 16 wires, it is a 16-bit bus.
+If there are 64 wires, it is a 64-bit bus.
+More wires mean more data can be transferred at once.
+
+Why is it called a "Shared Bus"?
+Only one device can use the bus at a time.
+Imagine a single-lane bridge.
+CPU is sending data → Others must wait.
+Hard disk is sending data → CPU waits.
+This prevents two devices from sending data simultaneously and causing collisions.
+
+Three Types of System Bus
+A system bus consists of three types of lines:
+Address Bus
+Data Bus
+Control Bus
+
+1. Address Bus
+Purpose
+The Address Bus tells where the data should go.
+It carries the memory address from the CPU.
+Direction
+Unidirectional
+CPU  ─────────► Memory
+
+Only the CPU sends addresses.
+Memory never sends addresses back.
+
+Example
+Suppose the CPU wants data stored at memory location 500.
+The CPU sends:
+Address = 500
+using the Address Bus.
+Now RAM knows which location the CPU wants.
+
+Why is it Important?
+The number of address lines determines how much memory can be accessed.
+
+Formula:
+Maximum Memory = 2^(Number of Address Lines)
+
+Example
+16 address lines
+2^16 = 65,536 addresses
+
+Data Bus
+The Data Bus carries the actual data.
+This is the information being transferred.
+Direction
+Bidirectional
+CPU ◄────────► Memory
+Both CPU and memory can send data.
+
+Example 1 (Reading)
+CPU asks RAM:
+Give me the value at address 100.
+RAM sends
+25
+through the Data Bus.
+
+Why is Data Bus Width Important?
+The width determines how much data can be transferred at one time.
+
+Example
+8-bit Data Bus
+Transfers 8 bits at once
+A wider data bus generally means higher performance because more data moves in each transfer.
+
+3. Control Bus
+The Control Bus carries control and timing signals.
+It tells every component what operation to perform and when.
+Think of it as the traffic police of the system bus.
+
+Example
+Suppose CPU wants to read data.
+The CPU sends:
+Memory Read
+through the Control Bus.
+RAM understands:
+"The CPU wants to read data."
+
+If CPU wants to store data:
+Memory Write
+RAM understands:
+"Store the incoming data."
+
+Types of Control Signals
+Memory Read
+CPU → RAM
+"Send me data."
+
+Memory Write
+CPU → RAM
+"Store this data."
+
+I/O Read
+CPU → Keyboard
+"Send your data."
+
+I/O Write
+CPU → Printer
+"Print this."
+
+Interrupt Request (IRQ)
+Sometimes a device needs immediate attention.
+
+Example:
+You press a key.
+Keyboard sends
+Interrupt Request
+The CPU pauses its current task and processes the keyboard input.
+
+Clock Signal
+The clock synchronizes all operations.
+
+Bus Request / Bus Grant
+If multiple devices want to use the bus:
+A device sends a Bus Request.
+The CPU or bus controller sends a Bus Grant.
+Only then can that device use the bus.
+This avoids conflicts.
+
+Why is the Control Bus Important?
+Without the Control Bus:
+RAM wouldn't know whether to read or write.
+Devices would act at the wrong time.
+Multiple devices could try to use the bus simultaneously.
+
+Complete Example
+Suppose the CPU wants to read the value stored at memory location 200.
+
+Step 1: Address Bus
+CPU sends:
+Address = 200
+
+↓
+
+RAM selects location 200.
+
+Step 2: Control Bus
+CPU sends:
+Memory Read
+
+↓
+
+RAM understands it should send the data.
+
+Step 3: Data Bus
+RAM sends:
+
+45
+
+↓
+
+CPU receives the value 45.
+
+Transmission Media in Computer Networks
+Transmission Media is the path through which data travels from one device to another in a computer network. It can be a physical cable (wired) or wireless signals (air).
+
+Types of Transmission Media
+There are two main types:
+
+Guided Media (Wired)
+Unguided Media (Wireless)
+
+1. Guided Media (Wired Transmission)
+Guided media uses physical cables to carry data.
+The signal is guided through a fixed path.
+
+Examples
+Ethernet cable
+Telephone cable
+Optical fiber
+
+Advantages
+Faster
+More secure
+Less interference
+More reliable
+
+Disadvantages
+Installation cost
+Limited mobility
+
+Types of Guided Media
+
+A. Twisted Pair Cable
+A twisted pair cable contains two insulated copper wires twisted together.
+The twisting helps reduce electromagnetic interference (EMI)
+
+
+Why are the wires twisted?
+Imagine two straight wires acting like antennas—they easily pick up electrical noise.
+Twisting the wires causes the interference picked up on one twist to cancel with the interference on the next, resulting in a cleaner signal.
+
+Types of Twisted Pair
+
+(i) UTP (Unshielded Twisted Pair)
+No extra metal shielding
+Cheapest
+Easy to install
+
+Advantages
+Low cost
+Flexible
+Easy installation
+Good speed for short distances
+
+Disadvantages
+More affected by noise
+Shorter transmission distance
+
+Examples:
+Ethernet cable (Cat5e, Cat6)
+Telephone cable
+
+(ii) STP (Shielded Twisted Pair)
+STP has an additional metal shield around the wires.
+This shield blocks outside interference.
+
+Advantages
+Better performance
+Less noise
+
+Disadvantages
+More expensive
+Harder to install
+Thicker cable
+
+B. Coaxial Cable
+
+A coaxial cable has several layers:
+
+Outer Jacket
+Metal Shield
+Insulator
+Copper Wire (Center)
+
+The metal shielding protects the signal from noise.
+
+Uses
+Cable TV
+
+Advantages
+Higher bandwidth than twisted pair
+Better protection from interference
+
+Disadvantages
+More expensive than twisted pair
+Bulkier
+Less flexible
+
+C. Optical Fiber Cable
+Optical fiber sends light instead of electricity.
+It uses the principle of Total Internal Reflection (TIR) to keep light inside the fiber.
+
+Advantages
+Extremely high speed
+Very high bandwidth
+Long-distance communication
+Immune to EMI
+
+Disadvantages
+High installation cost
+Fragile
+
+Uses
+Undersea internet cables
+Hospitals
+Military communication
+
+2. Unguided Media (Wireless)
+Unguided media sends data through the air using electromagnetic waves.
+No physical cable is needed.
+
+Examples:
+Wi-Fi
+Bluetooth
+Mobile networks
+
+Types of Unguided Media
+
+A. Radio Waves
+Radio waves travel in all directions and can pass through buildings.
+
+Uses
+AM/FM radio
+Television broadcasting
+
+Advantages
+No line of sight needed
+Long-distance communication
+
+Disadvantages
+Lower security
+Can experience interference
+
+B. Microwaves
+Microwaves require Line of Sight (LOS).
+The transmitting and receiving antennas must directly face each other.
+
+Uses
+Mobile towers
+Satellite communication
+
+Advantages
+High speed
+
+Disadvantages
+Affected by rain and fog
+Obstacles block the signal
+
+C. Infrared
+Infrared waves are used for very short distances.
+They cannot pass through walls, which reduces interference and improves privacy over short ranges.
+
+Uses
+TV remote controls
+Wireless keyboards
+Wireless mouse
+
+Advantages
+Low cost
+Minimal interference between nearby rooms
+
+Disadvantages
+Very short range
+Cannot penetrate obstacles
+
+Transmission Impairments
+Sometimes signals become weak or distorted during transmission.
+
+1. Attenuation
+Loss of signal strength over distance.
+
+Solution:
+Analog: Amplifier
+Digital: Repeater
+
+2. Distortion
+The shape of the signal changes because different frequency components arrive at different times.
+
+3. Noise
+Unwanted electrical or electromagnetic signals mix with the original signal and can corrupt data.
+
+What is UTP (Unshielded Twisted Pair)?
+UTP (Unshielded Twisted Pair) is the most commonly used networking cable. It consists of pairs of insulated copper wires twisted together without any additional metal shielding.
+
+Why are the wires twisted?
+Suppose there is a nearby power cable.
+A straight wire would pick up electrical noise.
+
+When two wires are twisted:
+
+Both wires experience nearly the same interference.
+The receiver compares the signals.
+The common interference cancels out.
+This results in a cleaner, more reliable signal.
+
+Categories (Types) of UTP Cable
+
+Different categories support different speeds and frequencies.
+
+Category	Bandwidth	Maximum Speed					Common Use
+Cat5e	        100 MHz			1 Gbps						Home and office LANs
+Cat6		250 MHz			Up to 10 Gbps (short distances)			Modern Ethernet
+Cat6a		500 MHz			10 Gbps (longer distances)			Enterprise networks
+Cat7		600 MHz			10 Gbps						High-performance networking (includes extra shielding)
+Cat8		2000 MHz		25–40 Gbps						Data centers
+
+Applications of UTP
+
+1. Local Area Networks (LAN)
+Most computers in homes, schools, and offices are connected using UTP Ethernet cables.
+
+2. Telephone Networks
+Telephone systems have used twisted pair cables for many years because they carry voice signals efficiently.
+
+Difference between WDM and DWDM
+Both WDM (Wavelength Division Multiplexing) and DWDM (Dense Wavelength Division Multiplexing) are technologies used in optical fiber communication.
+Their main purpose is to increase the amount of data that can be transmitted through a single optical fiber by sending multiple light signals of different wavelengths simultaneously.
+
+What is Multiplexing?
+Multiplexing means combining multiple signals into one communication channel.
+
+Example
+Imagine a highway.
+Without multiplexing → Only one car can use the road.
+With multiplexing → Many cars travel together on the same highway
+
+What is WDM?
+WDM (Wavelength Division Multiplexing) is a technology that combines multiple light signals of different wavelengths (colors) and sends them through one optical fiber.
+Each wavelength carries its own independent data.
+
+Why use WDM?
+Without WDM:
+
+Fiber 1 → Signal A
+Fiber 2 → Signal B
+Fiber 3 → Signal C
+Need three separate fibers.
+
+With WDM:
+Signal A
+Signal B
+Signal C
+      │
+      ▼
+One Optical Fiber
+Only one fiber is needed.
+This reduces installation cost.
+
+Advantages of WDM
+1. Increased Capacity
+Many signals travel simultaneously.
+More data.
+
+2. Cost Effective
+No need to install multiple optical fibers.
+
+Disadvantages of WDM
+Difficult wavelength tuning
+Mostly suitable for smaller networks
+
+What is DWDM?
+DWDM (Dense Wavelength Division Multiplexing) is an advanced version of WDM.
+
+The word Dense means:
+More wavelengths are packed very closely together.
+Instead of using only a few wavelengths,
+DWDM uses dozens or even hundreds of wavelengths on the same optical fiber.
+
+Diagram
+
+WDM
+🔴        🔵        🟢
+Large spacing between wavelengths.
+
+DWDM
+🔴🔵🟢🟡🟣⚪🟠🔴🔵🟢🟡
+Very closely packed wavelengths.
+
+Advantages of DWDM
+1. Very High Capacity
+Hundreds of channels can be transmitted.
+
+3. Long Distance Communication
+Signals travel very long distances.
+
+Suitable for:
+Internet backbone
+Telecom companies
+Undersea cables
+
+4. Efficient Bandwidth Usage
+Almost the entire fiber capacity is utilized.
+
+Disadvantages of DWDM
+Expensive
+Complex technology
+Requires more power
+
+Applications
+
+WDM
+Campus networks
+
+DWDM
+Internet backbone
+Telecom networks
+Long-distance communication
+
+Data Link Layer in OSI Model
+The Data Link Layer is the second layer of the OSI (Open Systems Interconnection) Model.
+It is responsible for transferring data between two directly connected devices (node-to-node communication) on the same local network (LAN).
+
+Main Responsibilities of the Data Link Layer
+The Data Link Layer receives packets from the Network Layer, converts them into frames, and sends them to the Physical Layer for transmission.
+
+It performs the following tasks:
+Node-to-node delivery
+Framing
+Physical (MAC) addressing
+Error detection and correction
+
+2. Physical Addressing (MAC Address)
+Every network device has a unique MAC Address.
+
+Example:
+00:1A:2B:3C:4D:5E
+The Data Link Layer uses MAC addresses to deliver frames within the same LAN.
+
+3. Error Detection
+Sometimes data becomes corrupted during transmission.
+The Data Link Layer detects errors using techniques like:
+CRC (Cyclic Redundancy Check)
+Checksum
+The receiver detects that the data has changed.
+
+Sub-layers of Data Link Layer
+The Data Link Layer has two sublayers.
+
+Data Link Layer
+│
+├── Logical Link Control (LLC)
+│
+└── Media Access Control (MAC)
+
+1. Logical Link Control (LLC)
+
+LLC is responsible for:
+Multiplexing
+Flow control
+Error reporting
+
+Example
+Computer A sends data.
+Computer B replies:
+ACK
+This acknowledgment is handled by LLC.
+
+2. Media Access Control (MAC)
+
+The MAC sublayer is responsible for:
+MAC addressing
+Frame creation
+
+It decides:
+"Which device can send data now?"
+
+Communication Process
+Suppose Computer A sends data to Computer B.
+
+Step 1
+Application creates data.
+
+↓
+
+Step 2
+Network Layer creates a packet.
+↓
+
+Step 3
+Data Link Layer creates a frame.
+Destination MAC
+Source MAC
+Data
+CRC
+↓
+
+Step 4
+Physical Layer converts it into bits.
+↓
+
+Step 5
+Receiver performs the reverse process.
+
+Devices Operating at Data Link Layer
+
+1. Switch
+A switch is the most common
+It forwards frames using MAC addresses.
+
+Example
+PC1 ----\
+          \
+PC2 ---- Switch ---- PC3
+          /
+PC4 ----/
+
+The switch learns MAC addresses and sends the frame only to the correct destination.
+
+2. Bridge
+A bridge connects two LANs.
+It reduces unnecessary traffic by forwarding only required frames.
+
+3. Network Interface Card (NIC)
+Every computer has a NIC.
+
+Functions:
+Stores the MAC address.
+Sends and receives frames.
+Connects the computer to the network.
+
+4. Wireless Access Point (WAP)
+Allows wireless devices to communicate with a wired network.
+Protocols Used at Data Link Layer
+
+Some common protocols include:
+HDLC (High-Level Data Link Control) – Reliable communication over point-to-point links.
+PPP (Point-to-Point Protocol) – Commonly used for direct connections (e.g., older dial-up and some WAN links).
+SLIP (Serial Line Internet Protocol) – Older protocol for serial connections.
+SDLC (Synchronous Data Link Control) – IBM-developed data link protocol.
+LCP (Link Control Protocol) – Establishes and manages PPP links.
+NCP (Network Control Protocol) – Configures network-layer protocols over PPP.
+
+What is SDLC?
+SDLC (Synchronous Data Link Control) is a Data Link Layer (Layer 2) protocol developed by IBM
+Its main purpose is to provide reliable communication between devices by organizing data into frames and detecting transmission errors.
+
+It supports:
+Point-to-Point communication
+Multipoint communication
+
+Basic SDLC Frame Format
+An SDLC frame looks like this:
+
++------+---------+---------+-------------+------+------+
+|Flag  | Address | Control | Information | FCS  | Flag |
++------+---------+---------+-------------+------+------+
+
+Every field has a specific purpose.
+
+1. Flag Field
+Purpose
+The Flag Field marks the beginning and end of every frame.
+
+Flag Pattern
+The flag is always:
+01111110
+This special bit pattern helps the receiver recognize where a frame begins and ends.
+Without the flag, the receiver wouldn't know where one frame ends and the next begins.
+
+2. Address Field
+Purpose
+The Address Field tells which device should receive the frame.
+
+Example
+Suppose three computers exist:
+Computer A
+Computer B
+Computer C
+Address field:
+Address = Computer B
+Only Computer B processes the frame.
+The others ignore it.
+
+Types of Addressing
+
+Individual Address
+Sent to one device.
+
+Example:
+Address = PC2
+
+Group Address
+Sent to multiple devices.
+
+Example:
+Address = Lab Computers
+
+Broadcast Address
+Sent to everyone.
+
+Example:
+Address = All Devices
+
+3. Control Field
+This is one of the most important fields.
+It tells the receiver:
+"What should I do with this frame?"
+
+Types of SDLC Frames
+
+There are three frame types.
+
+A. Information Frame (I-Frame)
+
+Used to carry actual user data.
+The Control field identifies it as an I-Frame.
+
+Uses
+Data transfer
+
+B. Supervisory Frame (S-Frame)
+
+Used for:
+
+Acknowledgement
+Error reporting
+
+It does not carry user data.
+
+Uses
+ACK
+NAK
+
+C. Unnumbered Frame (U-Frame)
+
+Used for connection management.
+
+Examples
+
+Establish connection
+Disconnect connection
+Reset communication
+
+It is mainly used for control purposes
+
+Uses
+Link setup
+Link termination
+
+4. Information Field
+Purpose
+This field contains the actual data.
+
+5. Frame Check Sequence (FCS)
+Purpose
+The FCS detects transmission errors.
+
+Before sending:
+The sender calculates an error-checking value using a method such as CRC (Cyclic Redundancy Check).
+The receiver performs the same calculation.
+If both values match:
+✅ Data is correct.
+If not:
+❌ Error detected.
+
+6. Ending Flag
+The ending flag is exactly the same as the starting flag.
+01111110
+It tells the receiver:
+"The frame has finished."
+
+Complete Example
+Suppose Computer A sends:
+Hello
+The SDLC frame becomes:
+
++--------+---------+-----------+-------------+------+--------+
+| Flag   | Address | Control   | Information | FCS  | Flag   |
++--------+---------+-----------+-------------+------+--------+
+|01111110| PC2     | I-Frame   | Hello       | CRC  |01111110|
++--------+---------+-----------+-------------+------+--------+
+
+How SDLC Communication Works
+Step 1
+
+Sender creates data.
+
+↓
+
+Step 2
+
+SDLC adds:
+
+Flag
+Address
+Control
+Information
+FCS
+Ending Flag
+
+↓
+
+Step 3
+
+Frame is transmitted.
+
+↓
+
+Step 4
+
+Receiver checks:
+
+Starting Flag ✔
+Address ✔
+Control ✔
+FCS ✔
+
+↓
+
+Step 5
+
+If no errors exist:
+
+Receiver sends an acknowledgement (ACK).
+
+Advantages of SDLC
+1. Reliable Communication
+Detects transmission errors.
+
+2. Error Detection
+Uses Frame Check Sequence (FCS) to identify corrupted frames.
+
+4. Multiple Network Types
+Works in:
+
+Point-to-point networks
+Multipoint networks
+
+What is HDLC?
+HDLC (High-Level Data Link Control) is a bit-oriented Data Link Layer (Layer 2) protocol used for reliable communication between two or more network devices.
+
+Features
+Operates at Data Link Layer (Layer 2)
+Uses frames for data transmission
+Supports point-to-point and multipoint communication
+
+HDLC Frame Structure
++------+---------+---------+-------------+------+------+
+|Flag  | Address | Control | Information | FCS  | Flag |
++------+---------+---------+-------------+------+------+
+
+Purpose of Each Field
+Field	Purpose
+Flag	Marks the beginning and end of the frame
+Address	Identifies the destination station
+Control	Specifies the frame type and communication control
+Information	Carries user data (optional)
+FCS	Detects errors using CRC
+Ending Flag	Marks the end of the frame
+
+How HDLC Communication Works
+Step 1
+Application creates data.
+
+↓
+
+Step 2
+HDLC creates a frame.
+Flag
+Address
+Control
+Information
+FCS
+Flag
+
+↓
+
+Step 3
+Frame is transmitted.
+
+↓
+
+Step 4
+Receiver checks:
+Flag ✔
+Address ✔
+Control ✔
+CRC ✔
+
+↓
+
+Step 5
+If everything is correct,
+Receiver sends an ACK (usually via an S-Frame).
+
+Serial Line Internet Protocol (SLIP)
+SLIP (Serial Line Internet Protocol) is one of the earliest protocols used to send IP packets over a serial connection.
+
+Why was SLIP created?
+In the early days of the Internet, computers were connected using serial communication (telephone lines, RS-232 serial ports, dial-up modems).
+However, the IP protocol could not directly send packets
+
+It simply says:
+"Take an IP packet, add start/end markers, send it over the serial cable."
+
+SLIP was mainly used in:
+Serial ports (RS-232)
+Router-to-router communication
+Host-to-host communication
+Early UNIX systems
+
+Today, it has almost completely been replaced by PPP (Point-to-Point Protocol)
+
+How does SLIP work?
+Suppose the IP layer creates an IP packet.
+SLIP simply adds a special byte at the end.
+When the receiver sees the END byte, it knows:
+"The packet is finished."
+
+A major job of SLIP is framing.
+Framing means:
+Determining where one packet starts and where it ends.
+SLIP uses two special control characters.
+
+1. END Character
+Purpose:
+Marks the end of every packet.
+
+2. ESC Character
+Purpose:
+Used when the actual data itself contains an END or ESC byte.
+Otherwise, the receiver would mistake it for a control character.
+
+Instead of sending
+
+END
+
+it sends
+
+ESC ESC_END
+
+Similarly,
+
+Instead of sending
+
+ESC
+
+it sends
+
+ESC ESC_ESC
+
+Addressing
+SLIP cannot automatically assign IP addresses.
+Both devices must already know each other's IP addresses.
+
+Data Transmission
+SLIP sends
+IP Packet
++
+END
+
+Nothing more.
+A SLIP frame looks like:
+
++--------------------+
+|     IP Packet      |
++--------------------+
+|      END Byte      |
++--------------------+
+
+Very simple.
+
+Advantages of SLIP
+
+1. Very Simple
+Easy to implement.
+Very little code is required.
+
+2. Low Overhead
+Adds only a few extra bytes.
+
+3. Lightweight
+Suitable for devices with limited memory and processing power.
+
+Disadvantages of SLIP
+
+1. No Authentication
+Anyone connected to the serial line can communicate.
+
+2. Supports Only IP
+
+4. No Dynamic IP Address Assignment
+IP addresses must be configured manually.
+
+3. No Error Detection
+If bits are corrupted during transmission,
+SLIP does not detect or correct errors.
+
+Why was PPP introduced?
+
+SLIP had many limitations.
+PPP (Point-to-Point Protocol) improved on SLIP by adding:
+
+Authentication (PAP, CHAP)
+Dynamic IP address assignment
+Error detection
+Support for multiple network protocols
+
+The two most common authentication methods are:
+
+PAP (Password Authentication Protocol)
+CHAP (Challenge Handshake Authentication Protocol)
+
+Think of them as two different ways of proving your identity.
+Why is Authentication Needed?
+Suppose you dial into an Internet Service Provider (ISP).
+Before allowing access, the ISP wants to verify your identity.
+
+1. PAP (Password Authentication Protocol)
+PAP is the simplest authentication protocol.
+It works like logging into a website using a username and password.
+
+How PAP Works
+Client connects to the server.
+Client sends:
+Username
+Password
+Server checks the credentials.
+If correct → Access granted.
+If incorrect → Access denied.
+
+Problem with PAP
+The password is sent in plain text.
+If an attacker intercepts the communication, they can directly read the password.
+
+Advantages of PAP
+Very simple
+Easy to implement
+Fast authentication
+
+Disadvantages of PAP
+Password sent in plain text
+Vulnerable to eavesdropping
+
+2. CHAP (Challenge Handshake Authentication Protocol)
+CHAP is much more secure.
+Instead of sending the password, it proves the client knows the password without actually transmitting it.
+
+How CHAP Works
+Step 1: Connection Established
+Client ------------- Server
+Step 2: Server Sends a Challenge
+The server generates a random number.
+
+Example:
+Challenge = 56789
+and sends it to the client.
+
+Step 3: Client Creates a Hash
+The client combines:
+Challenge
+Password
+
+Example:
+Password = abc123
+Hash(56789 + abc123)
+Suppose the result is:
+8A92BC41
+The client sends only:
+8A92BC41
+The password itself is never sent.
+
+Step 4: Server Verifies
+The server already knows the user's password.
+It performs the same calculation:
+Hash(56789 + abc123)
+If the computed hash matches the client's hash:
+Authentication Successful
+Otherwise:
+Authentication Failed
+
+
+
+
+    </pre>
+
+</body>
+
+</html>
