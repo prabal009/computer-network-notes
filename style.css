@@ -10,7 +10,7 @@ body{
 
     background-size:cover;
 
-    background-position:center;
+    background-position:center center;
 
     background-repeat:no-repeat;
 
@@ -89,5 +89,115 @@ header p{
     font-family:Arial, Helvetica, sans-serif;
 
     box-shadow:0 0 20px rgba(0,0,0,0.5);
+
+}
+
+/* ---------- Tablets ---------- */
+
+@media (max-width:992px){
+
+    .overlay{
+
+        padding:25px;
+
+    }
+
+    header h1{
+
+        font-size:40px;
+
+    }
+
+    header p{
+
+        font-size:18px;
+
+    }
+
+    .content{
+
+        padding:25px;
+
+        font-size:17px;
+
+    }
+
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width:768px){
+
+    body{
+
+        background-attachment:scroll;
+
+        background-position:center center;
+
+    }
+
+    .overlay{
+
+        padding:15px;
+
+    }
+
+    header{
+
+        margin-bottom:25px;
+
+    }
+
+    header h1{
+
+        font-size:30px;
+
+    }
+
+    header p{
+
+        font-size:16px;
+
+    }
+
+    .content{
+
+        width:100%;
+
+        padding:18px;
+
+        font-size:15px;
+
+        border-radius:10px;
+
+    }
+
+}
+
+/* ---------- Small Phones ---------- */
+
+@media (max-width:480px){
+
+    header h1{
+
+        font-size:24px;
+
+    }
+
+    header p{
+
+        font-size:14px;
+
+    }
+
+    .content{
+
+        padding:15px;
+
+        font-size:14px;
+
+        line-height:1.7;
+
+    }
 
 }
