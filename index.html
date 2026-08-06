@@ -9543,7 +9543,537 @@ Address	   gPurpose
 169.254.x.x	Link-local (APIPA)
 0.0.0.0	   Used before obtaining an IP address
 
+Classful IP Addressing
+Earlier IPv4 addresses were divided into fixed classes.
+A
+B
+C
+D
+E
+
+Special IP Addresses
+Address		Purpose
+127.x.x.x	Loopback (localhost)
+169.254.x.x	Link-local (APIPA)
+0.0.0.0		Used before obtaining an IP address
+
+
 	
+IPv4 vs IPv6
+Feature	IPv4	IPv6
+Address Size	32 bits	128 bits
+Notation	Decimal (192.168.1.1)	Hexadecimal (2001:db8::1)
+Address Space	~4.3 billion	Vastly larger (2¹²⁸)
+NAT	Commonly required	Generally not required
+Security	IPsec optional	IPsec built into the design
+Header	Variable (20–60 bytes)	Fixed (40 bytes)
+Fragmentation	Sender and routers	Sender only
+Broadcast	Supported	Not supported (uses multicast/anycast)
+Address Classes	Yes	No (prefix-based addressing)
+
+What is a Host?
+A host is any device connected to a network.
+
+Examples:
+Computer
+Laptop
+Mobile phone
+What is a Subnet?
+A subnet is a smaller network created from a larger network.
+
+For example:
+
+Original Network
+
+192.168.1.0/24
+
+can be divided into
+
+192.168.1.0/25
+192.168.1.128/25
+
+Now there are 2 smaller networks (subnets) instead of one large network.
+
+Why do we do Subnetting?
+
+Without subnetting
+
+Company
+│
+├── HR
+├── Sales
+├── Accounts
+├── IT
+
+Everyone is in one network.
+
+Problems
+
+Too much broadcast traffic
+Slow network
+Wastage of IP addresses
+Poor security
+
+After subnetting
+
+HR → Subnet 1
+
+Sales → Subnet 2
+
+Accounts → Subnet 3
+
+IT → Subnet 4
+
+Benefits
+
+Better performance
+Better security
+Less broadcast traffic
+
+Formula to Calculate Number of Hosts
+The most important formula is
+Hosts=2*h−2 
+where
+•	h = Host bits 
+We subtract 2 because:
+•	One IP is the Network Address 
+•	One IP is the Broadcast Address 
+These cannot be assigned to devices.
+
+How to Find Host Bits
+IPv4 has 32 bits.
+Host bits
+= 32 − Prefix
+Example
+/24
+Network bits = 24
+Host bits
+32−24=8
+Hosts
+2^8−2
+=256−2
+=254
+So a /24 network supports 254 devices.
+
+Quick Host Table (Very Important)
+CIDR	Subnet Mask	Host Bits	Usable Hosts
+/24	255.255.255.0	8	254
+/25	255.255.255.128	7	126
+/26	255.255.255.192	6	62
+/27	255.255.255.224	5	30
+/28	255.255.255.240	4	14
+/29	255.255.255.248	3	6
+/30	255.255.255.252	2	2
+
+Formula for Number of Subnets
+If subnetting from a larger network,
+Subnets=2s 
+where
+•	s = Borrowed bits 
+________________________________________
+Example
+Original network
+/24
+New subnet
+/26
+Borrowed bits
+26−24=2
+Subnets
+2²=4
+Answer
+4 subnets
+
+Finding the Network Address
+Formula
+Network Address
+
+=
+
+IP Address AND Subnet Mask
+Example
+IP
+192.168.1.10
+Mask
+255.255.255.0
+Result
+192.168.1.0
+This is the Network Address.
+________________________________________
+9. Finding the Broadcast Address
+The broadcast address is the last IP in the subnet.
+Example
+Network
+
+192.168.1.0/24
+Range
+192.168.1.0
+
+↓
+
+192.168.1.255
+Broadcast
+192.168.1.255
+________________________________________
+10. First and Last Host
+Example
+192.168.1.0/24
+Network
+192.168.1.0
+First Host
+192.168.1.1
+Last Host
+192.168.1.254
+Broadcast
+192.168.1.255
+
+What is VLSM?
+VLSM (Variable Length Subnet Mask) allows using different subnet masks within the same network based on actual host requirements.
+Instead of giving every department the same-sized subnet, VLSM assigns subnet sizes according to need, reducing IP address wastage
+Example
+Company Network
+192.168.1.0/24
+Departments
+Department	Hosts Needed
+Sales	120
+Development	50
+Accounts	26
+Management	5
+________________________________________
+Using FLSM
+Every department gets
+/24
+Each receives
+254 hosts
+Even Management needs only 5 hosts, so most addresses are wasted.
+________________________________________
+Using VLSM
+Allocate the smallest subnet that fits each department:
+Department	Needed	Allocated
+Sales	120	/25 (126 hosts)
+Development	50	/26 (62 hosts)
+Accounts	26	/27 (30 hosts)
+Management	5	/29 (6 hosts)
+This saves many IP addresses.
+13. Steps to Solve VLSM Problems
+1.	Write the required number of hosts. 
+2.	Arrange requirements from largest to smallest. 
+3.	Choose the smallest subnet that can accommodate each requirement. 
+4.	Allocate the largest subnet first.
+14. Advantages of VLSM
+•	Efficient use of IP addresses. 
+•	Less IP wastage. 
+•	Better scalability. 
+•	Improved routing. 
+•	Smaller broadcast domains. 
+•	Commonly used in modern networks with routing protocols like OSPF, EIGRP, and BGP. 
+________________________________________
+15. Disadvantages of VLSM
+•	More complex to design. 
+•	Requires careful planning. 
+•	Easier to make configuration mistakes. 
+•	Older devices or protocols may not support it.
+Supernetting
+What is Supernetting?
+Supernetting is the opposite of subnetting.
+•	Subnetting: Divide one large network into many smaller networks. 
+•	Supernetting: Combine many smaller networks into one larger network. 
+It is also called Route Aggregation or CIDR Aggregation.
+Why is Supernetting Needed?
+Suppose a router has
+Network A
+Network B
+Network C
+Network D
+Each requires one routing table entry.
+Routing table
+Network	Interface
+200.1.0.0/24	A
+200.1.1.0/24	B
+200.1.2.0/24	C
+200.1.3.0/24	D
+Instead, we can write
+200.1.0.0/22
+Only one routing entry is needed.
+This makes routing faster.
+Advantages of Supernetting
+•	Smaller routing tables 
+•	Faster routing 
+•	Fewer routing updates 
+•	Better utilization of IP addresses 
+•	Easier network management 
+________________________________________
+Conditions for Supernetting
+There are three conditions.
+Condition 1
+Networks must be contiguous (continuous).
+Correct
+192.168.0.0
+192.168.1.0
+192.168.2.0
+192.168.3.0
+Wrong
+192.168.0.0
+192.168.2.0
+192.168.5.0
+There are gaps.
+________________________________________
+Condition 2
+Every subnet should have the same size.
+Example
+All should be
+/24
+or
+/25
+Not mixed.
+Condition 3
+The first network should be divisible by the total block size.
+Suppose
+4 networks
+Each network has
+256 addresses
+Total
+4 × 256 =1024
+The first network must begin exactly at the boundary of 1024 addresses.
+Routing
+What is Routing?
+Routing is the process of selecting the best path for data packets to travel from the source to the destination.
+Routers perform routing.
+Router
+A router
+•	Works at Layer 3 
+•	Uses IP Address 
+•	Connects different networks 
+•	Forwards packets 
+________________________________________
+Working of Routing
+Step 1
+Sender creates packet.
+↓
+Step 2
+Destination IP is added.
+↓
+Step 3
+Router checks routing table.
+↓
+Step 4
+Router forwards packet.
+↓
+Step 5
+Packet reaches destination.
+________________________________________
+Hop Count
+Every router crossed
+=
+One hop
+Example
+PC
+
+↓
+
+Router1
+
+↓
+
+Router2
+
+↓
+
+Router3
+
+↓
+
+Server
+Hop count = 3
+Lower hop count generally means a shorter path.
+________________________________________
+Types of Routing
+There are three major types.
+________________________________________
+1. Static Routing
+Routes are entered manually.
+Administrator writes
+To reach Network A
+Go via Router B
+Advantages
+•	Secure 
+•	No overhead 
+•	Easy for small networks 
+Disadvantages
+•	Manual 
+•	Difficult for large networks 
+________________________________________
+2. Dynamic Routing
+Routers automatically learn routes.
+They exchange routing information.
+Advantages
+•	Automatic 
+•	Good for large networks 
+•	Adapts to failures 
+Disadvantages
+•	Uses CPU 
+•	Uses memory 
+•	More complex 
+________________________________________
+3. Default Routing
+If no route exists
+Send packet to
+Default Gateway
+Usually
+0.0.0.0/0
+Routing Metrics
+A router selects the best path using metrics.
+Hop Count
+Number of routers crossed.
+Lower is better.
+________________________________________
+Bandwidth
+Higher bandwidth
+=
+Better.
+________________________________________
+Delay
+Less delay
+=
+Better.
+________________________________________
+Load
+Less busy route
+=
+Better.
+________________________________________
+Reliability
+More reliable links
+=
+Preferred.
+Distance Vector Routing
+Routers send the entire routing table to neighbors periodically.
+Algorithm
+Bellman-Ford
+Protocols
+•	RIP 
+Advantages
+Simple.
+Disadvantages
+Link State Routing
+Routers share information only when there is a change.
+Algorithm
+Dijkstra
+Protocols
+•	OSPF 
+•	IS-IS 
+Advantages
+Fast.
+Uses less bandwidth.
+3. Bellman-Ford Algorithm
+Purpose
+Find the shortest path from one source to every other node.
+Unlike Dijkstra,
+it works with negative edge weights.
+________________________________________
+Main Idea
+Repeatedly improve the shortest distance by relaxing edges.
+________________________________________
+Relaxation
+Suppose
+A ----5---- B
+
+Distance(B)=10
+But
+Distance(A)=2
+New distance
+2+5=7
+Since
+7<10
+
+Update
+Distance(B)=7
+This process is called Relaxation.
+Why Repeat V−1 Times?
+If graph has
+V vertices
+Longest simple path
+V−1 edges
+Therefore
+Repeat
+V−1
+times.
+________________________________________
+Detecting Negative Cycle
+After
+V−1
+iterations
+perform one extra iteration.
+If any distance still decreases
+↓
+Negative cycle exists.
+Return
+-1
+Advantages
+•	Works with negative weights 
+•	Detects negative cycles 
+________________________________________
+Disadvantages
+•	Slow 
+•	Not suitable for huge graphs
+4. Dijkstra Algorithm
+Purpose
+Find the shortest path.
+Works only if
+All edge weights are non-negative.
+Main Idea
+Always choose the nearest unvisited vertex.
+Once chosen,
+its distance is considered final.
+________________________________________
+Working
+Suppose
+A
+
+/ \
+4 8
+
+B C
+Initially
+A=0
+
+B=∞
+
+C=∞
+Visit A
+Update
+B=4
+
+C=8
+Next
+Visit B
+Update C
+4+3=7
+
+7<8
+Now
+C=7
+Shortest path found.
+________________________________________
+Why Priority Queue?
+Priority Queue always removes the vertex having the smallest distance.
+This makes the algorithm very fast.
+Why Doesn't Dijkstra Work for Negative Edges?
+Suppose
+A → B = 4
+
+A → C = 5
+
+C → B = -10
+Dijkstra first finalizes
+B = 4
+Later
+A→C→B
+
+5 + (-10) = -5
+Actual shortest distance is -5, but Dijkstra has already finalized 4 and will not update it. Hence, it gives the wrong answer.
+Bellman-Ford does not make this assumption, so it correctly handles negative edges.  67
+
+
 
 
 
