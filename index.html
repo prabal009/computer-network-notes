@@ -3436,6 +3436,6098 @@ Authentication Successful
 Otherwise:
 Authentication Failed
 
+What is LAP?
+Link Access Procedure (LAP) is a family of Data Link Layer (DLL) protocols
+
+It is based on HDLC (High-Level Data Link Control) and is designed to provide reliable communication over different types of networks.
+
+Think of HDLC as the parent protocol, and LAP protocols as specialized versions created for different communication technologies.
+
+LAP works at the Data Link Layer (Layer 2) of the OSI model.
+
+Its main responsibilities are:
+Framing
+
+Error detection
+
+Error correction (in some versions)
+
+Why are there different LAP protocols?
+
+Different communication technologies have different requirements.
+
+Types of LAP Protocols
+1. MLP (Multilink Procedure)
+
+Purpose
+
+MLP combines multiple physical communication links into one logical link.
+
+Example
+
+Suppose one connection provides:
+
+64 Kbps
+
+Using four links:
+
+64 + 64 + 64 + 64
+
+= 256 Kbps
+
+MLP treats them as one large connection.
+
+Advantages
+
+Higher bandwidth
+
+Better utilization
+
+2. LAPM (Link Access Procedure for Modems)
+
+Purpose
+
+LAPM is used in modems, especially V.32 and V.42 modems.
+
+Its main goal is error-free communication over telephone lines.
+
+Why is LAPM needed?
+
+Telephone lines are noisy.
+
+Errors may occur during transmission.
+
+LAPM detects and corrects these errors.
+
+Features
+1. CRC (Cyclic Redundancy Check)
+
+Checks whether data has been corrupted.
+
+Example:
+
+Original Data
+
+HELLO
+
+Receiver computes CRC.
+
+If CRC matches:
+
+No Error
+
+Otherwise:
+
+Error Detected
+
+2. ARQ (Automatic Repeat Request)
+
+If an error is found,
+
+Receiver sends:
+
+Please send again.
+
+Sender retransmits the frame.
+
+3. Selective Reject (SREJ)
+
+Suppose frames are
+
+1
+
+2
+
+3
+
+4
+
+5
+
+Only frame 3 is damaged.
+
+Without SREJ:
+
+Resend everything.
+
+With SREJ:
+
+Resend only Frame 3.
+
+This improves efficiency.
+
+Advantages
+
+Reliable transmission
+
+Error detection
+
+Error correction through retransmission
+
+Better modem performance
+
+3. LAPF (Link Access Procedure for Frame Relay)
+
+Purpose
+
+LAPF is used in Frame Relay networks.
+
+Frame Relay is designed for fast communication.
+
+To achieve speed, LAPF removes unnecessary features.
+
+Key Idea
+
+Instead of correcting errors itself,
+
+LAPF simply checks the frame and forwards it.
+
+If an error occurs,
+
+Higher layers (such as TCP) handle retransmission.
+
+Features
+
+Very lightweight
+
+Fast
+
+4. LAPX (Link Access Procedure for Half-Duplex)
+
+Purpose
+
+LAPX is designed for half-duplex communication.
+
+What is Half-Duplex?
+
+Only one side can transmit at a time.
+
+Example:
+
+Walkie-talkies.
+
+Where is it used?
+
+Examples include:
+
+Ship-to-shore communication
+
+Radio communication
+
+Advantage
+
+Reliable communication where only one direction is active at a time.
+
+Key Features of LAP Protocols
+
+1. Based on HDLC
+
+2. Reliable Communication
+
+Most LAP protocols use:
+
+CRC
+
+ARQ
+
+3. Technology-Specific
+
+Each version is designed for a specific technology.
+
+Network Control Protocol (NCP)
+The term NCP (Network Control Protocol) can refer to two different things, which often causes confusion:
+
+Original NCP – Used in ARPANET before TCP/IP (historical protocol).
+
+PPP Network Control Protocols – A family of protocols used with PPP to configure different network-layer protocols (such as IP and IPv6).
+
+1. Original NCP (ARPANET)
+What is NCP?
+
+Network Control Protocol (NCP) was the first host-to-host communication protocol used in ARPANET, the predecessor of the Internet.
+
+Before TCP/IP existed, computers communicated using NCP.
+
+ARPANET → NCP → TCP/IP
+
+ARPANET (Advanced Research Projects Agency Network) was the world's first computer network and the direct precursor to the modern Internet.
+
+How it worked
+
+Instead of sending data as one continuous stream, ARPANET broke information into small packets. Each packet could travel independently across the network and be reassembled at its destination. This made the network more efficient
+
+Why was NCP created?
+
+It allowed computers on ARPANET to:
+
+Communicate with each other
+
+Transfer files
+
+Without NCP, computers could not exchange information over the network.
+
+Features of Original NCP
+
+1. Host-to-Host Communication
+
+It enabled two computers to communicate.
+
+Computer A <------NCP------> Computer B
+
+2. Remote Login
+
+Users could log into another computer over the network.
+
+Example:
+
+You are sitting at Computer A but use Computer B remotely.
+
+3. File Transfer
+
+Allowed users to send files between computers.
+
+Example:
+
+Computer A
+
+│
+
+│ file.txt
+
+▼
+
+Computer B
+
+4. Simplex Communication
+
+NCP mainly supported simplex (one-way) communication.
+
+Example:
+
+Sender -----------> Receiver
+
+Limitations of Original NCP
+
+It lacked many features that TCP/IP later introduced.
+
+No proper routing between multiple networks
+
+Could not efficiently connect different kinds of networks
+
+Why was TCP/IP better?
+
+TCP/IP introduced:
+
+Reliable communication
+
+Routing across multiple interconnected networks
+
+2. PPP Network Control Protocols
+The term NCP (Network Control Protocol) can refer to two different things, which often causes confusion:
+
+Original NCP – Used in ARPANET before TCP/IP (historical protocol).
+
+PPP Network Control Protocols – A family of protocols used with PPP to configure different network-layer protocols (such as IP and IPv6).
+
+What does PPP NCP do?
+
+After the PPP link is established, NCP configures the network-layer protocol.
+
+Different NCP Protocols
+1. IPCP (Internet Protocol Control Protocol)
+
+Purpose
+
+Configures IPv4 over PPP.
+
+Functions
+
+Assigns IP addresses
+
+Enables IPv4 communication
+
+Example:
+
+Client
+
+IP = 192.168.1.10
+
+↓
+
+Server
+
+IP = 192.168.1.1
+
+2. IPv6CP (IPv6 Control Protocol)
+
+Purpose
+
+Configures IPv6 over PPP.
+
+Functions
+
+enables IPv6 communication
+
+3. IPXCP (Internetwork Packet Exchange Control Protocol)
+
+4. OSINLCP (OSI Network Layer Control Protocol)
+
+Purpose
+
+Configures OSI Network Layer protocols.
+
+Functions:
+
+Enable OSI modules
+
+Disable OSI modules
+
+Configure OSI networking
+
+5. NBFCP (NetBIOS Frames Control Protocol)
+
+Purpose
+
+Configures NetBIOS Frames (NBF) over PPP.
+
+Used mainly in older Microsoft networking environments.
+
+6. CCP (Compression Control Protocol)
+
+Purpose
+
+Compresses data before transmission.
+
+Benefits:
+
+Less bandwidth usage
+
+Faster data transfer
+
+Reduced congestion
+
+7. ECP (Encryption Control Protocol)
+
+Purpose
+
+Provides encryption for data sent over PPP.
+
+Benefits:
+
+Improved security
+
+Protects sensitive information
+
+8. BCP (Bridging Control Protocol)
+
+Purpose
+
+Allows PPP links to carry bridged network traffic.
+
+Advantages of NCP (PPP)
+
+1. Network Configuration
+
+Automatically configures network-layer protocols.
+
+2. Compatibility
+
+Supports multiple protocols:
+
+IPv4
+
+IPv6
+
+IPX
+
+OSI
+
+NetBIOS
+
+5. Compression
+
+Can reduce the amount of transmitted data (using CCP).
+
+Applications
+
+1. WAN (Wide Area Networks)
+
+Used for long-distance point-to-point links.
+
+2. VPNs
+
+PPP with NCP can help configure secure VPN connections.
+
+Link Control Protocol (LCP)
+Link Control Protocol (LCP) is a protocol used by PPP (Point-to-Point Protocol) to establish, configure, test, maintain, and terminate a communication link between two devices.
+
+Think of LCP as the manager of a PPP connection.
+
+Before any data can be exchanged, LCP first ensures that the communication link is ready.
+
+Where does LCP work?
+
+LCP operates at the Data Link Layer (Layer 2) of the OSI model.
+
+Functions of LCP
+
+LCP performs five major functions.
+
+1. Link Establishment
+
+LCP first establishes the PPP connection.
+
+Process
+
+Computer A Computer B
+
+|------ Configure-Request ----->|
+
+|<----- Configure-Ack ----------|
+
+Once both devices agree on the settings, the PPP link is established.
+
+2. Link Configuration
+
+LCP negotiates various communication parameters.
+
+Examples include:
+
+Maximum Receive Unit (MRU)
+
+Authentication protocol (PAP or CHAP)
+
+3. Link Testing and Monitoring
+
+LCP continuously checks whether the link is still functioning.
+
+If the connection fails, LCP detects it.
+
+Common mechanism:
+
+Echo Request
+
+↓
+
+Echo Reply
+
+If no reply is received, the link is considered down.
+
+4. Authentication Negotiation
+
+LCP decides which authentication protocol will be used.
+
+For example:
+
+Use PAP
+
+or
+
+Use CHAP
+
+The actual authentication is performed later by PAP or CHAP.
+
+LCP only negotiates which one to use.
+
+5. Link Termination
+
+When communication ends, LCP gracefully closes the connection.
+
+Terminate Request
+
+↓
+
+Terminate Acknowledge
+
+This frees network resources.
+
+Advantages of LCP
+
+Establishes PPP connections reliably.
+
+Negotiates communication parameters automatically.
+
+Supports authentication methods such as PAP and CHAP.
+
+Detects link failures using Echo Requests and Echo Replies.
+
+Terminates connections gracefully.
+
+Limitations
+
+LCP itself does not authenticate users; it only negotiates the authentication protocol.
+
+It does not configure IP addresses; this is done by NCP
+
+Services Offered by the Data Link Layer (DLL)
+Its main job is to ensure reliable communication between two directly connected devices by organizing data into frames, detecting/correcting errors, controlling data flow, and using physical (MAC) addresses.
+
+Services Offered by the Data Link Layer
+
+The main services are:
+
+Framing
+
+Error Detection
+
+Error Correction
+
+Flow Control
+
+Addressing
+
+1. Framing
+
+The Physical Layer sends only bits (0s and 1s).
+
+Example:
+
+101101011010100101001
+
+These bits have no clear beginning or end.
+
+The Data Link Layer groups these bits into frames.
+
+A frame is a structured unit of data.
+
+Example
+
+Without framing:
+
+101101011010100101011010101001
+
+Receiver cannot determine where one message ends and another begins.
+
+With framing:
+
++-----------------------------+
+
+| Header | Data | Trailer |
+
++-----------------------------+
+
+The header and trailer mark the start and end of the frame.
+
+Why is framing needed?
+
+Identifies the beginning and end of data.
+
+Makes transmission reliable.
+
+Types of Framing
+
+A. Fixed-size Framing
+
+Every frame has the same size.
+
+Example:
+
+Frame 1 → 100 bytes
+
+Frame 2 → 100 bytes
+
+Frame 3 → 100 bytes
+
+Easy to process but may waste space.
+
+B. Variable-size Framing
+
+Frames can have different sizes.
+
+Example:
+
+Frame 1 → 80 bytes
+
+Frame 2 → 150 bytes
+
+Frame 3 → 45 bytes
+
+Uses bandwidth more efficiently.
+
+2. Error Detection
+
+Sometimes bits change during transmission because of noise.
+
+Example:
+
+Sender sends:
+
+10110110
+
+Receiver gets:
+
+10100110
+
+An error has occurred.
+
+The Data Link Layer detects such errors.
+
+Methods of Error Detection
+
+A. Parity Check
+
+A parity bit is added to the data.
+
+Even Parity
+
+The total number of 1s should be even.
+
+If the receiver counts an odd number of 1s, it detects an error.
+
+B. Checksum
+
+The sender calculates the sum of the data and appends a checksum.
+
+3. Error Correction
+
+After detecting an error, it must either be corrected or the data must be retransmitted.
+
+There are two main methods.
+
+A. Automatic Repeat Request (ARQ)
+
+If the receiver detects an error, it asks the sender to retransmit the frame.
+
+Types of ARQ
+
+Stop-and-Wait ARQ
+
+Send Frame 1
+
+↓
+
+Wait for ACK
+
+↓
+
+Send Frame 2
+
+Simple but slow.
+
+Go-Back-N ARQ
+
+Suppose the sender transmits:
+
+1 2 3 4 5
+
+If Frame 3 is lost:
+
+The sender retransmits:
+
+3 4 5
+
+Selective Repeat ARQ
+
+If only Frame 3 is lost:
+
+The sender retransmits:
+
+Only Frame 3
+
+This is more efficient than Go-Back-N.
+
+B. Forward Error Correction (FEC)
+
+Instead of asking for retransmission, extra redundant bits are added.
+
+The receiver uses these bits to detect and correct errors on its own.
+
+Examples:
+
+Hamming Code
+
+Reed-Solomon Code
+
+This is useful where retransmission is difficult, such as satellite communication.
+
+4. Flow Control
+
+What is Flow Control?
+
+Suppose:
+
+Sender can send 1000 frames/second
+
+Receiver can process only 100 frames/second
+
+Without flow control, the receiver's buffer overflows and frames are lost.
+
+Flow control regulates the sender's speed.
+
+Methods of Flow Control
+
+A. Stop-and-Wait
+
+Sender
+
+↓
+
+Frame 1
+
+↓
+
+Receiver
+
+↓
+
+ACK
+
+↓
+
+Frame 2
+
+Only one frame is sent at a time.
+
+Simple but inefficient.
+
+B. Sliding Window
+
+The sender can transmit multiple frames before waiting for acknowledgments.
+
+Example:
+
+Window Size = 4
+
+Sender
+
+1 2 3 4
+
+↓
+
+Receiver sends ACKs later
+
+↓
+
+Sender sends 5 6 7 8
+
+Advantages:
+
+Better bandwidth utilization
+
+Faster communication
+
+5. Addressing
+
+The Data Link Layer uses MAC (Media Access Control) addresses.
+
+A MAC address uniquely identifies a network interface within a local network.
+
+Example:
+
+00:1A:2B:3C:4D:5E
+
+Every network card (NIC) has a unique MAC address.
+
+Example
+
+Suppose three computers are connected to a switch.
+
+Computer A
+
+MAC:
+
+AA-AA
+
+|
+
+Switch
+
+/ \
+
+Computer B Computer C
+
+MAC:
+
+BB-BB
+
+MAC:
+
+CC-CC
+
+If Computer A wants to send data to Computer C:
+
+The frame contains:
+
+Destination MAC = CC-CC
+
+The switch forwards the frame only to Computer C.
+
+Limitations of the Data Link Layer
+
+1. No Encryption
+
+It does not encrypt data.
+
+2. No Authentication
+
+It generally does not verify whether a device is genuine.
+
+This makes attacks such as MAC address spoofing possible.
+
+3. Limited to Local Communication
+
+It works only between directly connected devices or within the same local network.
+
+Switching in Computer Networks
+Switching is the process of transferring data from one device to another through a network.
+
+A switch receives data from one device and forwards it only to the intended destination device.
+
+Instead of sending data to everyone, a switch sends it only to the correct device, making communication faster and more efficient.
+
+Switching mainly occurs at the Data Link Layer (Layer 2) of the OSI model.
+
+What Does a Switch Do?
+
+Connects multiple devices in a LAN.
+
+Learns the MAC address of connected devices.
+
+Sends frames only to the intended device.
+
+Reduces unnecessary traffic.
+
+Working of a Network Switch
+
+Step 1: Frame Reception
+
+Computer A sends a frame.
+
+PC A
+
+↓
+
+Frame
+
+↓
+
+Switch
+
+Step 2: MAC Address Extraction
+
+The switch reads the destination MAC address from the frame.
+
+Example:
+
+Destination MAC
+
+00:11:22:33:44:55
+
+Step 3: Lookup
+
+The switch checks its MAC Address Table.
+
+Example:
+
+MAC Address Port
+
+AA-AA 1
+
+BB-BB 2
+
+CC-CC 3
+
+If the destination MAC is BB-BB, the switch knows it is connected to Port 2.
+
+Step 4: Forwarding
+
+The switch sends the frame only through the correct port.
+
+Port 1
+
+↓
+
+Switch
+
+↓
+
+Port 2
+
+No other device receives the frame.
+
+Step 6: Frame Transmission
+
+The frame reaches the destination device.
+
+PC A
+
+↓
+
+Switch
+
+↓
+
+PC B
+
+Communication is complete.
+
+What if the Destination MAC Address is Unknown?
+Suppose the switch has never seen the destination device before.
+
+So it performs Flooding.
+
+Flooding
+
+The switch sends the frame to every port except the incoming port.
+
+The correct device receives the frame and replies.
+
+The switch learns its MAC address and stores it for future communication.
+
+Types of Switching
+There are three switching techniques.
+
+Message Switching
+
+Circuit Switching
+
+Packet Switching
+
+Message Switching
+Message Switching is a switching technique in which the entire message is transmitted as one unit from the sender to the receiver.
+
+There is no dedicated path between the sender and receiver.
+
+Instead, each intermediate node:
+
+Receives the complete message.
+
+Stores it temporarily.
+
+Forwards it to the next node when the communication link becomes available.
+
+This process is called Store-and-Forward Switching.
+
+How Message Switching Works
+
+Step 1
+
+Computer A sends the entire message to Node B.
+
+A
+
+|
+
+| Entire Message
+
+|
+
+▼
+
+B
+
+Step 2
+
+Node B stores the complete message in its memory.
+
+Node B
+
+[Stored Message]
+
+If the next link is busy,
+
+the message waits.
+
+Step 3
+
+When the communication channel becomes free,
+
+Node B forwards the complete message to Node C.
+
+Node B
+
+↓
+
+Node C
+
+Step 4
+
+Node C again stores the complete message.
+
+Node C
+
+[Stored Message]
+
+Step 5
+
+Node C forwards it to the destination.
+
+Computer A
+
+↓
+
+Node B
+
+↓
+
+Node C
+
+↓
+
+Computer D
+
+The message has now reached the destination.
+
+Message Format
+
+Each message contains:
+
++---------------------------------------+
+
+| Header | Complete Message |
+
++---------------------------------------+
+
+The Header contains:
+
+Source Address
+
+Destination Address
+
+Components of a Message Switching Network
+
+1. End Stations
+
+These are the sender and receiver.
+
+Example:
+
+Computer
+
+Server
+
+Terminal
+
+2. Switching Nodes
+
+Intermediate devices that store and forward messages.
+
+Example:
+
+Sender
+
+↓
+
+Node A
+
+↓
+
+Node B
+
+↓
+
+Receiver
+
+3. Transmission Links
+
+Communication channels connecting the nodes.
+
+Examples:
+
+Fiber optic cable
+
+Characteristics of Message Switching
+
+1. No Dedicated Path
+
+2. Entire Message is Sent
+
+The whole message travels together.
+
+It is not divided into packets.
+
+3. Hop-by-Hop Communication
+
+The message moves from one node to another.
+
+Advantages of Message Switching
+
+1. Better Traffic Management
+
+Messages can be assigned priorities.
+
+3. No Dedicated Circuit Required
+
+Communication is possible even if no direct path exists.
+
+4. Flexible Message Length
+
+Messages can be of any practical size because they are transmitted as complete units.
+
+5. Reduces Congestion
+
+If a communication channel is busy,
+
+messages are stored until the channel becomes available.
+
+This helps manage network traffic.
+
+Disadvantages of Message Switching
+
+1. High Delay
+
+2. Large Storage Requirement
+
+3. Not Suitable for Real-Time Applications
+
+4. Delivery Uncertainty
+
+Applications of Message Switching
+
+1. Email
+
+Emails are stored on mail servers before being delivered.
+
+4. Store-and-Forward Messaging
+
+Used in systems where direct communication is not always available.
+
+Circuit Switching
+Circuit Switching is a switching technique in which a dedicated communication path (circuit) is established between the sender and the receiver before any data is transmitted.
+
+Once the path is established:
+
+The entire bandwidth of the path is reserved.
+
+No other user can use that path.
+
+Data flows continuously until the communication ends.
+
+How Circuit Switching Works
+Suppose Computer A wants to communicate with Computer D.
+
+Computer A → Switch 1 → Switch 2 → Computer D
+
+Step 1: Circuit Establishment
+
+A dedicated path is created.
+
+A ===== Switch1 ===== Switch2 ===== D
+
+The ===== represents the reserved communication circuit.
+
+No data is sent yet.
+
+Step 2: Data Transfer
+
+Once the circuit is established, data flows continuously.
+
+A =============================== D
+
+Since the path is already reserved, there is no routing delay for each piece of data.
+
+Step 3: Circuit Disconnection
+
+When communication finishes:
+
+Disconnect
+
+↓
+
+Reserved path removed
+
+↓
+
+Resources become available
+
+The dedicated circuit is released.
+
+Phases of Circuit Switching
+There are three phases.
+
+1. Circuit Establishment
+
+Before communication starts:
+
+Sender requests a connection.
+
+Intermediate switches create a dedicated path.
+
+Receiver accepts the request.
+
+2. Data Transfer
+
+After the path is ready:
+
+Data flows continuously through the same path.
+
+3. Circuit Disconnection
+
+When either side ends communication:
+
+The reserved bandwidth becomes available for other users.
+
+Multiplexing in Circuit Switching
+A physical communication link can be shared by multiple users using multiplexing.
+
+The two main techniques are:
+
+Frequency Division Multiplexing (FDM)
+
+Time Division Multiplexing (TDM)
+
+1. Frequency Division Multiplexing (FDM)
+
+What is FDM?
+
+The total available bandwidth is divided into multiple frequency bands.
+
+Each user gets a separate frequency band.
+
+All users transmit simultaneously.
+
+Applications
+
+Radio broadcasting
+
+Television broadcasting
+
+2. Time Division Multiplexing (TDM)
+
+What is TDM?
+
+Instead of dividing frequency,
+
+TDM divides time into slots.
+
+Each user transmits only during their assigned time slot.
+
+Applications
+
+Digital telephone systems
+
+Long-distance communication
+
+Characteristics of Circuit Switching
+
+Dedicated communication path.
+
+Fixed bandwidth.
+
+Constant bit delay.
+
+Formulas Used in Circuit Switching
+
+1. Transmission Rate
+
+If:
+
+Link rate = R bps
+
+Number of slots = h
+
+Then:
+
+Transmission Rate=rbps/h
+
+Applications of Circuit Switching
+
+1. Telephone Networks
+
+Advantages of Circuit Switching
+
+1. Guaranteed Data Rate
+
+The reserved path ensures a constant transmission speed.
+
+2. No Delay During Data Transfer
+
+Once the circuit is established, data flows continuously without per-packet routing delays.
+
+3. High Reliability
+
+Disadvantages of Circuit Switching
+
+1. Wastes Bandwidth
+
+2. Expensive
+
+Maintaining dedicated circuits increases cost.
+
+4. Failure of Path
+
+If any link in the dedicated path fails, communication stops until a new circuit is established.
+
+Packet Switching
+Packet Switching is a switching technique in which data is divided into small units called packets before transmission.
+
+Each packet is sent independently through the network, and all packets are reassembled at the destination to form the original message.
+
+Unlike Circuit Switching, no dedicated communication path is established.
+
+How Packet Switching Works
+Suppose Computer A wants to send data to Computer D.
+
+Computer A → Router → Router → Computer D
+
+Step 1: Divide the Message
+
+Original Message
+
+HELLO WORLD
+
+Becomes:
+
+Packet 1
+
+Packet 2
+
+Packet 3
+
+Packet 4
+
+Step 2: Add a Header
+
+Each packet receives a header containing important information.
+
++-------------------------------------+
+
+| Header | Data |
+
++-------------------------------------+
+
+The header usually contains:
+
+Source Address
+
+Destination Address
+
+Packet Number (Sequence Number)
+
+Error-checking information
+
+Step 3: Independent Transmission
+
+Each packet can travel through a different path.
+
+Packet 1 → Route A
+
+Packet 2 → Route B
+
+Packet 3 → Route C
+
+Packet 4 → Route A
+
+This makes packet switching very flexible.
+
+Step 4: Reassembly
+
+At the destination:
+
+Packet 1
+
+Packet 2
+
+Packet 3
+
+Packet 4
+
+↓
+
+HELLO WORLD
+
+The receiver uses the sequence numbers to arrange the packets in the correct order.
+
+Characteristics of Packet Switching
+
+Data is divided into packets.
+
+No dedicated path.
+
+Packets may travel through different routes.
+
+Packets are reassembled at the destination.
+
+Advantages of Packet Switching
+
+1. Efficient Bandwidth Utilization
+
+2. High Reliability
+
+If one route fails,
+
+packets can be sent through another route.
+
+3. Flexibility
+
+Supports different types of data:
+
+Text
+
+Audio
+
+Video
+
+Disadvantages of Packet Switching
+
+1. Packet Loss
+
+Some packets may be lost due to:
+
+Network congestion
+
+Hardware failures
+
+2. Out-of-Order Delivery
+
+Because packets may take different paths, they may arrive in a different order.
+
+3. Variable Delay (Latency)
+
+Different paths have different transmission times.
+
+Applications of Packet Switching
+
+Packet Switching is used in almost every modern network.
+
+Examples:
+
+Internet
+
+Email
+
+Web Browsing
+
+MAC (Media Access Control)
+A MAC Address (Media Access Control Address) is a unique physical address assigned to every Network Interface Card (NIC) by the manufacturer. It is used for communication within a Local Area Network (LAN)
+
+Why Do We Need a MAC Address?
+
+Suppose four computers are connected to a switch.
+
+If PC A wants to send data to PC C, the switch must know which device should receive the frame.
+
+The MAC address uniquely identifies each device so the frame reaches the correct destination.
+
+What is a NIC?
+
+NIC (Network Interface Card) is the hardware that connects a device to a network.
+
+It acts as an interface (bridge) between the device and the network by sending and receiving data.
+
+Without a NIC, a device cannot communicate with other devices on a network.
+
+Other Names of NIC
+
+A NIC is also called:
+
+Network Card
+
+Network Adapter
+
+Ethernet Card (for wired networks)
+
+Layers Where NIC Operates
+A NIC works at two OSI layers.
+
+1. Physical Layer (Layer 1)
+
+Responsible for:
+
+Sending signals
+
+Receiving signals
+
+Examples:
+
+Electrical signals (Ethernet)
+
+Radio signals (Wi-Fi)
+
+2. Data Link Layer (Layer 2)
+
+Responsible for:
+
+Framing
+
+MAC Addressing
+
+What Does a NIC Do?
+
+Connects the device to a network.
+
+Sends data to the network.
+
+Receives data from the network.
+
+Converts data into network signals.
+
+Uses the MAC address to identify the device.
+
+Working of a NIC
+Suppose Computer A sends a file to Computer B.
+
+Step 1
+
+The operating system sends the data to the NIC.
+
+Step 2
+
+The NIC converts the data into signals.
+
+Wired NIC → Electrical signals
+
+Wireless NIC → Radio signals
+
+Step 3
+
+The signals travel through the network.
+
+Step 4
+
+The NIC of Computer B receives the signals and converts them back into data.
+
+Communication is complete.
+
+Characteristics of NIC
+
+1. Physical Network Address (MAC Address)
+
+Every NIC has a unique MAC address.
+
+3. Status Indicator Lights (LEDs)
+
+NICs usually have two LEDs.
+
+Link Light
+
+Shows whether the network cable is connected.
+
+Activity Light
+
+Blinks whenever data is transmitted or received.
+
+Types of NIC
+
+There are two main types.
+
+Wired NIC
+
+Wireless NIC
+
+1. Wired NIC (Ethernet NIC)
+
+A Wired NIC uses Ethernet cables to connect to the network.
+
+Features
+
+Uses physical cables.
+
+High speed (1 Gbps or more).
+
+Stable connection.
+
+More secure.
+
+Used In
+
+Desktop PCs
+
+Servers
+
+Offices
+
+2. Wireless NIC
+
+A Wireless NIC connects using Wi-Fi (radio signals).
+
+Features
+
+No cables required.
+
+Portable and convenient.
+
+Used In
+
+Laptops
+
+Smartphones
+
+Advantages of NIC
+
+1. High-Speed Communication
+
+2. Reliable Connection
+
+3. Device Identification
+
+4. Supports Data Sharing
+
+Disadvantages of NIC
+
+1. Wired NIC Needs Cables
+
+Ethernet cables reduce mobility.
+
+2. Configuration Required
+
+Drivers and network settings must be properly configured.
+
+3. Security Risks
+
+If proper security is not used, attackers may intercept network traffic.
+
+Format of a MAC Address
+A MAC address is:
+
+48 bits long
+
+Written as 12 hexadecimal digits
+
+Usually displayed in pairs separated by colons.
+
+Structure of a MAC Address
+Example:
+
+00:40:96 : AB:CD:EF
+
+First 3 Bytes (24 bits)
+
+00:40:96
+
+This is called the OUI (Organizationally Unique Identifier).
+
+It identifies the manufacturer.
+
+Examples:
+
+Cisco
+
+Google
+
+HP
+
+Huawei
+
+Last 3 Bytes (24 bits)
+
+AB:CD:EF
+
+Assigned by the manufacturer to uniquely identify the specific NIC.
+
+Types of MAC Addresses
+There are three types.
+
+1. Unicast MAC Address
+
+A frame is sent to one specific device.
+
+2. Multicast MAC Address
+
+Only the devices in the multicast group receive the frame.
+
+A frame is sent to a group of devices.
+
+3. Broadcast MAC Address
+
+All connected devices receive the frame.
+
+A frame is sent to every device on the LAN.
+
+Why Do We Need Both IP Address and MAC Address
+
+MAC Address
+
+Used inside a LAN
+
+Provides hop-to-hop delivery
+
+Operates at the Data Link Layer
+
+IP Address
+
+Used between different networks
+
+Provides end-to-end delivery
+
+Operates at the Network Layer
+
+Suppose you send data from Delhi to Mumbai.
+
+The IP address tells the network where the data should finally go.
+
+At each step along the journey, the MAC address is used to deliver the frame to the next device (next hop).
+
+Characteristics of MAC Address
+
+Unique for every NIC.
+
+48-bit binary address (12 hexadecimal digits).
+
+Assigned by the manufacturer.
+
+Used only in LAN communication.
+
+Advantages of MAC Address
+
+Every device has a unique identifier.
+
+Simple to configure and use.
+
+Supported by almost all networking technologies.
+
+Disadvantages of MAC Address
+
+Limited to the local network (LAN).
+
+MAC addresses can be spoofed (forged).
+
+IP Address
+An IP Address (Internet Protocol Address) is a unique numerical address assigned to every device connected to a network that uses the Internet Protocol. It helps identify a device and locate it so that data can be sent to the correct destination.
+
+Functions of an IP Address
+
+An IP address performs two main functions:
+
+1. Identification
+
+It uniquely identifies a device connected to a network.
+
+2. Location
+
+It tells the network where the device is located so routers can deliver data correctly.
+
+Components of an IP Address
+
+An IP address has two parts:
+
+1. Network Portion
+
+Identifies the network.
+
+2. Host Portion
+
+Identifies the specific device on that network.
+
+Types of IP Address
+There are several ways to classify IP addresses.
+
+1. Public IP Address
+A Public IP Address is a unique IP address assigned by an Internet Service Provider (ISP) to a device It allows the device to communicate with other devices over the Internet.
+
+Why Do We Need a Public IP Address?
+
+Suppose you want to open www.google.com.
+
+Your computer sends a request through your router.
+
+Your ISP assigns your network a public IP address, which identifies your network on the Internet.
+
+Without a public IP address, websites on the Internet would not know where to send the requested data.
+
+How Does a Public IP Address Work?
+Step 1
+
+Your laptop sends a request to the router.
+
+Step 2
+
+The router sends the request to the ISP.
+
+Step 3
+
+The ISP attaches your public IP address to the request.
+
+Step 4
+
+Google receives the request.
+
+Step 5
+
+Google sends the response back to your public IP address.
+
+Step 6
+
+The router forwards the response to your laptop.
+
+Characteristics of a Public IP Address
+
+1. Globally Unique
+
+Every public IP address is unique across the Internet.
+
+2. Assigned by ISP
+
+Public IP addresses are assigned by your:
+
+JioFiber
+
+3. Internet Accessible
+
+Devices with a public IP can communicate with other devices anywhere on the Internet.
+
+Public IP Address Ranges
+1. Class A
+
+Range:
+
+1 – 126
+
+Format:
+
+N.H.H.H
+
+First octet → Network ID
+
+Last three octets → Host ID
+
+Example:
+
+41.167.11.21
+
+Features
+
+Used for large networks.
+
+2. Class B
+
+Range:
+
+128 – 191
+
+Format:
+
+N.N.H.H
+
+Example:
+
+172.25.110.51
+
+Features
+
+Used for medium-sized networks.
+
+3. Class C
+
+Range:
+
+192 – 223
+
+Format:
+
+N.N.N.H
+
+Example:
+
+200.120.50.11
+
+Features
+
+Used for small networks.
+
+Public IP vs External IP Address
+According to the source:
+
+A Public IP Address is assigned by an ISP and allows devices or networks to be accessible from anywhere on the Internet.
+
+An External IP Address is generally similar, but in some environments (such as cloud computing), it may specifically refer to the address used to access a service from outside its private network.
+
+Are Public IP Addresses Traceable?
+
+Yes, but only to a certain extent.
+
+A public IP address can reveal:
+
+Approximate country
+
+Region
+
+Sometimes the city
+
+Internet Service Provider (ISP)
+
+However, it does not directly reveal your personal information such as your name or exact home address.
+
+Advantages of Public IP Address
+
+Enables communication over the Internet.
+
+Allows hosting of websites and online applications.
+
+Makes remote access possible.
+
+Supports communication between networks worldwide.
+
+Disadvantages of Public IP Address
+
+Devices with public IP addresses are more exposed to Internet-based attacks if not properly secured.
+
+Public IP addresses can reveal approximate location and ISP information
+
+Port Number
+A Port Number is a 16-bit logical number that identifies a specific process, service, or application running on a computer.
+
+While an IP address identifies the device, the port number identifies the application or service on that device.
+
+Why Do We Need Port Numbers?
+
+Suppose your computer is running:
+
+Google Chrome
+
+Gmail
+
+WhatsApp
+
+Zoom
+
+All these applications use the same IP address.
+
+If data arrives at your computer, how does the operating system know which application should receive it?
+
+The answer is Port Numbers.
+
+How Does a Port Number Work?
+Suppose you open a website.
+
+The request reaches the server.
+
+The server checks the destination port.
+
+Since HTTP listens on Port 80, the request is sent to the web server.
+
+The web server processes the request and sends the webpage back.
+
+there are 65,536 possible port numbers.
+
+Types of Port Numbers
+Port numbers are divided into three categories.
+
+1. Well-Known Ports
+Range:
+
+0 – 1023
+
+These ports are reserved for standard Internet services.
+
+Common Well-Known Ports
+
+Port Service
+
+20, 21 FTP
+
+22 SSH
+
+23 Telnet
+
+25 SMTP
+
+53 DNS
+
+67, 68 DHCP
+
+80 HTTP
+
+2. Registered Ports
+Range:
+
+1024 – 49151
+
+These ports are registered for specific software or applications.
+
+Examples:
+
+Database servers
+
+Gaming applications
+
+3. Dynamic (Ephemeral) Ports
+Range:
+
+49152 – 65535
+
+These ports are used temporarily.
+
+The operating system automatically assigns them when a client connects to a server.
+
+Example:
+
+Your browser may temporarily use Port 52345 to connect to a website.
+
+After communication ends, the port is released.
+
+Importance of Port Numbers
+
+1. Routes Data to the Correct Service
+
+The IP address brings the packet to the correct computer.
+
+The port number delivers it to the correct application.
+
+2. Allows Multiple Services on One Computer
+
+A server can run:
+
+Web Server
+
+Mail Server
+
+FTP Server
+
+All on the same IP address.
+
+Different port numbers keep them separate.
+
+3. Supports Temporary Connections
+
+How IP Address and Port Number Work Together
+Suppose you visit:
+
+https://www.google.com
+
+Your browser sends a request like:
+
+Destination IP:
+
+142.250.xxx.xxx
+
+Destination Port:
+
+443
+
+IP Address → Finds Google's server.
+
+Port 443 → Sends the request to Google's HTTPS service.
+
+Both are required for successful communication.
+
+Cyber Attack
+A Cyber Attack is an attempt by hackers or cybercriminals to steal, damage, destroy, or gain unauthorized access to a computer system, network, or data using digital methods.
+
+The main goal of a cyber attack may be to:
+
+Steal sensitive information
+
+Damage systems
+
+Disrupt services
+
+How Does a Cyber Attack Work?
+A typical cyber attack follows these steps:
+
+Attacker
+
+│
+
+│ Sends fake email/link or malware
+
+▼
+
+Victim
+
+│
+
+│ Clicks malicious link or opens attachment
+
+▼
+
+Malware Installed / Credentials Stolen
+
+│
+
+▼
+
+Attacker Gains Access
+
+│
+
+▼
+
+Data Theft / System Damage / Ransom
+
+Categories of Cyber Attacks
+Cyber attacks are mainly divided into two categories.
+
+1. Untargeted Cyber Attack
+
+In an untargeted attack, hackers do not target a specific person.
+
+Instead, they attack many users or devices hoping that some victims will fall for the attack.
+
+Examples
+
+A. Phishing
+
+Hackers send fake emails to thousands of people.
+
+Victims enter their login details on a fake website.
+
+B. Ransomware
+
+Hackers lock your files and demand money.
+
+2. Targeted Cyber Attack
+
+A targeted attack focuses on a specific individual, company, or organization.
+
+These attacks are carefully planned.
+
+Examples
+
+A. Spear-Malware Emails
+
+A specially crafted email is sent to one employee.
+
+The attachment contains malware.
+
+B. Focused Credential Theft
+
+Hackers create customized fake websites or messages to steal passwords from a particular victim.
+
+Types of Cyber Attacks
+
+1. Phishing Attack
+
+A phishing attack uses fake emails or messages pretending to be from trusted organizations.
+
+2. Whale Phishing Attack
+
+Also called Whaling.
+
+It targets high-ranking executives.
+
+Targets
+
+CEO
+
+Founder
+
+Director
+
+Company President
+
+The emails appear highly professional.
+
+3. Spear Phishing Attack
+
+A phishing attack aimed at one specific person or organization.
+
+Unlike normal phishing, the message is personalized.
+
+5. Malware Attack
+
+Malware means Malicious Software.
+
+Examples:
+
+Virus
+
+Worm
+
+Trojan Horse
+
+Malware can:
+
+Delete files
+
+Corrupt data
+
+Spy on users
+
+Steal passwords
+
+It often enters through:
+
+Email attachments
+
+Fake software downloads
+
+Infected USB drives
+
+6. Web Attack
+
+Targets websites and web servers.
+
+Goal:
+
+Steal customer information
+
+Attack online payment systems
+
+Exploit website vulnerabilities
+
+7. DoS (Denial of Service) Attack
+
+A DoS attack floods a server with huge numbers of requests.
+
+9. Brute Force Attack
+
+Hackers use automated software to try every possible password.
+
+Prevention of Cyber Attacks
+1. Use Strong Passwords
+
+A strong password should include:
+
+Uppercase letters
+
+Lowercase letters
+
+Numbers
+
+2. Do Not Trust Unknown Emails
+
+Always:
+
+Verify the sender.
+
+Avoid clicking suspicious links.
+
+3. Secure Your Devices
+
+Protect your computer by:
+
+Installing antivirus software
+
+Enabling the firewall
+
+Advantages of Cyber Security (Against Cyber Attacks)
+
+By preventing cyber attacks, organizations can:
+
+Protect confidential data.
+
+Ensure uninterrupted services.
+
+Prevent financial losses.
+
+Maintain customer trust.
+
+Reduce the risk of malware and ransomware.
+
+Private IP Address
+A Private IP Address is an IP address that is used only inside a local network (LAN), such as a home, school, or office network. These addresses are not accessible or routable on the Internet.
+
+Private IP addresses are assigned by a router or network administrator, and they allow devices on the same network to communicate with each other.
+
+Why Do We Need Private IP Addresses?
+Imagine a company has:
+
+500 computers
+
+100 printers
+
+50 servers
+
+300 smartphones
+
+Giving each device a public IP address would be expensive and would quickly exhaust the limited supply of public IPs.
+
+Instead:
+
+Every device gets a private IP address.
+
+The entire network uses one public IP address to access the Internet through NAT (Network Address Translation).
+
+This saves public IP addresses and improves security.
+
+Characteristics of Private IP Address
+
+Used only within a local network (LAN).
+
+Cannot be accessed directly from the Internet.
+
+Assigned by a router or network administrator.
+
+Can be reused in different networks.
+
+Where Are Private IP Addresses Used?
+1. Home Networks
+
+Home routers assign private IP addresses to:
+
+Computers
+
+Smartphones
+
+Smart TVs
+
+Printers
+
+IoT devices
+
+All these devices communicate with each other using private IPs.
+
+2. Business Networks
+
+Companies use private IP addresses for:
+
+Employee computers
+
+Servers
+
+Printers
+
+Databases
+
+Employees can share files and resources securely within the organization.
+
+3. Virtual Private Networks (VPNs)
+
+VPNs allow remote users to securely access a private network over the Internet.
+
+Private IP addresses are used inside the VPN for secure communication.
+
+4. Cloud Computing
+
+Cloud providers create Virtual Private Clouds (VPCs) where:
+
+Virtual Machines
+
+Databases
+
+Containers
+
+communicate using private IP addresses while remaining isolated from other customers.
+
+How to Find Your Private IP Address?
+Windows
+
+Open Command Prompt and type:
+
+ipconfig
+
+The IPv4 Address displayed is your private IP address.
+
+Private IPv4 Address Ranges
+The Internet Assigned Numbers Authority (IANA) reserves three IPv4 ranges for private networks.
+
+Class Private IP Range Used For
+
+Class A 10.0.0.0 – 10.255.255.255 Large organizations
+
+Class B 172.16.0.0 – 172.31.255.255 Medium-sized networks
+
+Class C 192.168.0.0 – 192.168.255.255 Home and small office networks
+
+IPv6 Private Addresses
+In IPv6, private addresses are called Unique Local Addresses (ULA).
+
+Benefits of Private IP Addresses
+1. Security
+
+Private IP addresses cannot be accessed directly from the Internet, reducing the risk of unauthorized access and cyberattacks.
+
+2. Scalability
+
+Private IP ranges provide millions of addresses, allowing organizations to expand their networks
+
+3. Flexibility
+
+Network administrators can freely assign and manage private IP addresses
+
+Limitations of Private IP Addresses
+
+1. Limited Accessibility
+
+Devices with private IPs cannot be reached directly from the Internet.
+
+2. NAT Overhead
+
+To communicate with the Internet, private IP addresses must use Network Address Translation (NAT), which adds processing overhead.
+
+4. Interoperability Issues
+
+Some external services require public IP addresses
+
+How Private IP Works with NAT
+Devices in Home Network
+
+PC → 192.168.1.2
+
+Laptop → 192.168.1.3
+
+Phone → 192.168.1.4
+
+│
+
+▼
+
+Router (NAT)
+
+Private IPs ⇄ Public IP
+
+│
+
+▼
+
+Internet
+
+Devices communicate internally using private IP addresses.
+
+The router translates private IPs into a public IP when accessing the Internet.
+
+Advantages of Private IP Addresses
+
+Conserves public IP addresses.
+
+Improves network security.
+
+Supports communication within local networks.
+
+Allows address reuse across different networks.
+
+What is a Router?
+A Router is a networking device that connects two or more different networks and forwards data packets from one network to another using IP addresses.
+
+It decides the best path for data packets to reach their destination
+
+Without a router, devices on different networks cannot communicate.
+
+How Does a Router Work?
+When you access a website:
+
+Your Computer
+
+│
+
+▼
+
+Router
+
+│
+
+Reads Destination IP Address
+
+│
+
+Checks Routing Table
+
+│
+
+Chooses Best Path
+
+│
+
+Forwards Packet
+
+▼
+
+Next Router
+
+▼
+
+Destination Server
+
+The router performs three main steps:
+
+Receives the packet.
+
+Checks the destination IP address.
+
+Sends the packet through the best available route.
+
+Routing Table
+A Routing Table is a database inside the router.
+
+It contains information about:
+
+Destination networks
+
+Available paths
+
+Next hop
+
+Cost/metric
+
+The router consults this table before forwarding packets.
+
+Types of Routing
+1. Static Routing
+
+Configured manually by a network administrator.
+
+Does not change automatically.
+
+Advantages
+
+Simple
+
+Secure
+
+Low overhead
+
+Disadvantages
+
+Time-consuming to configure
+
+Not suitable for large networks
+
+2. Dynamic Routing
+
+Routes are updated automatically.
+
+Uses routing protocols.
+
+Advantages
+
+Automatically adapts to network changes.
+
+Better scalability.
+
+Disadvantages
+
+More complex
+
+Functions of a Router
+1. Forwarding
+
+The router receives packets and sends them to the correct outgoing interface based on the destination IP address.
+
+2. Routing
+
+The router determines the best path using routing tables and routing algorithms.
+
+3. Network Address Translation (NAT)
+
+Routers translate:
+
+Private IP Address → Public IP Address
+
+This allows multiple devices to share a single Internet connection.
+
+Router Architecture
+A router mainly consists of four components.
+
+1. Input Port
+
+Receives incoming packets.
+
+Determines where the packet should go.
+
+2. Switching Fabric
+
+The switching fabric is the internal connection system that transfers packets from input ports to output ports.
+
+Types of Switching Fabric
+A. Memory Switching
+
+CPU copies packets into memory.
+
+Packets are then sent to the output port.
+
+Slower.
+
+B. Bus Switching
+
+Uses a shared system bus.
+
+Only one packet can use the bus at a time.
+
+Faster than memory switching but limited by bus speed.
+
+C. Interconnection Network
+
+Uses dedicated hardware to connect multiple input and output ports.
+
+Very fast.
+
+3. Output Port
+
+Stores outgoing packets in a queue if necessary.
+
+Sends packets onto the next network.
+
+4. Routing Processor
+
+The routing processor is the brain of the router.
+
+It:
+
+Runs routing protocols.
+
+Updates routing tables.
+
+Makes routing decisions.
+
+Common Routing Protocols
+1. OSPF (Open Shortest Path First)
+
+Finds the shortest path between networks.
+
+Commonly used inside organizations.
+
+2. BGP (Border Gateway Protocol)
+
+Used between Internet Service Providers (ISPs).
+
+Exchanges routing information between large networks on the Internet.
+
+3. IGRP (Interior Gateway Routing Protocol)
+
+Exchanges routing info within autonomous networks.
+
+4. EIGRP (Enhanced IGRP)
+
+Improved version of IGRP.
+
+Learns routes from neighboring routers.
+
+5. EGP (Exterior Gateway Protocol)
+
+Used for sharing routing information between different networks.
+
+Types of Routers
+1. Broadband Router
+
+Connects home or office devices to the Internet.
+
+Shares one broadband connection.
+
+Example: Home Wi-Fi router.
+
+2. Wireless Router
+
+Creates a Wi-Fi network.
+
+Used in:
+
+Homes
+
+Offices
+
+Schools
+
+3. Wired Router
+
+Uses Ethernet cables instead of Wi-Fi.
+
+Advantages:
+
+Faster
+
+More secure
+
+Lower latency
+
+4. Edge Router
+
+Located at the boundary of a network.
+
+Connects an organization's network to an ISP or another external network.
+
+5. Core Router
+
+Used inside large networks.
+
+Handles heavy traffic between different parts of the same network.
+
+Found in:
+
+ISPs
+
+Data centers
+
+6. Virtual Router
+
+A software-based router running on a virtual machine instead of dedicated hardware.
+
+7. Portable Router
+
+A small, mobile router that creates a private Wi-Fi network.
+
+Commonly used while traveling.
+
+Applications of Routers
+Routers are used to:
+
+Connect different networks.
+
+Share Internet connections.
+
+Connect homes, schools, and offices.
+
+Support wired and wireless communication.
+
+Enable VPN access.
+
+Security Challenges of Routers
+1. Firmware Vulnerabilities
+
+Outdated router firmware may contain security flaws that attackers can exploit.
+
+2. DDoS Attacks
+
+Attackers may flood the router with excessive traffic, making network services unavailable.
+
+3. Default Administrator Credentials
+
+Many routers use default usernames and passwords (e.g., admin/admin).
+
+If not changed, attackers can gain unauthorized access.
+
+Virtual Private Network (VPN)
+A Virtual Private Network (VPN) is a technology that creates a secure, encrypted connection between your device and the internet. It protects your online privacy by encrypting your data and hiding your real IP address.
+
+Without VPN
+
+Your Device ───────────► Website
+
+│
+
+└── ISP can see your activity and IP address
+
+With VPN
+
+Your Device
+
+│
+
+▼
+
+[Encrypted VPN Tunnel]
+
+│
+
+▼
+
+VPN Server
+
+│
+
+▼
+
+Website
+
+Website sees VPN Server's IP, not yours.
+
+Why Do We Need a VPN?
+
+Normally, when you browse the internet:
+
+Your ISP (Internet Service Provider) can see which websites you visit.
+
+Hackers on public Wi-Fi may intercept your data.
+
+Websites can identify your approximate location through your IP address.
+
+A VPN solves these problems by encrypting your internet traffic.
+
+Advantages of VPN
+
+1. Privacy Protection
+
+A VPN hides your real IP address.
+
+2. Security on Public Wi-Fi
+
+Suppose you're using free Wi-Fi at:
+
+Airport
+
+Railway Station
+
+Café
+
+Hotel
+
+Without VPN:
+
+You → Public Wi-Fi → Internet
+
+Hackers may intercept passwords.
+
+With VPN:
+
+You
+
+│
+
+Encrypted Tunnel
+
+│
+
+Public Wi-Fi
+
+│
+
+Internet
+
+Even if someone captures your traffic, it appears as unreadable encrypted data.
+
+3. Bypass Geo-Restrictions
+
+Some websites are available only in certain countries
+
+4. Reduce ISP Throttling
+
+Some ISPs intentionally slow down:
+
+Streaming
+
+Gaming
+
+Torrent downloads
+
+Since VPN encrypts your traffic:
+
+ISP cannot easily determine what you're doing.
+
+Therefore, selective throttling becomes harder.
+
+How VPN Works
+Step 1: Connection Establishment
+
+You open the VPN app.
+
+Step 2: Data Encryption
+
+Suppose you type:
+
+Password = hello123
+
+Before leaving your computer:
+
+Anyone intercepting it sees only meaningless encrypted text.
+
+Step 3: Tunnelling
+
+Your encrypted data travels through a secure tunnel.
+
+No one can easily read the data while it is in transit.
+
+Step 4: Decryption
+
+The VPN server decrypts your data.
+
+The server forwards it to the destination website.
+
+Step 5: Website Responds
+
+The website sends data back to the VPN server.
+
+The VPN encrypts the response before sending it back.
+
+Types of VPN (Based on Usage)
+1. Remote Access VPN
+
+Used by individual users to connect securely to a private network.
+
+Common use:
+
+Work from home
+
+Company employees
+
+2. Site-to-Site VPN
+
+Connects two entire networks.
+
+Example:
+
+Head Office
+
+│
+
+VPN
+
+│
+
+Branch Office
+
+Employees at both locations communicate securely.
+
+3. Mobile VPN
+
+Designed for smartphones and tablets.
+
+It keeps the VPN connected even if you switch between:
+
+Wi-Fi
+
+↓
+
+4G
+
+↓
+
+5G
+
+The connection remains active.
+
+4. MPLS VPN
+
+Used mainly by large organizations.
+
+Office A
+
+│
+
+MPLS Network
+
+│
+
+Office B
+
+Features:
+
+High performance
+
+Traffic prioritization
+
+VPN Protocols
+A VPN protocol defines how the secure tunnel is created and how data is protected.
+
+1. OpenVPN
+
+One of the most popular VPN protocols.
+
+Advantages:
+
+Very secure
+
+Open-source
+
+Cross-platform
+
+Reliable
+
+Can use:
+
+UDP → Faster
+
+TCP → More reliable
+
+2. WireGuard
+
+A modern VPN protocol.
+
+Advantages:
+
+Extremely fast
+
+Lightweight
+
+3. IKEv2/IPsec
+
+Uses:
+
+IKEv2 for tunnel setup
+
+IPsec for encryption
+
+Best feature:
+
+Automatically reconnects if the network changes.
+
+Example:
+
+Wi-Fi
+
+↓
+
+Mobile Data
+
+VPN reconnects instantly.
+
+Widely used in enterprise environments.
+
+4. L2TP/IPsec
+
+L2TP creates the tunnel.
+
+IPsec encrypts the data.
+
+Advantages:
+
+More secure than PPTP
+
+Supported by many operating systems
+
+5. PPTP
+
+One of the oldest VPN protocols.
+
+Advantages:
+
+Very fast
+
+Simple setup
+
+Disadvantages:
+
+Weak encryption
+
+Vulnerable to attacks
+
+6. SSTP
+
+Developed by Microsoft.
+
+Uses:
+
+HTTPS (TCP Port 443)
+
+Advantages:
+
+Strong security
+
+Works well on Windows
+
+Can bypass many firewalls because it resembles normal HTTPS traffic
+
+Disadvantage:
+
+Limited support on non-Windows platforms.
+
+Drawbacks of VPN
+1. Slower Internet
+
+2. Not All VPNs Are Trustworthy
+
+Some providers:
+
+Keep activity logs
+
+Use weak encryption
+
+May sell user data
+
+Choose a reputable VPN provider.
+
+3. Some Websites Block VPNs
+
+Certain services (such as some streaming platforms or websites) detect and block VPN traffic, preventing access.
+
+4. Configuration Can Be Complex
+
+5. Premium VPNs Cost Money
+
+Amazon Virtual Private Cloud (Amazon VPC)
+Amazon VPC is AWS's networking service that lets you create a private, isolated virtual network inside the AWS cloud, where you control IP addresses, subnets, routing, and security for your cloud resources.
+
+What is Amazon VPC?
+
+Imagine AWS is a huge city with millions of buildings.
+
+When you create an AWS account, you don't want your servers to be mixed with everyone else's.
+
+AWS gives you your own private area inside its cloud.
+
+That private area is called a Virtual Private Cloud (VPC).
+
+Every customer has their own isolated network.
+
+VPC vs Traditional Private Cloud
+The file compares AWS VPC with a traditional private cloud:
+
+AWS VPC Traditional Private Cloud
+
+Easily scalable Limited by hardware
+
+Pay only for what you use Expensive to build and maintain
+
+Easy connection with AWS services Limited connectivity
+
+Uses Security Groups, NACLs, IAM Relies on firewalls and VPNs
+
+Components of Amazon VPC
+A VPC is made up of several networking components that work together to create a secure cloud environment.
+
+1. VPC
+A VPC is your private network inside AWS.
+
+Everything inside belongs to you.
+
+The VPC is assigned a private IP address range using a CIDR block.
+
+2. Subnets
+Subnetting is the process of dividing one large network into multiple smaller networks, called subnets.
+
+Why Do We Need Subnetting?
+Suppose a company owns the network:
+
+192.168.1.0/24
+
+A /24 network has:
+
+256 IP addresses
+
+Suppose the company has:
+
+Department Devices
+
+Sales 20
+
+HR 10
+
+IT 50
+
+Without subnetting:
+
+256 IPs
+
+Only 80 used
+
+176 wasted
+
+Everyone shares one large network.
+
+After subnetting:
+
+Department Devices Subnet
+
+Sales 20 192.168.1.0/27
+
+HR 10 192.168.1.32/28
+
+IT 50 192.168.1.64/26
+
+Each department gets only the IP addresses it actually needs.
+
+Benefits of Subnetting
+
+1. Efficient IP Address Usage
+
+Instead of wasting addresses:
+
+Whole Network
+
+256 IPs
+
+Used = 80
+
+Unused = 176
+
+After subnetting:
+
+Each department receives only the required IPs.
+
+Less wastage.
+
+2. Better Performance
+
+3. Better Security
+
+Network Portion
+
+Identifies which network the device belongs to.
+
+Example
+
+192.168.1.xxx
+
+All devices having this network portion belong to the same network.
+
+Host Portion
+
+Identifies the individual device.
+
+Example
+
+192.168.1.10
+
+192.168.1.20
+
+192.168.1.35
+
+All are different hosts inside the same network.
+
+What is a Subnet Mask?
+A Subnet Mask tells the computer:
+
+Which bits belong to the network
+
+Which bits belong to the host
+
+Example
+
+IP Address
+
+192.168.1.10
+
+Subnet Mask
+
+255.255.255.0
+
+CIDR Notation
+Instead of writing
+
+255.255.255.0
+
+We simply write
+
+/24
+
+Meaning
+
+24 bits = Network
+
+8 bits = Host
+
+Number of subnets = 2ⁿ, where n = number of host bits borrowed
+
+Usable hosts per subnet = 2ʰ − 2, where h = remaining host bits
+
+Advantages of Subnetting
+
+1. Improved Security
+
+2. Better Performance
+
+3. Easier Maintenance
+
+Disadvantages of Subnetting
+
+1. Wasted Addresses
+
+2. Higher Cost
+
+3. More Complexity
+
+Role of Subnet Mask
+A subnet mask is a 32-bit number that works together with an IP address.
+
+Its main job is to divide an IP address into two parts:
+
+Network ID
+
+Host ID
+
+Example
+
+IP Address
+
+192.168.1.25
+
+Subnet Mask
+
+255.255.255.0
+
+This means:
+
+192.168.1 | 25
+
+-----------|----
+
+Network Host
+
+Network ID = 192.168.1
+
+Host ID = 25
+
+Meaning of Binary 1s and 0s
+In a subnet mask:
+
+1 → Network Portion
+
+0 → Host Portion
+
+Example:
+
+11111111.11111111.11111111.00000000
+
+This means:
+
+Network = First 24 bits
+
+Host = Last 8 bits
+
+That is exactly what /24 means.
+
+Main Role of a Subnet Mask
+
+The subnet mask helps a computer answer this question:
+
+"Is the destination computer on my network or on another network?"
+
+If Yes:
+
+Computer A
+
+│
+
+Switch
+
+│
+
+Computer B
+
+The computers communicate directly.
+
+If No:
+
+Computer A
+
+│
+
+Router
+
+│
+
+Computer B
+
+The packet is sent to the router, which forwards it to the correct network.
+
+Functions of a Subnet Mask
+1. Separates Network ID and Host ID
+
+2. Creates Smaller Networks (Subnetting)
+
+Suppose you have one large network:
+
+192.168.1.0/24
+
+It contains 256 IP addresses.
+
+You divide it into smaller networks:
+
+Sales
+
+192.168.1.0/26
+
+HR
+
+192.168.1.64/26
+
+IT
+
+192.168.1.128/26
+
+Finance
+
+192.168.1.192/26
+
+Now each department has its own subnet.
+
+3. Improves Network Performance
+
+Without subnetting:
+
+Broadcast
+
+↓
+
+Entire Network
+
+Every computer receives the broadcast.
+
+With subnetting:
+
+Broadcast
+
+↓
+
+Only Sales Subnet
+
+4. Helps Routers Forward Packets
+
+Routers compare:
+
+Destination IP
+
+Subnet Mask
+
+Then decide where to send the packet.
+
+With Subnetting
+
+The computer identifies:
+
+1. Network
+
+↓
+
+2. Subnet
+
+↓
+
+3. Host
+
+↓
+
+4. Process
+
+The extra Subnet level allows the network to be organized into smaller sections.
+
+Example: Divide a Class C Network into 4 Subnets
+
+Given network:
+
+200.1.2.0/24
+
+A /24 network has:
+
+24 Network Bits
+
+8 Host Bits
+
+To create 4 subnets, borrow 2 host bits.
+
+Why?
+
+2² = 4
+
+New Subnet Mask
+
+Original mask:
+
+255.255.255.0
+
+Binary
+
+11111111.11111111.11111111.00000000
+
+3. Route Tables
+A route table decides where network traffic should go.
+
+A routing table is a table stored in the router's RAM that contains information about known networks and the best path to reach them.
+
+when a router receives a packet, it looks at its routing table and decides which interface (port) the packet should leave from.
+
+What is the Default Route?
+Sometimes a router doesn't know where a destination is.
+
+Instead of dropping the packet immediately, it sends it to a default gateway.
+
+The default route is always:
+
+Destination : 0.0.0.0
+
+Subnet Mask : 0.0.0.0
+
+Entries in a Routing Table
+Each row (entry) contains important information.
+
+1. Network ID (Destination)
+
+This is the destination network.
+
+2. Subnet Mask
+
+The subnet mask tells the router how much of the IP address is the network portion.
+
+The router performs a bitwise AND between:
+
+Destination IP
+
+Subnet Mask
+
+3. Next Hop
+
+Sometimes the destination is not directly connected.
+
+The router forwards the packet to another router.
+
+Types of Routes Stored in a Routing Table
+1. Directly Attached Networks
+
+These are networks directly connected to the router.
+
+The router automatically knows these networks.
+
+No manual configuration is needed.
+
+2. Remote Networks
+
+These are networks connected through another router.
+
+3. Host Route
+
+A route to one specific device.
+
+Only that single computer is matched.
+
+4. Default Route
+
+Used when no other route matches.
+
+How Are Routing Tables Created?
+There are three ways.
+
+1. Directly Connected Networks
+
+These are added automatically.
+
+Example:
+
+Router
+
+↓
+
+Network Connected
+
+↓
+
+Added Automatically
+
+2. Static Routing
+
+The administrator manually enters routes.
+
+Example:
+
+Network Admin
+
+↓
+
+Configure Route
+
+↓
+
+Saved in Routing Table
+
+Advantages:
+
+Simple
+
+Secure
+
+No routing protocol overhead
+
+Disadvantages:
+
+Not suitable for large networks
+
+Must be updated manually
+
+3. Dynamic Routing
+
+Routers automatically exchange routing information using routing protocols (such as RIP, OSPF, or EIGRP).
+
+Example:
+
+Router A
+
+⇄
+
+Router B
+
+⇄
+
+Router C
+
+Advantages:
+
+Automatic updates
+
+Suitable for large networks
+
+4. Network ACL (NACL)
+A Network ACL is a firewall for an entire subnet.
+
+Internet
+
+↓
+
+NACL
+
+↓
+
+Subnet
+
+It checks every packet entering or leaving the subnet.
+
+Characteristics:
+
+Works at subnet level
+
+5. Internet Gateway (IGW)
+A Gateway is a network device that connects two different networks and translates data so that devices using different protocols can communicate.
+
+It is often called a Protocol Converter because it converts one network protocol into another when necessary.
+
+Why Do We Need a Gateway?
+
+Suppose your home computer wants to access a website.
+
+Without the gateway:
+
+Your computer cannot reach the Internet.
+
+Different networks cannot exchange data.
+
+The gateway acts as the door connecting your local network to other networks.
+
+Features of Gateways
+1. Located at the Edge of the Network
+
+A gateway sits at the boundary of a network.
+
+2. Works at Any OSI Layer
+
+Unlike devices such as switches or routers that mainly operate at specific layers, a gateway can operate at any layer of the OSI model, depending on the type of conversion it performs.
+
+3. Packet Handling
+
+Instead of sending large amounts of data at once, a gateway can process and forward data as smaller packets.
+
+4. Provides Security
+
+Since all traffic passes through the gateway, it can inspect and filter data.
+
+Types of Gateways (Based on Data Flow)
+1. Unidirectional Gateway
+
+Data flows in only one direction.
+
+2. Bidirectional Gateway
+
+Data flows in both directions.
+
+Types of Gateways (Based on Function)
+1. Network Gateway
+
+This is the most common type.
+
+It connects two different networks using different protocols.
+
+2. Cloud Storage Gateway
+
+It connects local storage with cloud storage services.
+
+It translates storage requests between local applications and cloud services.
+
+3. Internet-to-Orbit (I2O) Gateway
+
+Used to communicate between:
+
+Internet
+
+Satellites
+
+4. IoT Gateway
+
+Used in the Internet of Things (IoT).
+
+5. VoIP Trunk Gateway: By using a VoIP (voice over Internet Protocol) network, it makes data transmission between POTS (plain old telephone service) devices like landlines and fax machines easier.
+
+How Does a Gateway Work?
+Step 1: Receive Data
+
+A device sends data.
+
+Step 2: Analyze the Packet
+
+The gateway examines:
+
+Destination address
+
+Source address
+
+Packet header
+
+Step 3: Determine the Destination
+
+The gateway decides where the packet should go.
+
+Step 4: Convert the Data (if needed)
+
+If the destination network uses a different protocol, the gateway converts the packet.
+
+Step 5: Forward the Packet
+
+Finally, the gateway sends the packet to its destination.
+
+Limitations of Gateways
+
+1. Time Delay
+
+Protocol conversion and packet inspection take time.
+
+2. Single Point of Failure
+
+If the gateway fails:
+
+The network may lose connectivity with other networks, such as the Internet.
+
+3. Complex and Expensive
+
+Gateways are more complex to configure than basic networking devices and may increase implementation costs.
+
+SOAP (Simple Object Access Protocol)
+SOAP and REST are two popular ways for applications to communicate over a network.
+
+Think of them as two different ways of sending messages between a client and a server.
+
+What is SOAP?
+
+SOAP (Simple Object Access Protocol) is an XML-based messaging protocol used to exchange structured information between a client and a server.
+
+Features of SOAP
+1. XML-Based
+
+SOAP messages are always written in XML.
+
+Example
+
+1001
+
+2. Supports Multiple Transport Protocols
+
+SOAP can work over:
+
+HTTP
+
+HTTPS
+
+SMTP
+
+3. Built-in Security
+
+SOAP supports WS-Security, making it suitable for:
+
+Banking
+
+Online payments
+
+4. Reliable Messaging
+
+SOAP ensures that important messages are delivered correctly.
+
+5. Uses WSDL
+
+SOAP uses WSDL (Web Services Description Language).
+
+WSDL acts like a contract that tells clients:
+
+What operations are available
+
+What data to send
+
+What data will be received
+
+Which URL to use
+
+Components of SOAP Architecture
+1. SOAP Client
+
+The application that sends the request.
+
+Example:
+
+Mobile app
+
+Website
+
+2. SOAP Message
+
+The XML document exchanged between client and server.
+
+It contains:
+
+Request
+
+Response
+
+3. SOAP Server (Web Service)
+
+Receives the request.
+
+Processes it.
+
+Returns the response.
+
+4. Transport Protocol
+
+Carries SOAP messages.
+
+Usually:
+
+HTTP
+
+But SOAP can also use:
+
+HTTPS
+
+SMTP
+
+TCP
+
+Working of SOAP
+The working is very simple.
+
+Step 1
+
+The client creates a SOAP request.
+
+Step 3
+
+The server processes the request.
+
+Step 4
+
+The server creates a SOAP response.
+
+Step 5
+
+The response is returned to the client.
+
+Structure of a SOAP Message
+Every SOAP message has four parts.
+
+SOAP Envelope
+
+│
+
+├── Header (Optional)
+
+├── Body
+
+└── Fault (Optional)
+
+1. SOAP Envelope
+
+The Envelope is the root element.
+
+It tells the receiver:
+
+"This document is a SOAP message."
+
+Without the Envelope, the message is not recognized as a SOAP message.
+
+2. SOAP Header (Optional)
+
+Contains extra information.
+
+Examples:
+
+Authentication
+
+Security
+
+Routing
+
+3. SOAP Body
+
+Contains the actual request or response.
+
+4. SOAP Fault (Optional)
+
+Used if an error occurs.
+
+Example:
+
+Invalid Customer ID
+
+OR
+
+Authentication Failed
+
+SOAP returns a Fault message.
+
+WSDL (Web Services Description Language)
+WSDL is an XML document describing the SOAP service.
+
+Think of it as an instruction manual or contract.
+
+It tells the client:
+
+Service name
+
+Available operations
+
+Input format
+
+Output format
+
+Without WSDL, the client would not know how to call the web service correctly.
+
+Advantages of SOAP
+
+1. High Security
+
+2. Reliable Messaging
+
+3. Transaction Support
+
+Limitations of SOAP
+
+1. Large XML Messages
+
+2. Complex
+
+3. Slower
+
+4. Not Suitable for Mobile Apps
+
+REST API (Representational State Transfer)
+A REST API allows a client and a server to communicate over HTTP, usually exchanging data in JSON format.
+
+REST Architecture
+
+Client
+
+↓
+
+HTTP Request
+
+↓
+
+Server
+
+↓
+
+JSON Response
+
+↓
+
+Client
+
+HTTP Methods Used in REST
+1. GET
+
+Used to retrieve data.
+
+2. POST
+
+Used to create a new resource.
+
+Meaning:
+
+Create a new user.
+
+3. PUT
+
+Used to replace the entire resource
+
+Entire user data must be sent.
+
+If the user doesn't exist, PUT can create it.
+
+4. PATCH
+
+Used to update only selected fields.
+
+example
+
+Only the email changes.
+
+Everything else remains the same.
+
+Difference Between PUT and PATCH
+
+PUT PATCH
+
+Updates the entire resource Updates only selected fields
+
+Sends complete data Sends only changed fields
+
+5. DELETE
+
+Used to remove a resource.
+
+Features of REST APIs
+
+Stateless: Each request contains all the information needed; the server does not store client session state.
+
+Client-Server Architecture: Separates the client and server, improving scalability.
+
+Cacheable Responses: Responses can be cached to improve performance.
+
+Real-World Applications of REST APIs
+
+REST APIs are commonly used in:
+
+Social media platforms
+
+E-commerce websites
+
+Weather applications
+
+GPS and geolocation services
+
+limitations of REST APIs
+
+Each request must include all required information, which can increase request size.
+
+Not ideal for real-time communication because it follows a request-response model.
+
+Clients may receive more or less data than needed in some cases.
+
+REST does not enforce strict standards like SOAP, so implementations can vary.
+
+API versioning and backward compatibility can become challenging as APIs grow.
+
+SOAP vs REST
+
+Feature SOAP REST
+
+Type Protocol Architectural style
+
+Data Format XML only Usually JSON (can also use XML, HTML, etc.)
+
+Speed Slower Faster
+
+Message Size Large Small
+
+Security Built-in (WS-Security) Typically uses HTTPS and other mechanisms
+
+Complexity More complex Simpler
+
+Best Use Banking, enterprise Web apps, mobile apps, public APIs
+
+1. Voice over Internet Protocol (VoIP)
+VoIP (Voice over Internet Protocol) is a technology that allows people to make voice calls over the Internet instead of traditional telephone lines.
+
+Instead of sending voice as analog electrical signals through telephone cables, VoIP converts your voice into digital data packets and sends them through the Internet.
+
+How VoIP Works
+Step 1: Speak
+
+You speak into your phone or computer microphone.
+
+↓
+
+Step 2: Voice Conversion
+
+Your voice (analog signal) is converted into digital data.
+
+↓
+
+Step 3: Packetization
+
+The digital data is divided into small packets.
+
+↓
+
+Step 4: Internet Transmission
+
+The packets travel through the Internet.
+
+↓
+
+Step 5: Reconstruction
+
+The receiver's device combines the packets.
+
+↓
+
+Step 6: Digital to Analog
+
+The digital packets are converted back into sound.
+
+↓
+
+Step 7: Listener hears your voice.
+
+Equipment Required
+
+High-speed Internet
+
+Computer, smartphone or VoIP phone
+
+Microphone
+
+Speaker
+
+Evolution of VoIP
+1995
+
+VocalTec introduced the first VoIP software called InternetPhone.
+
+Problems:
+
+Poor sound quality
+
+Frequent call drops
+
+No video
+
+2003
+
+Skype became popular.
+
+Improvements:
+
+Better voice quality
+
+Video calling
+
+Cheap international calls
+
+COVID-19 Pandemic
+
+Remote work increased.
+
+VoIP applications became essential.
+
+Examples:
+
+Zoom
+
+Teams
+
+Google Meet
+
+Advantages of VoIP
+
+1. Low Cost
+
+2. Free International Calls
+
+3. Extra Features
+
+Video calls
+
+Call forwarding
+
+Voicemail
+
+Conference calls
+
+4. Portable
+
+5. Easy Installation
+
+Disadvantages of VoIP
+
+1. Needs Internet
+
+2. Power Failure
+
+3. Delay (Latency)
+
+What is a Signal?
+A signal is a function of one or more variables hat represents or carries information about a physical phenomenon. In communication and electronics, signals are used to transfer information from one device or system to another.
+
+Examples of Signals
+
+Human voice and sound waves
+
+Voltage in electrical circuits
+
+Temperature measured by a thermostat
+
+Types of Signals
+
+The file classifies signals into five main types.
+
+1. Analog Signal
+
+Continuous in time.
+
+Can take any value within a range.
+
+Usually represented by smooth sine waves.
+
+More affected by noise.
+
+Examples:
+
+Sound waves
+
+Temperature
+
+Audio signals
+
+Television signals
+
+2. Digital Signal
+
+Discrete (not continuous).
+
+Represented using binary values (0 and 1).
+
+More resistant to noise.
+
+Widely used in computers and telecommunications.
+
+Examples:
+
+Computer data
+
+Digital audio
+
+Internet communication
+
+3. Real and Complex Signals
+
+Real Signal
+
+Contains only real-number values.
+
+Complex Signal
+
+Contains real and imaginary parts.
+
+4. Deterministic and Random Signals
+
+Deterministic Signal
+
+Can be described exactly by a mathematical equation.
+
+Future values are predictable.
+
+Random Signal
+
+Cannot be predicted exactly.
+
+Requires statistical methods for analysis.
+
+Example
+
+Deterministic: Sine wave
+
+Random: Noise
+
+5. Periodic and Non-Periodic Signals
+
+Periodic Signal
+
+Repeats after a fixed interval (period).
+
+Example:
+
+AC voltage
+
+Sine wave
+
+Non-Periodic (Aperiodic) Signal
+
+Does not repeat.
+
+Example:
+
+Speech signal
+
+Music signal
+
+Signal Parameters
+
+Important characteristics of a signal are:
+
+Amplitude: Maximum strength or height of the signal.
+
+Frequency: Number of cycles per second (measured in Hertz).
+
+Phase: Indicates the position of the waveform relative to a reference.
+
+Wavelength: Physical distance covered by one complete cycle.
+
+Digital Signal Processing (DSP)
+Digital Signal Processing is the processing of signals in digital form.
+
+Steps:
+
+Convert an analog signal to digital using an ADC (Analog-to-Digital Converter).
+
+Process the digital signal using digital circuits or computers.
+
+Convert it back to analog using a DAC (Digital-to-Analog Converter) if needed.
+
+Basic Signals
+The file describes four fundamental signals:
+
+1. Unit Step Signal u(t)
+
+Used to represent switching operations.
+
+2. Unit Impulse Signal δ(t)
+
+Used in system analysis.
+
+3. Unit Ramp Signal r(t)
+
+Increases linearly with time.
+
+Used to model steadily increasing quantities.
+
+4. Unit Parabolic Signal
+
+Amplitude increases with the square of time
+
+Applications of Signals
+
+Signals are widely used in:
+
+Communication systems
+
+Telephone and wireless communication
+
+Audio systems
+
+Audio and video signal processing
+
+Functional Signals
+
+These include:
+
+Sinc Function
+
+Oscillates with decreasing amplitude.
+
+Important in Fourier analysis and communication systems.
+
+Signum Function
+
+Indicates whether a value is positive, negative, or zero.
+
+Continuous-Time Complex Exponential
+
+If the exponent is positive → exponential growth.
+
+If negative → exponential decay.
+
+Used to model many physical and communication processes.
+
+Geometric Signals
+
+Two common geometric signals are:
+
+Rectangular pulse
+
+Triangular pulse
+
+Both are symmetric and commonly used in signal analysis
+
+What is a Digital Signal?
+A digital signal represents information using binary digits (0 and 1).
+
+Instead of continuously changing values, it has only two states.
+
+____ _____
+
+|____|
+
+Characteristics
+
+Discrete values
+
+Binary (0 and 1)
+
+High accuracy
+
+Easy processing
+
+Applications
+
+Communication
+
+Audio
+
+Video
+
+Storage
+
+Advantages
+
+Less noise
+
+High accuracy
+
+Easy compression
+
+Secure encryption
+
+Easy storage
+
+Disadvantages
+
+Requires higher bandwidth
+
+Complex hardware
+
+Analog-to-Digital conversion required
+
+Quantization errors possible
+
+SSD (Solid State Drive)
+SSD = Solid State Drive
+
+It stores data using flash memory chips instead of rotating magnetic disks.
+
+HDD vs SSD
+
+HDD
+
+Uses rotating disks.
+
+SSD
+
+Uses flash memory chips.
+
+No moving parts.
+
+Components
+
+Flash Memory
+
+Stores the data.
+
+Flash Controller
+
+Controls:
+
+Read
+
+Write
+
+Data transfer
+
+Characteristics
+
+Very fast boot
+
+Fast data transfer
+
+Silent
+
+Lightweight
+
+Low power consumption
+
+Advantages
+
+Faster than HDD
+
+No noise
+
+Durable
+
+Energy efficient
+
+Disadvantages
+
+Expensive
+
+Less storage for the same price
+
+Limited write lifespan
+
+Analog Signal
+What is an Analog Signal?
+
+An analog signal is a continuous signal whose value changes smoothly over time.
+
+Example:
+
+Human voice
+
+Temperature
+
+Graph
+
+~~~~~~~
+
+Characteristics
+
+Continuous
+
+Infinite values
+
+Time varying
+
+Natural signals
+
+Examples
+
+Human voice
+
+Temperature
+
+Radio waves
+
+Advantages
+
+Natural representation
+
+Less bandwidth
+
+Good for audio and video
+
+Disadvantages
+
+Noise affects quality
+
+Difficult to edit
+
+Signal quality decreases over distance
+
+Relationship Between Analog, Digital and VoIP
+Suppose you make a WhatsApp call.
+
+Step 1
+
+You speak.
+
+Voice is an analog signal.
+
+↓
+
+Step 2
+
+Your phone converts it into a digital signal (0s and 1s).
+
+↓
+
+Step 3
+
+The digital data is sent over the Internet using VoIP.
+
+↓
+
+Step 4
+
+The receiver's phone converts the digital signal back into an analog sound.
+
+↓
+
+Step 5
+
+The other person hears your voice.
+
+RADAR (Radio Detection and Ranging)
+RADAR (Radio Detection and Ranging) is a technology that uses radio waves to detect the position, distance, speed, and direction of objects such as aircraft, ships, vehicles
+
+Working of RADAR
+
+Step 1
+
+The transmitter generates radio waves.
+
+↓
+
+Step 2
+
+The antenna sends them into space.
+
+↓
+
+Step 3
+
+The waves hit an object.
+
+↓
+
+Step 4
+
+The object reflects the waves.
+
+↓
+
+Step 5
+
+The receiver receives the reflected signal.
+
+↓
+
+Step 6
+
+The processor calculates:
+
+Distance
+
+Direction
+
+Speed
+
+Position
+
+using the time delay and signal characteristics
+
+Components of RADAR
+
+Transmitter
+
+Antenna
+
+Receiver
+
+Processor
+
+Types of RADAR
+1. Pulse Radar
+
+Sends short pulses.
+
+Measures distance.
+
+2. Continuous Wave (CW) Radar
+
+Sends continuous waves.
+
+Measures speed using the Doppler effect.
+
+3. Doppler Radar
+
+Measures speed of moving objects.
+
+Used in weather forecasting.
+
+4. Synthetic Aperture Radar (SAR)
+
+Produces high-resolution images of the Earth's surface.
+
+Applications of RADAR
+
+RADAR is used in:
+
+Air traffic control
+
+Weather forecasting
+
+Military surveillance
+
+Missile guidance
+
+2. SONAR (Sound Navigation and Ranging)
+SONAR (Sound Navigation and Ranging) is a technology that uses ultrasonic sound waves to detect underwater objects, measure depth, and determine distance. It is mainly used by ships and submarines.
+
+Working of SONAR
+
+Step 1
+
+The transmitter emits ultrasonic waves.
+
+↓
+
+Step 2
+
+The waves travel through water.
+
+↓
+
+Step 3
+
+They strike an underwater object.
+
+↓
+
+Step 4
+
+The waves are reflected back as echoes.
+
+↓
+
+Step 5
+
+The receiver receives the echoes.
+
+↓
+
+Step 6
+
+The time taken is measured to calculate the object's distance.
+
+Components of SONAR
+
+1. Transmitter (Emitter)
+
+Produces ultrasonic waves.
+
+2. Receiver
+
+Receives reflected echoes.
+
+3. Ultrasonic Waves
+
+Sound waves with frequency greater than 20 kHz.
+
+Applications (Uses) of SONAR
+
+SONAR is used for:
+
+Underwater communication
+
+Measuring sea depth
+
+Detecting submarines
+
+Detecting underwater rocks and icebergs
+
+Military surveillance
+
+Echolocation in Bats
+
+Bats also use ultrasonic waves.
+
+They:
+
+Produce ultrasonic sound.
+
+Receive reflected echoes.
+
+Determine the location of insects and obstacles.
+
+This process is called echolocation.
+
+Bandwidth
+Bandwidth is the maximum amount of data that can be transmitted over a network connection in a given amount of time. It is usually measured in bits per second (bps), Kbps, Mbps, or Gbps. It represents the data-carrying capacity of a communication channel, not the actual speed of data transfer
+
+Higher bandwidth allows more data to pass every second, but generally costs more.
+
+Importance of Bandwidth
+
+Bandwidth is important because it:
+
+Determines how quickly web pages load.
+
+Improves streaming quality.
+
+Allows faster downloads and uploads.
+
+Supports multiple users simultaneously.
+
+Reduces network congestion.
+
+Improves overall network performance.
+
+Uses (Applications) of Bandwidth
+
+Bandwidth is used for:
+
+Increasing network capacity.
+
+Internet Service Providers (ISPs) managing network traffic.
+
+Bandwidth throttling to reduce congestion.
+
+Connecting multiple devices simultaneously.
+
+Communication systems and signal transmission.
+
+Audio and video streaming.
+
+Measuring Bandwidth
+Bandwidth is commonly measured in:
+
+Mbps (Megabits per second)
+
+Gbps (Gigabits per second)
+
+Two types:
+
+Symmetrical Bandwidth
+
+Upload speed = Download speed
+
+Used in business networks
+
+Asymmetrical Bandwidth
+
+Download speed > Upload speed
+
+Common in home broadband
+
+Factors Affecting Bandwidth
+
+Bandwidth performance is affected by
+
+Network congestion
+
+Packet loss
+
+Delay (Latency)
+
+Jitter
+
+Bottleneck links
+
+Ways to Increase Bandwidth
+
+Upgrade Internet plan.
+
+Use a better router.
+
+Use Ethernet cable instead of Wi-Fi.
+
+Upgrade networking hardware.
+
+6. Network Address Translation (NAT)
+Network Address Translation (NAT) is a technique that allows instances in private subnets to access the internet without being directly accessible from the internet.
+
+In AWS, this is done using a NAT Gateway.
+
+Why is NAT Needed?
+
+Private subnet instances:
+
+Cannot receive public internet traffic.
+
+Cannot directly connect to the internet.
+
+May still need internet access to:
+
+Download software updates
+
+Install packages
+
+Working of NAT Gateway
+
+Imagine an EC2 instance inside a private subnet.
+
+Step 1
+
+The EC2 instance sends a request to the internet.
+
+↓
+
+Step 2
+
+The request reaches the NAT Gateway.
+
+↓
+
+Step 3
+
+The NAT Gateway replaces the private IP with its public IP.
+
+↓
+
+Step 4
+
+The request goes to the internet.
+
+↓
+
+Step 5
+
+The internet sends the response back.
+
+↓
+
+Step 6
+
+The NAT Gateway forwards the response to the private EC2 instance.
+
+✔ Outbound traffic is allowed.
+
+✖ Unsolicited inbound traffic is blocked.
+
+Characteristics
+
+Located in a Public Subnet
+
+Used by Private Subnets
+
+Requires an Internet Gateway
+
+Uses
+
+Download updates
+
+Install software
+
+Access external APIs
+
+7. Security Groups (SG)
+Definition
+
+A Security Group is a stateful virtual firewall attached to AWS resources such as EC2 instances.
+
+It controls:
+
+Incoming traffic (Inbound)
+
+Outgoing traffic (Outbound)
+
+8. Classless Inter-Domain Routing (CIDR)
+CIDR is a notation used to define the range of IP addresses assigned to a network or subnet.
+
+Creating an Amazon VPC
+
+Step 1
+
+Login to AWS Console.
+
+↓
+
+Go to
+
+Services
+
+↓
+
+VPC
+
+Step 2
+
+Click
+
+Create VPC
+
+Step 3
+
+Provide:
+
+VPC Name
+
+IPv4 CIDR Block
+
+Tags
+
+Then click
+
+Create VPC
+
+Step 4
+
+AWS creates the VPC.
+
+Step 5
+
+Verify it appears on the VPC Dashboard.
+
+Types of VPC Endpoints
+
+1. Gateway Endpoint
+
+Supports only:
+
+Amazon S3
+
+Amazon DynamoDB
+
+Features
+
+Free
+
+Uses Route Tables
+
+Traffic stays inside AWS
+
+2. Interface Endpoint (PrivateLink)
+
+Supports almost every AWS service.
+
+Examples:
+
+EC2 API
+
+SNS
+
+Kinesis
+
+CloudWatch
+
+Features
+
+Creates an Elastic Network Interface (ENI)
+
+Has a private IP
+
+Paid service
+
+Uses of VPC
+
+AWS VPC is used for:
+
+Hosting public web applications
+
+Deploying private application servers
+
+Hosting databases in private subnets
+
+Connecting multiple VPCs
+
+Link Aggregation Control Protocol (LACP)
+LACP (Link Aggregation Control Protocol) is an IEEE standard protocol used to combine multiple physical Ethernet links into a single logical link
+
+This increases:
+
+Bandwidth
+
+Reliability
+
+Redundancy
+
+Why is LACP Needed?
+
+Suppose one cable provides 1 Gbps.
+
+Instead of buying one expensive 4 Gbps cable, you can combine:
+
+1 Gbps
+
+1 Gbps
+
+1 Gbps
+
+1 Gbps
+
+↓
+
+One Logical Link (4 Gbps)
+
+Advantages:
+
+Higher speed
+
+Backup links
+
+Better traffic distribution
+
+Features of LACP
+
+Automatically negotiates link aggregation.
+
+Supports up to 16 Ethernet ports.
+
+Maximum 8 active links.
+
+Remaining links stay in standby.
+
+LACP Modes
+1. Active Mode
+
+Actively sends LACP Data Units (LACPDUs).
+
+Initiates link aggregation.
+
+2. Passive Mode
+
+Waits for another device.
+
+Responds to received LACPDUs.
+
+LACP in OSI Model
+
+Layer 1 (Physical Layer)
+
+Combines multiple physical cables.
+
+Layer 2 (Data Link Layer)
+
+Creates one logical Ethernet connection.
+
+Handles MAC addresses.
+
+Manages Ethernet frames.
+
+Layer 3 (Network Layer)
+
+Uses hashing based on:
+
+Source IP
+
+Destination IP
+
+Timers
+
+Fast Mode
+
+Every 1 second
+
+Slow Mode (Default)
+
+Every 30 seconds
+
+Load Balancing
+
+Traffic can be distributed using:
+
+Per packet
+
+Per flow
+
+Per socket
+
+Failover
+
+If one cable fails:
+
+Traffic automatically moves to the remaining links.
+
+No network downtime.
+
+Applications of LACP
+
+Enterprise LANs
+
+Data Centers
+
+Server connections
+
+Storage networks
+
+Advantages
+
+Higher bandwidth
+
+Redundancy
+
+Automatic failover
+
+Load balancing
+
+Limitations
+
+Requires compatible devices
+
+Complex configuration
+
+Limited scalability
+
+Error Control in Data Link Layer
+Error Control is a mechanism used by the Data Link Layer to ensure that transmitted frames are received correctly.
+
+It performs:
+
+Error Detection
+
+Error Correction
+
+Reliable Delivery
+
+Two Parts of Error Control
+
+1. Error Detection
+
+Detects whether an error has occurred.
+
+Examples:
+
+CRC
+
+Checksum
+
+Parity
+
+2. Error Correction
+
+Corrects the detected errors.
+
+Usually done by:
+
+Retransmission
+
+Forward Error Correction
+
+Automatic Repeat Request (ARQ)
+ARQ is the main error-control mechanism.
+
+Working:
+
+Sender sends frame
+
+↓
+
+Receiver checks it
+
+↓
+
+If correct → ACK
+
+↓
+
+If incorrect → Retransmit
+
+Types of ARQ
+
+Stop-and-Wait ARQ
+
+Working:
+
+Send one frame
+
+↓
+
+Wait for ACK
+
+↓
+
+Receive ACK
+
+↓
+
+Send next frame
+
+If ACK is lost:
+
+Retransmit.
+
+Advantages
+
+Simple
+
+Reliable
+
+Disadvantages
+
+Slow
+
+Poor bandwidth utilization
+
+Sliding Window ARQ
+
+Allows multiple frames before waiting for ACK.
+
+Much faster than Stop-and-Wait.
+
+Two types:
+
+Go-Back-N
+
+Selective Repeat
+
+Go-Back-N ARQ
+
+Suppose sender sends:
+
+1
+
+2
+
+3
+
+4
+
+5
+
+Frame 3 is lost.
+
+Receiver accepts:
+
+1
+
+2
+
+Rejects:
+
+3
+
+4
+
+5
+
+Sender retransmits:
+
+3
+
+4
+
+5
+
+Advantage
+
+Simple
+
+Disadvantage
+
+Retransmits many correct frames.
+
+Selective Repeat ARQ
+
+Again:
+
+1
+
+2
+
+3
+
+4
+
+5
+
+Frame 3 is lost.
+
+Receiver stores:
+
+4
+
+5
+
+Only frame
+
+3
+
+is retransmitted.
+
+Advantage
+
+Efficient
+
+Disadvantage
+
+Needs more memory.
+
+Error Detection
+Definition
+
+Error Detection is the process of determining whether transmitted data has been corrupted during communication.
+
+Types of Errors
+
+Single-Bit Error
+
+Only one bit changes.
+
+Example
+
+101101
+
+↓
+
+101001
+
+Burst Error
+
+Several consecutive bits change.
+
+Example
+
+1011010110
+
+↓
+
+1000111110
+
+Error Detection Methods
+
+1. Simple Parity Check
+
+Adds one parity bit.
+
+Even Parity
+
+Total number of 1's becomes even.
+
+Odd Parity
+
+Total number of 1's becomes odd.
+
+Advantages
+
+Easy
+
+Detects single-bit errors
+
+Disadvantages
+
+Cannot detect even-numbered errors
+
+3. Checksum
+
+Working
+
+Sender:
+
+Divide data
+
+Add segments
+
+Take 1's complement
+
+Send checksum
+
+Receiver:
+
+Add all segments
+
+Result = all 1's
+
+No error.
+
+Otherwise:
+
+Error detected.
+
+4. Cyclic Redundancy Check (CRC)
+
+Most reliable detection method.
+
+Working:
+
+Step 1
+
+Append zeros.
+
+↓
+
+Step 2
+
+Perform Modulo-2 division.
+
+↓
+
+Step 3
+
+Remainder = CRC.
+
+↓
+
+Step 4
+
+Append CRC to data.
+
+Receiver performs the same division.
+
+Remainder = 0 → No error
+
+Non-zero remainder → Error
+
+Error Correction
+Error Correction is the process of detecting and fixing errors so the receiver obtains the correct data.
+
+Types of Error Correction
+
+1. Forward Error Correction (FEC)
+
+Sender adds extra bits.
+
+Receiver:
+
+Detects
+
+Corrects
+
+No retransmission needed.
+
+Used in:
+
+Satellite communication
+
+2. Backward Error Correction
+
+Receiver detects error.
+
+↓
+
+Requests retransmission.
+
+↓
+
+Sender sends again.
+
+Uses:
+
+Stop-and-Wait
+
+Go-Back-N
+
+Selective Repeat
+
+Applications of Error Correction
+
+Used in:
+
+Wi-Fi
+
+4G/5G Networks
+
+Satellite Communication
+
+Deep Space Communication
+
+HDDs
+
+SSDs
+
+Flow Control
+Flow Control is a Data Link Layer mechanism that controls how fast the sender sends data so that the receiver is not overloaded.
+
+Why is Flow Control Needed?
+
+Without flow control:
+
+Receiver buffer becomes full.
+
+Packets are dropped.
+
+Data is lost.
+
+Network becomes inefficient.
+
+With flow control:
+
+No buffer overflow
+
+Reliable communication
+
+Better throughput
+
+Stable network
+
+Flow Control Example
+
+Suppose
+
+Sender speed = 100 Mbps
+
+Receiver can process = 20 Mbps
+
+Without flow control:
+
+Sender --->>>>>>>>>>>>> Receiver
+
+Receiver buffer fills
+
+↓
+
+Packets dropped
+
+With flow control:
+
+Sender ---> Receiver
+
+Receiver processes
+
+Sender sends next
+
+Everything works smoothly.
+
+Types of Flow Control
+There are 2 approaches
+
+1. Feedback-Based Flow Control
+
+Receiver tells sender how much data it can accept.
+
+Example:
+
+Sender ---> Frame 1
+
+Receiver ---> ACK
+
+Sender ---> Frame 2
+
+The sender adjusts its speed according to receiver feedback.
+
+Examples:
+
+Stop-and-Wait
+
+Sliding Window
+
+TCP
+
+2. Rate-Based Flow Control
+
+The sender sends data at a fixed rate.
+
+Receiver does not constantly send feedback.
+
+Used in
+
+Video streaming
+
+Voice calls
+
+Examples
+
+Leaky Bucket
+
+Stop-and-Wait Flow Control
+This is the simplest flow control technique.
+
+Working
+
+Step 1
+
+Sender sends one frame.
+
+Step 2
+
+Receiver receives it.
+
+Step 3
+
+Receiver sends ACK.
+
+Step 4
+
+Sender sends next frame.
+
+Only one frame is in transit.
+
+Advantages
+
+Very simple
+
+Reliable
+
+Disadvantages
+
+Very slow.
+
+Sender wastes time waiting for ACK.
+
+Sliding Window Flow Control
+Instead of sending one frame,
+
+Sender sends multiple frames before waiting.
+
+Much faster than Stop-and-Wait.
+
+Advantages
+
+Better bandwidth utilization
+
+Higher throughput
+
+Disadvantages
+
+More memory
+
+More complex
+
+Stop-and-Wait ARQ
+ARQ stands for
+
+Automatic Repeat request
+
+Working
+
+Sender
+
+Frame 0
+
+↓
+
+Receiver
+
+Received
+
+↓
+
+Receiver sends
+
+ACK 1
+
+↓
+
+Sender sends
+
+Frame 1
+
+Problems in Stop-and-Wait
+
+1. Lost Data
+
+2. Lost ACK
+
+Receiver receives frame.
+
+ACK gets lost.
+
+Sender waits.
+
+Timeout occurs.
+
+Frame sent again.
+
+Receiver ignores duplicate using sequence number.
+
+3. Delayed ACK
+
+Go-Back-N ARQ (GBN)
+This is an improved Sliding Window protocol.
+
+Instead of one frame,
+
+Sender sends multiple frames.
+
+Receiver sends cumulative ACK.
+
+Advantages
+
+Faster than Stop-and-Wait
+
+High throughput
+
+Good for reliable links
+
+Example
+
+Sender sends
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Suppose Frame 2 is lost.
+
+Receiver receives
+
+0 ✓
+
+1 ✓
+
+2 ✗
+
+3 discarded
+
+4 discarded
+
+Receiver keeps asking for Frame 2.
+
+Sender retransmits
+
+2
+
+3
+
+4
+
+Even though 3 and 4 were already sent.
+
+Disadvantages
+
+If one frame is lost,
+
+Many correct frames are retransmitted.
+
+Bandwidth is wasted.
+
+4. Selective Repeat ARQ
+Selective Repeat solves the main problem of GBN.
+
+Instead of retransmitting many frames,
+
+It retransmits only the lost one.
+
+Example
+
+Sender sends
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Frame 2 is lost.
+
+Receiver gets
+
+0 ✓
+
+1 ✓
+
+2 ✗
+
+3 ✓
+
+4 ✓
+
+Unlike GBN,
+
+Receiver stores Frames 3 and 4.
+
+Sender retransmits
+
+Only Frame 2
+
+Receiver now delivers all frames in order.
+
+Disadvantages
+
+More memory required
+
+Complex implementation
+
+Piggybacking
+Piggybacking is a technique where the receiver attaches the ACK to its own outgoing data frame instead of sending a separate ACK.
+
+Without Piggybacking
+
+A ---> DATA ---> B
+
+B ---> ACK ---> A
+
+B ---> DATA ---> A
+
+A ---> ACK ---> B
+
+Four transmissions.
+
+With Piggybacking
+
+A ---> DATA ---> B
+
+B ---> DATA + ACK ---> A
+
+A ---> DATA + ACK ---> B
+
+Only two transmissions.
+
+Advantages
+
+Fewer packets
+
+Less overhead
+
+Better bandwidth utilization
+
+Disadvantages
+
+If the receiver has no data to send, it cannot wait forever to attach the ACK.
+
+After a short delay, it sends a separate ACK to avoid unnecessary retransmission
+
+Network Layer
+The Network Layer is the 3rd layer of the OSI Model.
+
+Its main job is to:
+
+Give every device a logical address (IP Address).
+
+Find the best path to the destination.
+
+Forward packets through routers.
+
+Deliver packets across multiple networks.
+
+Suppose:
+
+You are in Delhi.
+
+Your friend is in Mumbai.
+
+The Data Link Layer can only send data within one local network.
+
+The Network Layer is responsible for taking your packet from Delhi to Mumbai through many routers.
+
+Laptop
+
+│
+
+Switch
+
+│
+
+Router
+
+│
+
+Internet
+
+│
+
+Router
+
+│
+
+Switch
+
+│
+
+Friend's Laptop
+
+Responsibilities of the Network Layer
+A) Logical Addressing
+
+Every device gets an IP address.
+
+Unlike MAC addresses (which identify hardware), IP addresses identify devices across networks.
+
+B) Packetization
+
+Transport Layer sends segments.
+
+Network Layer adds an IP header.
+
+Now it becomes a Packet.
+
+C) Routing
+
+Routing means
+
+Finding the best path from source to destination.
+
+D) Forwarding
+
+Routing chooses the path.
+
+Forwarding actually sends the packet through the correct interface.
+
+Think of:
+
+Routing = Deciding the road.
+
+Forwarding = Driving on the road.
+
+E) Host-to-Host Delivery
+
+Network Layer ensures
+
+Host A
+
+↓
+
+Host B
+
+even if they are thousands of kilometers apart.
+
+F) Fragmentation
+
+Different networks allow different packet sizes.
+
+Example
+
+Wi-Fi supports
+
+1500 Bytes
+
+Another network supports
+
+576 Bytes
+
+The Network Layer breaks the packet into smaller pieces.
+
+Original Packet
+
+1500 Bytes
+
+↓
+
+576
+
+576
+
+348
+
+At the destination they are reassembled.
+
+H) NAT (Network Address Translation)
+
+Private IP addresses cannot directly access the Internet.
+
+Router converts
+
+Private IP
+
+192.168.1.10
+
+↓
+
+Public IP
+
+49.207.x.x
+
+This is called NAT.
+
+How the Network Layer Works
+Step 1
+
+Application creates data.
+
+↓
+
+Step 2
+
+Transport Layer creates segment.
+
+↓
+
+Step 3
+
+Network Layer adds IP Header.
+
+↓
+
+Packet formed.
+
+↓
+
+Router checks destination IP.
+
+↓
+
+Chooses best path.
+
+↓
+
+Packet travels through routers.
+
+↓
+
+Destination receives packet.
+
+Protocols Used
+IP (Internet Protocol)
+
+Most important protocol.
+
+Functions
+
+Logical Addressing
+
+Routing
+
+Packet Delivery
+
+ICMP
+
+Used for
+
+Error messages
+
+Diagnostics
+
+ARP
+
+Converts
+
+IP Address
+
+↓
+
+MAC Address
+
+RARP
+
+Reverse of ARP.
+
+MAC
+
+↓
+
+IP
+
+IPSec
+
+Provides
+
+Encryption
+
+Authentication
+
+Security
+
+NAT
+
+Converts
+
+Private IP
+
+↓
+
+Public IP
+
+Advantages
+
+✔ Connects different networks
+
+✔ Finds best path
+
+✔ Supports Internet
+
+✔ Logical addressing
+
+7. Limitations
+
+❌ No flow control
+
+❌ Limited error control
+
+❌ Packet loss possible
+
+Routing vs Flooding
+
+Routing                 Flooding
+
+Uses routing table      No routing table
+
+Less traffic            High traffic
+
+No duplicate packets    Duplicate packets present
+
+Less reliable           More reliable
+
+Usually finds best path    Sends packets on all paths, so destination receives via the shortest available path
 
 
 
