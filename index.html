@@ -10093,6 +10093,526 @@ The administrator manually tells:
 
 Even if one cable breaks, routers **cannot find another path automatically**.
 
+## Characteristics
+
+- Manual configuration
+- No routing protocols used
+- No routing algorithms
+- Routes remain fixed until changed manually
+
+## Advantages
+
+- Very secure because no routing updates are exchanged.
+- No bandwidth is wasted exchanging routing information.
+- Low CPU and memory usage.
+- Cheaper routers can be used.
+
+## Disadvantages
+
+- Difficult to manage large networks.
+- Every new route must be configured manually.
+- No automatic recovery if a link fails.
+
+# Dynamic Routing
+
+Dynamic Routing automatically learns and updates routes whenever the network changes.
+It is called **Adaptive Routing** because it adapts to topology changes.
+Routers communicate using **routing protocols**.
+
+Example protocols:
+- RIP
+- OSPF
+- EIGRP
+- IS-IS
+
+## Advantages
+
+- Automatic updates
+- Best path selection
+- Supports large networks
+- Automatic recovery after failures
+
+## Disadvantages
+
+- More CPU usage
+- More memory usage
+- Uses bandwidth for routing updates
+- More complex configuration
+
+# Unicast Communication
+
+## Definition
+
+**Unicast** means
+> One sender → One receiver
+
+```
+Computer A  --------->  Computer B
+```
+
+Only one destination receives the data.
+
+---
+
+### Examples
+
+- HTTP
+- HTTPS
+- FTP
+- SSH
+- TCP
+
+---
+
+# Types of Routing Protocols
+
+There are three major routing protocols.
+
+## 1. Distance Vector Routing
+
+Each router only knows:
+- Its neighbors
+- Distance to destination
+
+Examples:
+
+- RIP
+
+---
+
+## 2. Link State Routing
+
+Each router knows
+
+**The complete network topology**
+
+Example:
+
+- OSPF
+- IS-IS
+
+---
+
+## 3. Path Vector Routing
+
+Each router stores the **entire path** to reach a destination.
+
+Example:
+
+- BGP
+
+---
+
+# 4. Link State Routing (LSR)
+
+## Definition
+
+Every router builds a complete map of the network.
+
+Instead of only knowing neighbors, every router knows:
+
+- All routers
+- All links
+- Cost of every link
+
+Then it calculates the shortest path using **Dijkstra's Algorithm**.
+
+## Working
+
+### Step 1
+
+Each router discovers its neighbors.
+
+↓
+
+### Step 2
+
+Creates a **Link State Packet (LSP)**
+
+Contains:
+
+- Router ID
+- Neighbor information
+- Link cost
+
+↓
+
+### Step 3
+
+Flooding
+
+Every router sends its LSP to all routers.
+
+Now every router has the same network map.
+
+↓
+
+### Step 4
+
+Stores everything inside the
+
+**Link State Database (LSDB)**
+
+↓
+
+### Step 5
+
+Runs
+
+**Shortest Path First (SPF)**
+
+using
+
+**Dijkstra Algorithm**
+
+↓
+
+### Step 6
+
+Builds the routing table.
+
+# Components of Link State Routing
+
+### Link State Packet (LSP)
+
+Contains
+
+- Router identity
+- Link cost
+- Connected neighbors
+
+---
+
+### Link State Database (LSDB)
+
+Database containing information from every router.
+
+---
+
+### Dijkstra Algorithm
+
+Calculates the shortest path.
+
+---
+
+### Routing Table
+
+Stores the best routes.
+
+---
+
+# Characteristics
+
+- Large memory required
+- More CPU usage
+- Fast convergence
+- Very reliable
+- Authentication supported
+
+# Link State Protocols
+
+## OSPF
+
+Open Shortest Path First
+
+Most popular link-state protocol.
+
+---
+
+## IS-IS
+
+Intermediate System to Intermediate System
+
+Mostly used by Internet Service Providers.
+
+---
+
+# 5. OSPF (Open Shortest Path First)
+
+## Definition
+
+OSPF is a **Link-State Interior Gateway Protocol (IGP)** used within a single Autonomous System (AS).
+
+It uses **Dijkstra's Shortest Path First (SPF)** algorithm to find the best route.
+
+---
+
+## Features
+
+- Link-state protocol
+- Protocol number **89**
+- Administrative Distance = **110**
+- Classless (supports VLSM and CIDR)
+- Fast convergence
+- Triggered updates (updates only when changes occur)
+
+### Router Types
+
+Internal Router → One area
+
+ABR → Connects multiple areas
+
+ASBR → Connects OSPF to another routing protocol
+
+DR → Reduces unnecessary communication on shared networks
+
+BDR → Backup of DR
+
+## OSPF Message Types
+
+1. Hello → Discover neighbors
+2. DBD → Exchange database summary
+3. LSR → Request missing information
+4. LSU → Send complete routing information
+5. LSAck → Acknowledge receipt
+
+## OSPF Network Types
+
+OSPF Network Types
+Point-to-Point: Direct link between two routers.
+Broadcast Multi-Access: (e.g., Ethernet) DR/BDR election required.
+Point-to-Multipoint: Treats each connection as point-to-point.
+NBMA (Non-Broadcast Multi-Access): (e.g., Frame Relay) Manual neighbor configuration needed..
+
+## OSPF Timers
+
+- Hello Timer: Interval between Hello packets (default: 10 sec).
+- Dead Timer: Time to declare a neighbor down if Hellos are missing (default: 40 sec).
+
+## Advantages
+
+- Fast
+- Scalable
+- Loop-free
+- Supports IPv4 & IPv6
+- Supports load balancing
+
+## Disadvantages
+
+- Complex configuration
+- High CPU usage
+
+# TCP (Transmission Control Protocol)
+
+## Definition
+
+TCP is a **connection-oriented**, **reliable** transport-layer protocol.
+
+It ensures:
+
+- No data loss
+- Correct order
+- Error checking
+- Flow control
+
+## TCP Features
+
+- Reliable
+- Connection-oriented
+- Ordered delivery
+- Error detection
+- Retransmission
+
+# Three-Way Handshake (Connection Establishment)
+
+Before sending data:
+
+```
+Client              Server
+
+SYN  ------------>
+
+      <----------- SYN + ACK
+
+ACK  ------------>
+```
+
+Connection established.
+
+---
+
+ Four-Way Handshake (Connection Termination)
+
+```
+FIN -------->
+
+     <------- ACK
+
+     <------- FIN
+
+ACK -------->
+```
+
+Connection closed.
+
+---
+
+# TCP Working
+
+1. Segmenting → Breaks data into segments.
+2. Routing via IP → IP delivers the segments.
+3. Reassembly → Receiver arranges them in order.
+4. ACK → Receiver acknowledges received data.
+5. Retransmission → Lost segments are resent.
+6. Flow & Error Control → Prevents overload and detects corruption.
+
+## Applications
+
+- HTTP/HTTPS
+- Email (SMTP, IMAP, POP3)
+- FTP/SFTP
+
+# HTTP (HyperText Transfer Protocol)
+
+## Definition
+
+HTTP is an **application-layer protocol** that allows communication between a web browser and a web server.
+
+---
+
+## Working
+
+```
+Browser
+
+↓
+
+DNS Lookup
+
+↓
+
+HTTP Request
+
+↓
+
+Server
+
+↓
+
+HTTP Response
+
+↓
+
+Browser displays webpage
+```
+
+---
+
+# HTTP Request Contains
+
+- URL
+- Method (GET, POST, PUT, DELETE)
+- Headers
+
+# HTTP Versions
+
+## HTTP/1.1
+
+- Persistent connections
+- Better than HTTP/1.0
+
+---
+
+## HTTP/2
+
+- Multiplexing
+- Header Compression
+- Server Push
+
+---
+
+## HTTP/3
+
+Uses **QUIC** instead of TCP.
+
+Advantages:
+
+- Faster connection setup
+- Better performance on unstable networks
+- Improved security
+
+# Cookies
+
+Cookies are **small pieces of data** stored in the browser by websites.
+
+Uses:
+
+- Login sessions
+- User preferences
+- Shopping carts
+
+---
+
+# Advantages
+
+- Simple
+- Low memory usage
+- Widely supported
+- Fast with persistent connections
+
+---
+
+# Disadvantages
+
+- No encryption (HTTP). Use **HTTPS** for security.
+- Less secure
+- Not ideal for sensitive data
+
+## What is HTTP Status Code?
+
+****HTTP Status codes**** are three-digit numbers that servers use to tell your browser what happened with the request you sent. There are different types of status codes:
+
+1. [Informational](https://www.geeksforgeeks.org/computer-networks/http-status-codes-informational-responses/) ****(1xx)****: These codes just give you information (e.g., 100 Continue means the request is still being processed).
+2. [Successful](https://www.geeksforgeeks.org/computer-networks/http-status-codes-successful-responses/)****(2xx)****: These codes tell you everything went fine (e.g., 200 OK means the request was successful).
+3. [Redirection](https://www.geeksforgeeks.org/computer-networks/http-status-codes-redirection-responses/)****(3xx)****: These codes tell the browser to take additional action (e.g., 301 Moved Permanently means the requested page has moved to a new address).
+4. [Client Error](https://www.geeksforgeeks.org/html/http-status-codes-client-error-responses/) ****(4xx)****: These codes indicate that there was a problem with your request (e.g., 404 Not Found means the page doesn’t exist).
+5. [Server Error](https://www.geeksforgeeks.org/computer-networks/http-status-codes-server-error-responses/) ****(5xx)****: These codes tell you that something went wrong on the server side (e.g., 500 Internal Server Error means the server had an issue processing the request).
+
+# DoS (Denial of Service)
+
+## Definition
+
+A **DoS attack** is a cyberattack in which **one computer** overwhelms a server or network with excessive requests, making it unavailable to legitimate users.
+
+## Goal
+
+Prevent legitimate users from accessing the service.
+
+---
+
+## Common Types
+
+- Ping of Death
+- SYN Flood
+- Buffer Overflow
+
+## Effects
+
+- Website unavailable
+- Slow network
+- Connection failures
+
+## Prevention
+
+- Firewalls
+- IDS/IPS
+- CDN
+- Rate limiting
+
+# DDoS (Distributed Denial of Service)
+
+## Definition
+
+A **DDoS attack** is similar to a DoS attack, but it is launched from **many compromised devices (a botnet)** instead of a single machine.
+Because requests come from many locations, DDoS attacks are much harder to stop and trace.
+
+## Types of DDoS Attacks
+
+- **Volumetric attacks:** Flood bandwidth with massive traffic.
+- **Protocol attacks:** Exploit transport/network protocols (e.g., SYN flood).
+- **Application-layer attacks (Layer 7):** Overwhelm web applications with HTTP requests.
+- **Fragmentation attacks:** Send malformed fragmented packets that cannot be reassembled.
+
 
 
 
