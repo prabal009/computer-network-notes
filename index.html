@@ -9985,7 +9985,7 @@ New distance
 Since
 7<10
 
-Update
+update
 Distance(B)=7
 This process is called Relaxation.
 Why Repeat V−1 Times?
@@ -10072,6 +10072,29 @@ A→C→B
 5 + (-10) = -5
 Actual shortest distance is -5, but Dijkstra has already finalized 4 and will not update it. Hence, it gives the wrong answer.
 Bellman-Ford does not make this assumption, so it correctly handles negative edges.  67
+
+Static Routing
+**Static Routing** is a routing method in which the network administrator manually enters the routes into the router's routing table.
+It is called **Non-Adaptive Routing** because the routes **do not change automatically**.
+
+### How it works
+
+Suppose there are three routers:
+
+```
+PC1 ---- R1 ---- R2 ---- R3 ---- PC2
+```
+
+The administrator manually tells:
+
+- R1 → To reach PC2, send packets to R2.
+- R2 → Send packets to R3.
+- R3 → Deliver to PC2.
+
+Even if one cable breaks, routers **cannot find another path automatically**.
+
+
+
 
 
 
