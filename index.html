@@ -10613,6 +10613,5343 @@ Because requests come from many locations, DDoS attacks are much harder to stop 
 - **Application-layer attacks (Layer 7):** Overwhelm web applications with HTTP requests.
 - **Fragmentation attacks:** Send malformed fragmented packets that cannot be reassembled.
 
+## Characteristics
+
+- Manual configuration
+- No routing protocols used
+- No routing algorithms
+- Routes remain fixed until changed manually
+
+## Advantages
+
+- Very secure because no routing updates are exchanged.
+- No bandwidth is wasted exchanging routing information.
+- Low CPU and memory usage.
+- Cheaper routers can be used.
+
+## Disadvantages
+
+- Difficult to manage large networks.
+- Every new route must be configured manually.
+- No automatic recovery if a link fails.
+
+# Dynamic Routing
+
+Dynamic Routing automatically learns and updates routes whenever the network changes.
+It is called **Adaptive Routing** because it adapts to topology changes.
+Routers communicate using **routing protocols**.
+
+Example protocols:
+- RIP
+- OSPF
+- EIGRP
+- IS-IS
+
+## Advantages
+
+- Automatic updates
+- Best path selection
+- Supports large networks
+- Automatic recovery after failures
+
+## Disadvantages
+
+- More CPU usage
+- More memory usage
+- Uses bandwidth for routing updates
+- More complex configuration
+
+# Unicast Communication
+
+## Definition
+
+**Unicast** means
+> One sender → One receiver
+
+```
+Computer A  --------->  Computer B
+```
+
+Only one destination receives the data.
+
+---
+
+### Examples
+
+- HTTP
+- HTTPS
+- FTP
+- SSH
+- TCP
+
+---
+
+# Types of Routing Protocols
+
+There are three major routing protocols.
+
+## 1. Distance Vector Routing
+
+Each router only knows:
+- Its neighbors
+- Distance to destination
+
+Examples:
+
+- RIP
+
+---
+
+## 2. Link State Routing
+
+Each router knows
+
+**The complete network topology**
+
+Example:
+
+- OSPF
+- IS-IS
+
+---
+
+## 3. Path Vector Routing
+
+Each router stores the **entire path** to reach a destination.
+
+Example:
+
+- BGP
+
+---
+
+# 4. Link State Routing (LSR)
+
+## Definition
+
+Every router builds a complete map of the network.
+
+Instead of only knowing neighbors, every router knows:
+
+- All routers
+- All links
+- Cost of every link
+
+Then it calculates the shortest path using **Dijkstra's Algorithm**.
+
+## Working
+
+### Step 1
+
+Each router discovers its neighbors.
+
+↓
+
+### Step 2
+
+Creates a **Link State Packet (LSP)**
+
+Contains:
+
+- Router ID
+- Neighbor information
+- Link cost
+
+↓
+
+### Step 3
+
+Flooding
+
+Every router sends its LSP to all routers.
+
+Now every router has the same network map.
+
+↓
+
+### Step 4
+
+Stores everything inside the
+
+**Link State Database (LSDB)**
+
+↓
+
+### Step 5
+
+Runs
+
+**Shortest Path First (SPF)**
+
+using
+
+**Dijkstra Algorithm**
+
+↓
+
+### Step 6
+
+Builds the routing table.
+
+# Components of Link State Routing
+
+### Link State Packet (LSP)
+
+Contains
+
+- Router identity
+- Link cost
+- Connected neighbors
+
+---
+
+### Link State Database (LSDB)
+
+Database containing information from every router.
+
+---
+
+### Dijkstra Algorithm
+
+Calculates the shortest path.
+
+---
+
+### Routing Table
+
+Stores the best routes.
+
+---
+
+# Characteristics
+
+- Large memory required
+- More CPU usage
+- Fast convergence
+- Very reliable
+- Authentication supported
+
+# Link State Protocols
+
+## OSPF
+
+Open Shortest Path First
+
+Most popular link-state protocol.
+
+---
+
+## IS-IS
+
+Intermediate System to Intermediate System
+
+Mostly used by Internet Service Providers.
+
+---
+
+# 5. OSPF (Open Shortest Path First)
+
+## Definition
+
+OSPF is a **Link-State Interior Gateway Protocol (IGP)** used within a single Autonomous System (AS).
+
+It uses **Dijkstra's Shortest Path First (SPF)** algorithm to find the best route.
+
+---
+
+## Features
+
+- Link-state protocol
+- Protocol number **89**
+- Administrative Distance = **110**
+- Classless (supports VLSM and CIDR)
+- Fast convergence
+- Triggered updates (updates only when changes occur)
+
+### Router Types
+
+Internal Router → One area
+
+ABR → Connects multiple areas
+
+ASBR → Connects OSPF to another routing protocol
+
+DR → Reduces unnecessary communication on shared networks
+
+BDR → Backup of DR
+
+## OSPF Message Types
+
+1. Hello → Discover neighbors
+2. DBD → Exchange database summary
+3. LSR → Request missing information
+4. LSU → Send complete routing information
+5. LSAck → Acknowledge receipt
+
+## OSPF Network Types
+
+OSPF Network Types
+Point-to-Point: Direct link between two routers.
+Broadcast Multi-Access: (e.g., Ethernet) DR/BDR election required.
+Point-to-Multipoint: Treats each connection as point-to-point.
+NBMA (Non-Broadcast Multi-Access): (e.g., Frame Relay) Manual neighbor configuration needed..
+
+## OSPF Timers
+
+- Hello Timer: Interval between Hello packets (default: 10 sec).
+- Dead Timer: Time to declare a neighbor down if Hellos are missing (default: 40 sec).
+
+## Advantages
+
+- Fast
+- Scalable
+- Loop-free
+- Supports IPv4 & IPv6
+- Supports load balancing
+
+## Disadvantages
+
+- Complex configuration
+- High CPU usage
+
+# TCP (Transmission Control Protocol)
+
+## Definition
+
+TCP is a **connection-oriented**, **reliable** transport-layer protocol.
+
+It ensures:
+
+- No data loss
+- Correct order
+- Error checking
+- Flow control
+
+## TCP Features
+
+- Reliable
+- Connection-oriented
+- Ordered delivery
+- Error detection
+- Retransmission
+
+# Three-Way Handshake (Connection Establishment)
+
+Before sending data:
+
+```
+Client              Server
+
+SYN  ------------>
+
+      <----------- SYN + ACK
+
+ACK  ------------>
+```
+
+Connection established.
+
+---
+
+# Four-Way Handshake (Connection Termination)
+
+```
+FIN -------->
+
+     <------- ACK
+
+     <------- FIN
+
+ACK -------->
+```
+
+Connection closed.
+
+---
+
+# TCP Working
+
+1. Segmenting → Breaks data into segments.
+2. Routing via IP → IP delivers the segments.
+3. Reassembly → Receiver arranges them in order.
+4. ACK → Receiver acknowledges received data.
+5. Retransmission → Lost segments are resent.
+6. Flow & Error Control → Prevents overload and detects corruption.
+
+## Applications
+
+- HTTP/HTTPS
+- Email (SMTP, IMAP, POP3)
+- FTP/SFTP
+
+# HTTP (HyperText Transfer Protocol)
+
+## Definition
+
+HTTP is an **application-layer protocol** that allows communication between a web browser and a web server.
+
+---
+
+## Working
+
+```
+Browser
+
+↓
+
+DNS Lookup
+
+↓
+
+HTTP Request
+
+↓
+
+Server
+
+↓
+
+HTTP Response
+
+↓
+
+Browser displays webpage
+```
+
+---
+
+# HTTP Request Contains
+
+- URL
+- Method (GET, POST, PUT, DELETE)
+- Headers
+
+# HTTP Versions
+
+## HTTP/1.1
+
+- Persistent connections
+- Better than HTTP/1.0
+
+---
+
+## HTTP/2
+
+- Multiplexing
+- Header Compression
+- Server Push
+
+---
+
+## HTTP/3
+
+Uses **QUIC** instead of TCP.
+
+Advantages:
+
+- Faster connection setup
+- Better performance on unstable networks
+- Improved security
+
+# Cookies
+
+Cookies are **small pieces of data** stored in the browser by websites.
+
+Uses:
+
+- Login sessions
+- User preferences
+- Shopping carts
+
+---
+
+# Advantages
+
+- Simple
+- Low memory usage
+- Widely supported
+- Fast with persistent connections
+
+---
+
+# Disadvantages
+
+- No encryption (HTTP). Use **HTTPS** for security.
+- Less secure
+- Not ideal for sensitive data
+
+## What is HTTP Status Code?
+
+****HTTP Status codes**** are three-digit numbers that servers use to tell your browser what happened with the request you sent. There are different types of status codes:
+
+1. [Informational](https://www.geeksforgeeks.org/computer-networks/http-status-codes-informational-responses/) ****(1xx)****: These codes just give you information (e.g., 100 Continue means the request is still being processed).
+2. [Successful](https://www.geeksforgeeks.org/computer-networks/http-status-codes-successful-responses/)****(2xx)****: These codes tell you everything went fine (e.g., 200 OK means the request was successful).
+3. [Redirection](https://www.geeksforgeeks.org/computer-networks/http-status-codes-redirection-responses/)****(3xx)****: These codes tell the browser to take additional action (e.g., 301 Moved Permanently means the requested page has moved to a new address).
+4. [Client Error](https://www.geeksforgeeks.org/html/http-status-codes-client-error-responses/) ****(4xx)****: These codes indicate that there was a problem with your request (e.g., 404 Not Found means the page doesn’t exist).
+5. [Server Error](https://www.geeksforgeeks.org/computer-networks/http-status-codes-server-error-responses/) ****(5xx)****: These codes tell you that something went wrong on the server side (e.g., 500 Internal Server Error means the server had an issue processing the request).
+
+# DoS (Denial of Service)
+
+## Definition
+
+A **DoS attack** is a cyberattack in which **one computer** overwhelms a server or network with excessive requests, making it unavailable to legitimate users.
+
+## Goal
+
+Prevent legitimate users from accessing the service.
+
+---
+
+## Common Types
+
+- Ping of Death
+- SYN Flood
+- Buffer Overflow
+
+## Effects
+
+- Website unavailable
+- Slow network
+- Connection failures
+
+## Prevention
+
+- Firewalls
+- IDS/IPS
+- CDN
+- Rate limiting
+
+# DDoS (Distributed Denial of Service)
+
+## Definition
+
+A **DDoS attack** is similar to a DoS attack, but it is launched from **many compromised devices (a botnet)** instead of a single machine.
+Because requests come from many locations, DDoS attacks are much harder to stop and trace.
+
+## Types of DDoS Attacks
+
+- **Volumetric attacks:** Flood bandwidth with massive traffic.
+- **Protocol attacks:** Exploit transport/network protocols (e.g., SYN flood).
+- **Application-layer attacks (Layer 7):** Overwhelm web applications with HTTP requests.
+- **Fragmentation attacks:** Send malformed fragmented packets that cannot be reassembled.## Characteristics
+
+- Manual configuration
+- No routing protocols used
+- No routing algorithms
+- Routes remain fixed until changed manually
+
+## Advantages
+
+- Very secure because no routing updates are exchanged.
+- No bandwidth is wasted exchanging routing information.
+- Low CPU and memory usage.
+- Cheaper routers can be used.
+
+## Disadvantages
+
+- Difficult to manage large networks.
+- Every new route must be configured manually.
+- No automatic recovery if a link fails.
+
+# Dynamic Routing
+
+Dynamic Routing automatically learns and updates routes whenever the network changes.
+It is called **Adaptive Routing** because it adapts to topology changes.
+Routers communicate using **routing protocols**.
+
+Example protocols:
+- RIP
+- OSPF
+- EIGRP
+- IS-IS
+
+## Advantages
+
+- Automatic updates
+- Best path selection
+- Supports large networks
+- Automatic recovery after failures
+
+## Disadvantages
+
+- More CPU usage
+- More memory usage
+- Uses bandwidth for routing updates
+- More complex configuration
+
+# Unicast Communication
+
+## Definition
+
+**Unicast** means
+> One sender → One receiver
+
+```
+Computer A  --------->  Computer B
+```
+
+Only one destination receives the data.
+
+---
+
+### Examples
+
+- HTTP
+- HTTPS
+- FTP
+- SSH
+- TCP
+
+---
+
+# Types of Routing Protocols
+
+There are three major routing protocols.
+
+## 1. Distance Vector Routing
+
+Each router only knows:
+- Its neighbors
+- Distance to destination
+
+Examples:
+
+- RIP
+
+---
+
+## 2. Link State Routing
+
+Each router knows
+
+**The complete network topology**
+
+Example:
+
+- OSPF
+- IS-IS
+
+---
+
+## 3. Path Vector Routing
+
+Each router stores the **entire path** to reach a destination.
+
+Example:
+
+- BGP
+
+---
+
+# 4. Link State Routing (LSR)
+
+## Definition
+
+Every router builds a complete map of the network.
+
+Instead of only knowing neighbors, every router knows:
+
+- All routers
+- All links
+- Cost of every link
+
+Then it calculates the shortest path using **Dijkstra's Algorithm**.
+
+## Working
+
+### Step 1
+
+Each router discovers its neighbors.
+
+↓
+
+### Step 2
+
+Creates a **Link State Packet (LSP)**
+
+Contains:
+
+- Router ID
+- Neighbor information
+- Link cost
+
+↓
+
+### Step 3
+
+Flooding
+
+Every router sends its LSP to all routers.
+
+Now every router has the same network map.
+
+↓
+
+### Step 4
+
+Stores everything inside the
+
+**Link State Database (LSDB)**
+
+↓
+
+### Step 5
+
+Runs
+
+**Shortest Path First (SPF)**
+
+using
+
+**Dijkstra Algorithm**
+
+↓
+
+### Step 6
+
+Builds the routing table.
+
+# Components of Link State Routing
+
+### Link State Packet (LSP)
+
+Contains
+
+- Router identity
+- Link cost
+- Connected neighbors
+
+---
+
+### Link State Database (LSDB)
+
+Database containing information from every router.
+
+---
+
+### Dijkstra Algorithm
+
+Calculates the shortest path.
+
+---
+
+### Routing Table
+
+Stores the best routes.
+
+---
+
+# Characteristics
+
+- Large memory required
+- More CPU usage
+- Fast convergence
+- Very reliable
+- Authentication supported
+
+# Link State Protocols
+
+## OSPF
+
+Open Shortest Path First
+
+Most popular link-state protocol.
+
+---
+
+## IS-IS
+
+Intermediate System to Intermediate System
+
+Mostly used by Internet Service Providers.
+
+---
+
+# 5. OSPF (Open Shortest Path First)
+
+## Definition
+
+OSPF is a **Link-State Interior Gateway Protocol (IGP)** used within a single Autonomous System (AS).
+
+It uses **Dijkstra's Shortest Path First (SPF)** algorithm to find the best route.
+
+---
+
+## Features
+
+- Link-state protocol
+- Protocol number **89**
+- Administrative Distance = **110**
+- Classless (supports VLSM and CIDR)
+- Fast convergence
+- Triggered updates (updates only when changes occur)
+
+### Router Types
+
+Internal Router → One area
+
+ABR → Connects multiple areas
+
+ASBR → Connects OSPF to another routing protocol
+
+DR → Reduces unnecessary communication on shared networks
+
+BDR → Backup of DR
+
+## OSPF Message Types
+
+1. Hello → Discover neighbors
+2. DBD → Exchange database summary
+3. LSR → Request missing information
+4. LSU → Send complete routing information
+5. LSAck → Acknowledge receipt
+
+## OSPF Network Types
+
+OSPF Network Types
+Point-to-Point: Direct link between two routers.
+Broadcast Multi-Access: (e.g., Ethernet) DR/BDR election required.
+Point-to-Multipoint: Treats each connection as point-to-point.
+NBMA (Non-Broadcast Multi-Access): (e.g., Frame Relay) Manual neighbor configuration needed..
+
+## OSPF Timers
+
+- Hello Timer: Interval between Hello packets (default: 10 sec).
+- Dead Timer: Time to declare a neighbor down if Hellos are missing (default: 40 sec).
+
+## Advantages
+
+- Fast
+- Scalable
+- Loop-free
+- Supports IPv4 & IPv6
+- Supports load balancing
+
+## Disadvantages
+
+- Complex configuration
+- High CPU usage
+
+# TCP (Transmission Control Protocol)
+
+## Definition
+
+TCP is a **connection-oriented**, **reliable** transport-layer protocol.
+
+It ensures:
+
+- No data loss
+- Correct order
+- Error checking
+- Flow control
+
+## TCP Features
+
+- Reliable
+- Connection-oriented
+- Ordered delivery
+- Error detection
+- Retransmission
+
+# Three-Way Handshake (Connection Establishment)
+
+Before sending data:
+
+```
+Client              Server
+
+SYN  ------------>
+
+      <----------- SYN + ACK
+
+ACK  ------------>
+```
+
+Connection established.
+
+---
+
+# Four-Way Handshake (Connection Termination)
+
+```
+FIN -------->
+
+     <------- ACK
+
+     <------- FIN
+
+ACK -------->
+```
+
+Connection closed.
+
+---
+
+# TCP Working
+
+1. Segmenting → Breaks data into segments.
+2. Routing via IP → IP delivers the segments.
+3. Reassembly → Receiver arranges them in order.
+4. ACK → Receiver acknowledges received data.
+5. Retransmission → Lost segments are resent.
+6. Flow & Error Control → Prevents overload and detects corruption.
+
+## Applications
+
+- HTTP/HTTPS
+- Email (SMTP, IMAP, POP3)
+- FTP/SFTP
+
+# HTTP (HyperText Transfer Protocol)
+
+## Definition
+
+HTTP is an **application-layer protocol** that allows communication between a web browser and a web server.
+
+---
+
+## Working
+
+```
+Browser
+
+↓
+
+DNS Lookup
+
+↓
+
+HTTP Request
+
+↓
+
+Server
+
+↓
+
+HTTP Response
+
+↓
+
+Browser displays webpage
+```
+
+---
+
+# HTTP Request Contains
+
+- URL
+- Method (GET, POST, PUT, DELETE)
+- Headers
+
+# HTTP Versions
+
+## HTTP/1.1
+
+- Persistent connections
+- Better than HTTP/1.0
+
+---
+
+## HTTP/2
+
+- Multiplexing
+- Header Compression
+- Server Push
+
+---
+
+## HTTP/3
+
+Uses **QUIC** instead of TCP.
+
+Advantages:
+
+- Faster connection setup
+- Better performance on unstable networks
+- Improved security
+
+# Cookies
+
+Cookies are **small pieces of data** stored in the browser by websites.
+
+Uses:
+
+- Login sessions
+- User preferences
+- Shopping carts
+
+---
+
+# Advantages
+
+- Simple
+- Low memory usage
+- Widely supported
+- Fast with persistent connections
+
+---
+
+# Disadvantages
+
+- No encryption (HTTP). Use **HTTPS** for security.
+- Less secure
+- Not ideal for sensitive data
+
+## What is HTTP Status Code?
+
+****HTTP Status codes**** are three-digit numbers that servers use to tell your browser what happened with the request you sent. There are different types of status codes:
+
+1. [Informational](https://www.geeksforgeeks.org/computer-networks/http-status-codes-informational-responses/) ****(1xx)****: These codes just give you information (e.g., 100 Continue means the request is still being processed).
+2. [Successful](https://www.geeksforgeeks.org/computer-networks/http-status-codes-successful-responses/)****(2xx)****: These codes tell you everything went fine (e.g., 200 OK means the request was successful).
+3. [Redirection](https://www.geeksforgeeks.org/computer-networks/http-status-codes-redirection-responses/)****(3xx)****: These codes tell the browser to take additional action (e.g., 301 Moved Permanently means the requested page has moved to a new address).
+4. [Client Error](https://www.geeksforgeeks.org/html/http-status-codes-client-error-responses/) ****(4xx)****: These codes indicate that there was a problem with your request (e.g., 404 Not Found means the page doesn’t exist).
+5. [Server Error](https://www.geeksforgeeks.org/computer-networks/http-status-codes-server-error-responses/) ****(5xx)****: These codes tell you that something went wrong on the server side (e.g., 500 Internal Server Error means the server had an issue processing the request).
+
+# DoS (Denial of Service)
+
+## Definition
+
+A **DoS attack** is a cyberattack in which **one computer** overwhelms a server or network with excessive requests, making it unavailable to legitimate users.
+
+## Goal
+
+Prevent legitimate users from accessing the service.
+
+---
+
+## Common Types
+
+- Ping of Death
+- SYN Flood
+- Buffer Overflow
+
+## Effects
+
+- Website unavailable
+- Slow network
+- Connection failures
+
+## Prevention
+
+- Firewalls
+- IDS/IPS
+- CDN
+- Rate limiting
+
+# DDoS (Distributed Denial of Service)
+
+## Definition
+
+A **DDoS attack** is similar to a DoS attack, but it is launched from **many compromised devices (a botnet)** instead of a single machine.
+Because requests come from many locations, DDoS attacks are much harder to stop and trace.
+
+## Types of DDoS Attacks
+
+- **Volumetric attacks:** Flood bandwidth with massive traffic.
+- **Protocol attacks:** Exploit transport/network protocols (e.g., SYN flood).
+- **Application-layer attacks (Layer 7):** Overwhelm web applications with HTTP requests.
+- **Fragmentation attacks:** Send malformed fragmented packets that cannot be reassembled.
+
+# Why is Firewall Needed?
+
+Suppose your company has:
+
+- Employee data
+- Customer information
+- Bank records
+
+If there is no firewall:
+
+```
+Internet
+      |
+ Hackers
+      |
+ Company Computers
+```
+
+Hackers can directly attack the computers.
+
+With a firewall:
+
+```
+Internet
+      |
+ Hackers
+      |
+  Firewall
+      |
+ Company Computers
+```
+
+The firewall checks every request before allowing it.
+
+---
+
+# Firewall Actions
+
+A firewall can take three actions.
+
+## 1. Accept
+
+Packet is allowed.
+
+```
+Packet ---> Firewall ---> Allowed
+```
+
+Example:
+
+Employee opening Google.
+
+---
+
+## 2. Reject
+
+Packet is blocked.
+
+The firewall also informs the sender.
+
+```
+Packet ---> Firewall ---> Rejected
+```
+
+The sender knows access was denied.
+
+---
+
+## 3. Drop
+
+Packet is silently discarded.
+
+```
+Packet ---> Firewall ---> X
+```
+
+No reply is sent.
+
+Hackers cannot even know whether the system exists.
+
+This is considered more secure.
+
+---
+
+# Importance of Firewall
+
+### 1. Prevent Unauthorized Access
+
+Only authorized users can enter the network.
+
+Example:
+
+Only company employees can access internal servers.
+
+---
+
+### 2. Block Malware
+
+Firewall blocks
+
+- viruses
+- worms
+- trojans
+- phishing traffic
+
+before they reach the computer.
+
+---
+
+### 3. Protect Sensitive Data
+
+Prevents
+
+- customer information
+- passwords
+- banking details
+
+from being stolen.
+
+---
+
+### 4. Control Internet Usage
+
+Organizations can block
+
+- Facebook
+- YouTube
+- Gaming websites
+
+during office hours.
+
+
+### 5. Detect Insider Threats
+
+Even employees inside the company can misuse data.
+
+Firewall can detect
+
+- unusual uploads
+- suspicious downloads
+- unauthorized connections
+
+---
+
+# Working of Firewall
+
+### Step 1
+
+Every packet enters the firewall.
+
+```
+Internet
+
+↓
+
+Firewall
+
+↓
+
+Computer
+```
+
+---
+
+### Step 2
+
+Firewall checks rules.
+
+Example rules:
+
+Allow:
+
+- HTTP
+- HTTPS
+- DNS
+
+Block:
+
+- Telnet
+- Unknown ports
+
+---
+
+### Step 3
+
+Decision
+
+If safe
+
+↓
+
+Allow
+
+If dangerous
+
+↓
+
+Reject or Drop
+
+---
+
+### Step 4
+
+Log Generation
+
+Firewall stores logs like
+
+```
+Time
+
+Source IP
+
+Destination IP
+
+Port
+
+Allowed/Blocked
+```
+
+Network administrators use these logs to investigate attacks.
+
+---
+
+### Step 5
+
+Default Policy
+Sometimes no rule matches.
+Firewall then uses a default action.
+Possible default actions:
+Accept
+Reject
+Drop
+Best practice:
+**Drop** or **Reject**
+Never Accept by default.
+
+# Types of Firewalls
+
+## 1. Packet Filtering Firewall
+
+Checks only
+
+- Source IP
+- Destination IP
+- Port Number
+
+## 2. Stateful Inspection Firewall
+
+Keeps track of existing connections.
+
+Example:
+
+If you requested a webpage,
+
+its reply is automatically allowed.
+
+Much more secure.
+
+---
+
+## 3. Proxy Firewall
+
+Acts as an intermediary.
+
+Instead of
+
+```
+You → Website
+```
+
+communication becomes
+
+```
+You
+
+↓
+
+Proxy Firewall
+
+↓
+
+Website
+```
+
+The website never directly communicates with your computer.
+
+---
+
+## 4. Circuit-Level Gateway
+
+Checks whether TCP connections are genuine.
+
+Doesn't inspect actual data.
+
+---
+
+## 5. Web Application Firewall (WAF)
+
+Protects websites.
+
+Blocks attacks like
+
+- SQL Injection
+- Cross Site Scripting (XSS)
+- HTTP Flood
+
+---
+
+## 6. Next Generation Firewall (NGFW)
+
+Most advanced firewall.
+
+Includes
+
+- Antivirus
+- Intrusion Prevention
+- Deep Packet Inspection
+- Malware Detection
+- Application Control
+
+---
+
+# Firewall Types by Installation
+
+## Network Firewall
+
+Protects the entire network.
+
+```
+Internet
+
+↓
+
+Firewall
+
+↓
+
+All Computers
+```
+
+---
+
+## Host-Based Firewall
+
+Installed on a single computer.
+
+Example:
+
+Windows Defender Firewall.
+
+# How DDoS Works
+
+Step 1
+
+Attacker infects thousands of computers.
+
+↓
+
+Step 2
+
+These become bots.
+
+↓
+
+Step 3
+
+Attacker sends command.
+
+↓
+
+All bots send requests together.
+
+↓
+
+Target server becomes overloaded.
+
+↓
+
+Legitimate users cannot access it.
+
+# Botnet
+
+Those infected computers together are called a **Botnet**.
+
+# Common DDoS Attacks
+
+## SYN Flood
+
+Abuses TCP handshake.
+
+Attacker sends
+
+```
+SYN
+
+SYN
+
+SYN
+
+SYN
+```
+
+but never completes the handshake.
+
+The server waits for replies until its resources are exhausted.
+
+---
+
+## HTTP Flood
+
+Thousands or millions of HTTP GET/POST requests are sent to a web server.
+
+Because they look like legitimate requests, they are difficult to distinguish from real users.
+
+---
+
+## DNS Amplification
+
+The attacker sends a small DNS query with the victim's spoofed IP address.
+
+The DNS server replies with a much larger response to the victim.
+
+A tiny request generates a huge amount of traffic toward the target.
+
+---
+
+# DDoS Mitigation
+
+- Firewalls
+- Web Application Firewall (WAF)
+- CDN
+- Rate Limiting
+- AI Detection
+- Traffic Monitoring
+
+# TCP Three-Way Handshake
+
+## Why do we need it?
+
+TCP is reliable.
+
+Before data transfer,
+
+both computers must agree that they are ready.
+
+This is called the Three-Way Handshake.
+
+## Step 1
+
+Client sends
+
+```
+SYN
+Sequence =1000
+```
+
+Meaning:
+
+"I want to communicate."
+
+---
+
+## Step 2
+
+Server replies
+
+```
+SYN + ACK
+
+Seq =5000
+
+Ack =1001
+```
+
+Meaning
+
+"I received your request.
+
+Here is my sequence number."
+
+---
+
+## Step 3
+
+Client replies
+
+```
+ACK
+
+Seq =1001
+
+Ack =5001
+```
+
+Meaning
+
+"I received your sequence number."
+
+Connection established.
+
+# HTTP Flood Attack
+
+## Definition
+
+An HTTP Flood Attack is a Layer 7 DDoS attack where attackers send huge numbers of valid-looking HTTP GET or POST requests to exhaust a web server's resources.
+
+The requests appear legitimate, making them difficult to detect.
+
+---
+
+# How it Works
+
+Thousands of bots repeatedly send requests such as:
+
+```
+GET /index.html
+
+GET /login
+
+GET /images/logo.png
+```
+
+The server processes each request until CPU, memory, or application resources are exhausted.
+
+Legitimate users then experience slow responses or complete downtime.
+
+---
+
+# Types
+
+## HTTP GET Flood
+
+Repeated requests for pages, images, videos, PDFs, etc.
+
+**Impact:** High bandwidth usage and server overload.
+
+---
+
+## HTTP POST Flood
+
+Repeated submission of forms or API requests.
+
+**Impact:** High CPU and database usage because each POST often triggers processing and database operations.
+
+---
+
+## Slowloris
+
+The attacker opens many HTTP connections but sends requests very slowly, never completing them.
+
+The server keeps waiting, tying up connection slots.
+
+---
+
+## Recursive HTTP Flood
+
+The attacker crawls many URLs (e.g., `/home` → `/products` → `/contact`) to force continuous page generation and database work.
+
+---
+
+## Randomized URL Flood
+
+The attacker changes URL parameters on every request, such as:
+
+```
+/index.php?id=1
+
+/index.php?id=2
+
+/index.php?id=3
+```
+
+This bypasses caching because every URL appears unique.
+
+---
+
+# Prevention
+
+- Rate Limiting
+- CAPTCHA
+- Web Application Firewall (WAF)
+- CDN
+- Load Balancing
+
+# Botnet
+
+## Definition
+
+A **Botnet** is a collection of malware-infected computers or devices that are secretly controlled by an attacker (called the **Botmaster**) through a **Command and Control (C&C)** system.
+
+Each infected device is called a **Bot** or **Zombie**.
+
+---
+
+# How Botnets Work
+
+### Step 1: Find Vulnerable Systems
+
+The attacker looks for devices with:
+
+- Outdated software
+- Weak/default passwords
+- Poor security settings
+- Users who click unsafe links or download untrusted software
+
+---
+
+### Step 2: Malware Infection
+
+The attacker infects devices using:
+
+- Phishing emails
+- Fake software updates
+- Cracked software
+- Malicious websites (drive-by downloads)
+
+The malware installs silently.
+
+---
+
+### Step 3: Connect to the C&C Server
+
+The infected device contacts the **Command and Control (C&C)** server.
+
+It sends information such as:
+
+- IP address
+- Operating system
+- Device details
+
+Then it waits for commands.
+
+---
+
+### Step 4: Communication
+
+Botnets commonly communicate using:
+
+- **IRC** (older botnets)
+- **HTTP/HTTPS** (to blend in with normal web traffic)
+- **Peer-to-Peer (P2P)** (bots communicate directly without a central server)
+
+---
+
+### Step 5: Execute Commands
+
+The botmaster instructs the bots to perform tasks such as:
+
+- Sending spam emails
+- Launching DDoS attacks
+- Redirecting users to phishing websites
+- Stealing data
+
+---
+
+### Step 6: Expansion
+
+The botnet spreads by infecting more vulnerable devices.
+Each new infected device becomes another bot, increasing the botnet's size and power.
+
+## Types of Botnets
+
+Botnets can be classified based on the communication channel used between the bots and the Command and Control (C&C) server.
+
+## Types of Botnets
+
+Botnets can be classified based on the communication channel used between the bots and the Command and Control (C&C) server.
+
+# 1. IRC Botnet
+
+This botnet uses Internet Relay Chat (IRC) servers as the Command and Control (C&C) channel through which the botmaster sends instructions to infected devices.
+
+- Uses centralized communication structure.
+- Bots connect to an IRC server to receive instructions.
+- Commands are transmitted as normal chat messages.
+
+### 2. Peer-to-Peer (P2P) Botnet
+
+This operates using a decentralized network structure where each infected device communicates directly with other bots instead of relying on a central server.
+
+- Does not depend on a central Command and Control server.
+- Each bot acts as both client and server.
+- Bots share commands with each other across the network.
+
+### 3. HTTP/HTTPS Botnet
+
+Bots periodically connect to specific URLs to receive instructions, making the traffic appear similar to normal web browsing activity.
+
+- Uses web protocols for communication.
+- Bots connect to web servers at regular intervals.
+- Communication blends with normal internet traffic.
+
+# Botnet Attacks
+
+Botnets are commonly used for:
+
+- **Phishing:** Sending fake emails or messages to steal credentials
+- **DDoS Attacks:** Flooding websites with traffic
+- **Spamming:** Sending large volumes of unwanted emails
+- **Data Theft:** Stealing passwords, financial data, or confidential information
+
+# Botnet Prevention
+
+- Keep operating systems and software updated
+- Use strong, unique passwords
+- Enable Two-Factor Authentication (2FA)
+- Avoid suspicious emails, links, and attachments
+- Install trusted antivirus or endpoint security software
+
+# Introduction to Phishing
+
+## What is Phishing?
+
+**Phishing** is a cyberattack in which an attacker **pretends to be a trusted person or organization** to trick people into revealing confidential information.
+## Example
+
+Suppose you receive this email:
+
+> Dear Customer,
+> 
+> Your SBI account has been blocked.
+> 
+> Click here immediately to verify your account.
+
+You click the link.
+
+The website looks exactly like SBI.
+
+You enter
+
+- Username
+- Password
+- OTP
+
+Instead of going to SBI,
+
+the information goes directly to the hacker.
+
+This is **Phishing**.
+
+# What Information Do Attackers Steal?
+
+They try to steal:
+
+- Usernames
+- Passwords
+- Bank account details
+- ATM PIN
+- Credit card numbers
+- Debit card numbers
+
+# Methods Used to Carry Out Phishing
+
+There are many ways hackers trick users.
+
+---
+
+# 1. Unknown Attachments
+
+Example
+
+You receive
+
+```
+Salary_Report.pdf.exe
+```
+
+It looks like a PDF.
+Actually,
+it's malware.
+When opened,
+it installs malicious software.
+Possible results:
+
+- Virus installation
+- Keylogger
+- Password theft
+- Ransomware
+
+---
+
+# 2. Free Public Wi-Fi
+
+Example
+
+Airport Wi-Fi
+Coffee shop Wi-Fi
+Railway station Wi-Fi
+These networks are often unsecured.
+Attackers connected to the same Wi-Fi may perform:
+
+- Packet Sniffing
+- Man-in-the-Middle (MITM) attacks
+- Session Hijacking
+
+Never enter banking passwords or sensitive information on public Wi-Fi unless you're using a trusted VPN.
+
+---
+
+# 3. Social Media
+
+Example
+Someone sends you a friend request.
+They chat with you for weeks.
+Then they ask
+Can you send me your OTP?
+Since you trust them,
+you may share it.
+This is called **Social Engineering**.
+
+Attackers also use **OSINT (Open Source Intelligence)** by collecting publicly available information from your profiles to make attacks more convincing.
+
+---
+
+# 4. Fake Links
+
+Example
+Real website
+
+```
+https://amazon.in
+```
+
+Fake website
+
+```
+https://amaz0n-login.com
+```
+
+Notice:
+The letter **o** has been replaced with **0** (zero).
+Many people don't notice.
+
+# Types of Phishing
+
+---
+
+# 1. Email Phishing
+
+Most common type.
+
+Hackers send fake emails pretending to be:
+
+- Bank
+- Google
+- Microsoft
+- Amazon
+- PayPal
+
+Example
+
+> Your Gmail storage is full.
+
+> Click here.
+
+The link leads to a fake login page.
+
+---
+
+# 2. Spear Phishing
+
+Targeted phishing.
+Instead of attacking everyone,
+the hacker attacks one specific person.
+Before sending the email
+the hacker researches the victim.
+
+Example
+Employee:
+Rahul Sharma
+
+# 3. Whaling
+
+Whaling targets **high-ranking executives**.
+
+Examples
+
+- CEO
+- CFO
+- Director
+- Managing Director
+
+These attacks usually involve:
+
+- Money transfer
+- Confidential documents
+- Company secrets
+
+Example
+
+Fake email:
+
+> Transfer ₹50 lakh immediately.
+
+Appears to come from the CEO.
+
+---
+
+# 4. Smishing
+
+SMS + Phishing = Smishing
+
+Example
+
+> Your package is waiting.
+
+> Click here.
+
+The link steals passwords.
+
+---
+
+# 5. Vishing
+
+Voice + Phishing = Vishing
+
+Example
+
+Someone calls:
+
+> Hello,
+
+> I'm calling from SBI.
+
+> Please tell me the OTP.
+
+Banks **never** ask for OTP over the phone.
+
+---
+
+# 6. Clone Phishing
+
+The hacker copies a genuine email.
+
+Then changes:
+
+- Link
+- Attachment
+
+Everything else remains the same.
+
+# Preventing Phishing
+
+---
+
+## Download only from official sources
+
+Never install software from unknown websites.
+
+---
+
+## Never share confidential information
+
+Never share:
+
+- OTP
+
+## Check URLs
+
+Always check
+
+## Don't reply to suspicious emails
+
+Instead,
+
+contact the company using their official website or customer support.
+
+---
+
+## Use Anti-Phishing Software
+
+Examples
+
+- Malwarebytes
+- Kaspersky
+- Webroot
+- Microsoft Defender SmartScreen
+
+These tools warn you about known phishing sites.
+
+---
+
+## Keep Software Updated
+
+Updates fix security vulnerabilities.
+
+---
+
+## Enable Firewall
+
+Firewalls block many malicious connections before they reach your device.
+
+# How to Identify a Fake Website
+
+---
+
+## 1. Check HTTPS
+
+Secure website
+
+```
+https://
+```
+
+Not secure
+
+```
+http://
+```
+
+**Important:** HTTPS means the connection is encrypted, but **it does not guarantee the website itself is trustworthy**. Attackers can also obtain HTTPS certificates. So always verify the domain name as well.
+
+---
+
+## 2. Check Domain Name Carefully
+
+Example
+
+Real
+
+```
+facebook.com
+```
+
+Fake
+
+```
+faceb00k.com
+```
+
+## 3. Look at Website Design
+
+Fake websites often have:
+
+- Spelling mistakes
+- Low-quality images
+
+## 4. Anti-Phishing Tools
+
+Examples
+
+- PhishTank
+- Kaspersky
+- Malwarebytes
+- Webroot
+
+They maintain databases of phishing websites and block access.
+
+
+# Two-Factor Authentication (2FA)
+Normally,
+login requires
+Password
+Only one layer of security.
+If the hacker steals the password,
+they can log in.
+2FA adds another layer.
+
+Example
+
+Password
+
+OTP
+
+Now,
+
+even if the hacker knows the password,
+
+they still need the OTP.
+
+---
+
+# Why is 2FA Needed?
+
+Without 2FA
+
+```
+Password
+
+↓
+
+Access Granted
+```
+
+With 2FA
+
+```
+Password
+
+↓
+
+OTP
+
+↓
+
+Access Granted
+```
+
+The attacker must compromise **both** factors
+
+# Authentication Factors
+
+Authentication verifies your identity using one or more factors.
+
+---
+
+## 1. Knowledge Factor
+
+Something you know.
+
+Examples
+
+- Password
+- PIN
+- Security question
+
+---
+
+## 2. Possession Factor
+
+Something you have.
+
+Examples
+
+- Phone
+- OTP
+- Security key
+- Smart card
+
+---
+
+## 3. Biometric (Inherence) Factor
+
+Something you are.
+
+Examples
+
+- Fingerprint
+- Face ID
+- Iris scan
+- Voice recognition
+
+---
+
+## 4. Location Factor
+
+Where you are.
+
+Example
+
+Only allow login from:
+
+- Office network
+- India
+- Specific GPS location
+
+---
+
+## 5. Time Factor
+
+When you log in.
+
+Example
+
+Employees can log in only between **9 AM and 6 PM**.
+
+Outside that time, access is denied.
+
+---
+
+# How 2FA Works
+
+### Step 1
+
+Enter username and password.
+
+↓
+
+Server checks credentials.
+
+---
+
+### Step 2
+
+If correct,
+
+the server asks for a second factor.
+
+Example
+
+OTP.
+
+---
+
+### Step 3
+
+The server generates a temporary code.
+
+Example
+
+```
+483726
+```
+
+Usually valid for **30–60 seconds**.
+
+---
+
+### Step 4
+
+The user enters the OTP or uses a biometric or security key.
+
+---
+
+### Step 5
+
+The server verifies the second factor.
+
+If it matches,
+
+access is granted.
+
+---
+
+# Types of Second Factors
+
+---
+
+## 1. Possession-Based
+
+Examples
+
+- SMS OTP
+- Email OTP
+- Google Authenticator
+- Microsoft Authenticator
+- Authy
+- Hardware OTP token
+
+---
+
+## 2. Biometric-Based
+
+Examples
+
+- Fingerprint
+- Face ID
+- Retina scan
+- Iris scan
+
+---
+
+## 3. Physical Security Tokens
+
+Examples
+
+- YubiKey
+- Smart Cards
+- FIDO2 Security Keys
+
+These are among the strongest forms of 2FA because they require a physical device.
+
+---
+
+# Is 2FA Completely Secure?
+
+No.
+
+It is **much** more secure than passwords alone, but no system is perfect.
+
+Possible risks include:
+
+- **SIM-swapping attacks** against SMS-based OTPs
+- Theft of your phone or security key
+- Sophisticated phishing sites that capture both your password and OTP in real time
+
+For the highest security, security keys (like FIDO2/YubiKey) and passkeys are generally stronger than SMS OTPs.
+
+# Malware
+
+**Malware (Malicious Software)** = Any software intentionally created to **damage**, **steal data**, **spy**, or **gain unauthorized access** to a computer, mobile device, or network.
+
+Think of malware as a **criminal hiding inside software**.
+
+### Main Goals of Malware
+
+- Steal passwords, bank details, and personal information.
+- Damage or delete files.
+- Slow down or crash computers.
+- Spy on users.
+### Why is malware dangerous?
+
+- It keeps evolving.
+- New versions appear regularly.
+- Antivirus software cannot always detect new malware immediately.
+- It is used in ransomware attacks, cyber espionage, and Advanced Persistent Threats (APTs).
+# Types of Malware
+
+## 1. Botnet
+
+A **Botnet** is **not a single virus**.
+
+It is a **network of infected computers (bots or zombies)** controlled by a hacker without the owners' knowledge.
+
+### How it works
+
+```
+Attacker
+    │
+    ▼
+Command & Control Server
+    │
+ ┌──┴─────┬───────┐
+ ▼        ▼       ▼
+Bot 1    Bot 2   Bot 3
+(Infected Computers)
+```
+
+The hacker sends one command.
+
+All infected computers perform it together.
+
+### Uses
+
+- DDoS attacks
+- Sending spam emails
+- Cryptocurrency mining
+- Stealing information
+### Example
+
+**Mirai Botnet (2016)**
+
+It infected IoT devices like CCTV cameras and routers to launch a massive DDoS attack.
+
+---
+
+## 2. Spyware
+
+Spyware secretly watches everything you do.
+
+It records
+
+- Passwords
+- Banking information
+- Browsing history
+- Emails
+- Screenshots
+- Keystrokes
+
+without your permission.
+
+### Example
+
+**Pegasus**
+
+One of the world's most advanced spyware programs.
+
+It secretly monitored phones of journalists and government officials.
+
+---
+
+## 3. Adware
+
+Adware displays unwanted advertisements.
+
+Examples
+
+- Random pop-up ads
+- Browser ads
+- Automatic redirects
+
+Some adware also tracks browsing habits to show targeted advertisements.
+
+---
+
+## 4. Ransomware
+
+Ransomware encrypts your files and asks for money (ransom).
+
+### How it works
+
+```
+Computer
+      │
+      ▼
+Files Encrypted
+      │
+      ▼
+"Pay $500 to recover your files"
+```
+
+### Example
+
+**WannaCry (2017)**
+
+Affected over 200,000 computers worldwide.
+
+Hospitals, businesses, and government offices were badly affected.
+
+---
+
+## 5. Trojan Horse
+
+A Trojan pretends to be useful software.
+
+Example
+
+You download
+
+```
+Free Game
+```
+
+But it secretly installs malware.
+
+Unlike worms, Trojans **do not spread by themselves.**
+
+---
+
+## 6. Worm
+
+A worm spreads automatically.
+
+No user action is needed.
+
+### Example
+
+```
+Computer A
+      │
+      ▼
+Computer B
+      │
+      ▼
+Computer C
+```
+
+One infected computer infects many others through a network.
+
+### Example
+
+**Stuxnet**
+
+It attacked industrial systems and damaged Iranian nuclear centrifuges.
+
+---
+
+# Signs Your Device is Infected
+
+## 1. Slow Computer
+
+Programs take longer to open.
+
+Reason:  
+Malware uses CPU and RAM.
+
+---
+
+## 2. Browser Redirects
+
+You search Google.
+
+Instead of opening Google,
+
+it automatically opens another website.
+
+---
+
+## 3. Fake Virus Warnings
+
+You may see messages like
+
+```
+Your computer has 567 viruses!
+
+Click here to clean now!
+```
+
+These are usually fake.
+
+---
+
+## 4. Startup/Shutdown Problems
+
+Symptoms
+
+- Slow startup
+- Automatic restart
+- Windows doesn't boot properly
+
+---
+
+## 5. Too Many Pop-up Ads
+
+Even when no browser is open,
+
+ads continue appearing.
+
+Usually caused by adware.
+
+# Real World Malware Examples
+
+## WannaCry
+
+Type:  
+Ransomware
+
+Year:  
+2017
+
+Impact:  
+Encrypted files worldwide.
+
+---
+
+## Stuxnet
+
+Type:  
+Worm
+
+Target:  
+Iran's nuclear facilities
+
+Impact:  
+Destroyed centrifuges.
+
+---
+
+## Emotet
+
+Type:  
+Trojan
+
+Initially stole banking information.
+
+Later spread ransomware and other malware.
+
+---
+
+## Pegasus
+
+Type:  
+Spyware
+
+Used for surveillance of important people.
+
+---
+
+# Protection Against Malware
+
+## 1. Avoid Phishing Emails
+
+Never click unknown links.
+
+Verify sender first.
+
+---
+
+## 2. Visit Trusted Websites
+
+Avoid pirated software.
+
+Download software only from official websites.
+
+---
+
+## 3. Update Software
+
+Install security patches.
+
+They fix known vulnerabilities.
+
+---
+
+## 4. Scan USB Drives
+
+Unknown USB devices may contain malware.
+
+Always scan before opening.
+
+---
+
+## 5. Install Antivirus
+
+Examples
+
+- Malwarebytes
+- Bitdefender
+- Windows Defender
+
+---
+
+## 6. Avoid Pop-ups
+
+Never click
+
+```
+Congratulations!
+
+You won an iPhone.
+```
+
+Simply close them.
+
+---
+
+## 7. Install Only Necessary Apps
+
+Avoid downloading software from unknown sources.
+
+---
+
+# Steps to Remove Malware
+
+### Step 1
+
+Install Malwarebytes.
+
+---
+
+### Step 2
+
+Update malware database.
+
+---
+
+### Step 3
+
+Run Full Scan.
+
+---
+
+### Step 4
+
+Review detected threats.
+
+---
+
+### Step 5
+
+Move threats to Quarantine.
+
+Quarantine means
+
+```
+Malware
+   │
+   ▼
+Isolated
+
+Cannot damage your computer.
+```
+
+---
+
+### Step 6
+
+Delete malware.
+
+---
+
+### Step 7
+
+Restart computer.
+
+---
+
+### Step 8
+
+Scan again.
+
+If nothing is detected,
+
+the system is probably clean.
+
+---
+
+# Malware Removal Tools
+
+| Tool                    | Purpose                              |
+| ----------------------- | ------------------------------------ |
+| Malwarebytes            | Removes malware, spyware, ransomware |
+| SUPERAntiSpyware        | Removes spyware and Trojans          |
+| MSRT                    | Microsoft's malware removal tool     |
+| Bitdefender Free        | Antivirus with real-time protection  |
+| Adaware                 | Removes malware and phishing threats |
+| Avast Free Mac Security | Malware protection for macOS         |
+
+# Advanced Persistent Threat (APT)
+APT is **not just malware**.
+
+It is a **long-term, carefully planned cyber attack** where attackers enter a network, stay hidden for months or even years, and continuously steal sensitive information without being detected.
+
+# Why is it called APT?
+
+## Advanced
+
+Uses sophisticated techniques like:
+
+- Zero-day exploits
+- Social engineering
+- Custom malware
+
+---
+
+## Persistent
+
+The attacker stays hidden for a very long time.
+
+---
+
+## Threat
+
+It is a serious cyber attack against valuable targets.
+
+# Characteristics of APT
+
+## 1. Advanced Techniques
+
+Uses
+
+- Spear phishing
+- Zero-day exploits
+- Custom malware
+
+instead of simple viruses.
+
+---
+
+## 2. Persistence
+
+The attacker remains inside the network for months or years.
+
+---
+
+## 3. Targeted
+
+APT attacks focus on valuable organizations like:
+
+- Banks
+- Governments
+- Defense
+- Hospitals
+- Large companies
+
+They do **not** usually target random home users.
+
+---
+
+## 4. Data Exfiltration
+
+The main objective is to quietly steal confidential information.
+
+---
+
+# Working of an APT
+
+## Step 1. Gain Initial Access
+
+Methods:
+
+- Spear phishing emails
+- Weak passwords
+- Software vulnerabilities
+
+---
+
+## Step 2. Expand Access
+
+The attacker moves through the network and infects more systems.
+
+---
+
+## Step 3. Gain Administrator Rights
+
+They steal passwords or exploit vulnerabilities to obtain full control.
+
+---
+
+## Step 4. Move Freely
+
+The attacker can access many computers inside the network without being noticed.
+
+---
+
+## Step 5. Harvest Data
+
+Sensitive data is collected and secretly transferred to the attacker's systems.
+
+# Detecting an APT
+
+Signs include:
+
+- Unusual file access
+- Strange network traffic
+- Unknown programs
+- Login attempts from unusual locations
+- Slow systems
+# Protection Against APT
+
+- Use strong, unique passwords.
+- Enable Two-Factor Authentication (2FA).
+- Keep software updated.
+- Install antivirus software.
+- Use firewalls.
+- Back up important data regularly.
+# Famous APT Attacks
+
+|Attack|Target|Year|
+|---|---|---|
+|Stuxnet|Iran's nuclear facilities|2010|
+|APT1|141+ companies|2006–2013|
+|Operation Aurora|Google, Adobe|2009|
+|DarkHotel|Business executives|2007–present|
+|Operation Shady RAT|70+ organizations|2006–2011|
+|APT28 (Fancy Bear)|Governments & military|2007–present|
+|Operation Night Dragon|Energy companies|2009–2011|
+|APT33|Aerospace & defense|2013–present|
+# Malware vs APT (Important Exam Difference)
+
+|Malware|APT|
+|---|---|
+|Malicious software|A long-term cyberattack campaign|
+|May infect anyone|Targets specific organizations|
+|Often detected quickly|Stays hidden for months or years|
+|Can damage or steal data|Mainly steals valuable information over time|
+|Examples: Worm, Trojan, Ransomware|Examples: APT1, APT28, DarkHotel|
+# Botnet
+
+## What is a Botnet?
+
+A **Botnet** is a group of computers, phones, servers, or IoT devices that have been infected with malware and are secretly controlled by a hacker.
+
+- Each infected device is called a **Bot** or **Zombie**.
+- The hacker controlling them is called the **Bot Herder**.
+- The hacker can make thousands or even millions of infected devices perform the same task simultaneously.
+## How Does a Botnet Work?
+
+### Step 1: Infection
+
+The attacker infects devices using malware through:
+
+- Phishing emails
+- Fake software
+- Malicious websites
+- Fake updates
+- Exploiting software vulnerabilities
+
+Example:
+
+You download a cracked game.
+
+Hidden malware gets installed.
+
+Your PC becomes infected.
+
+---
+
+### Step 2: Connect to Command & Control (C2) Server
+
+After infection,
+
+the malware secretly contacts the hacker's **Command and Control (C2) Server**.
+
+Think of C2 as the headquarters.
+
+```
+Hacker
+   |
+   |
+C2 Server
+   |
+----------------------------
+|     |      |      |      |
+PC1  PC2   Phone   Laptop IoT
+```
+
+Now your PC waits for commands.
+
+---
+
+### Step 3: Receive Commands
+
+The hacker can tell every infected computer to:
+
+- Attack websites
+- Send spam emails
+- Mine cryptocurrency
+- Spread malware
+- Steal data
+
+All bots work together.
+
+---
+
+### Step 4: Self Propagation
+
+Some botnets automatically search for other vulnerable devices.
+
+Example
+
+One infected computer scans nearby computers.
+
+If another computer has weak security,
+
+it infects that computer too.
+
+Botnet keeps growing.
+
+---
+
+### Step 5: Staying Hidden
+
+Botnets try to avoid detection by
+
+- Hiding processes
+- Changing filenames
+- Encrypting communication
+- Reinfecting computers after removal
+
+This makes them difficult to remove.
+
+---
+
+# Uses of Botnets
+
+## 1. DDoS Attack
+
+This is the most common use.
+
+Thousands of infected computers send requests to one server.
+
+Example
+
+100,000 bots visit one website simultaneously.
+
+The server becomes overloaded.
+
+The website crashes.
+
+Example:
+
+Mirai Botnet
+
+---
+
+## 2. Data Theft
+
+Botnets steal
+
+- Passwords
+- Credit card details
+- Login credentials
+- Personal information
+
+This data is sold on the dark web.
+
+---
+
+## 3. Sending Spam
+
+Botnets send millions of spam emails.
+
+Examples
+
+- Fake lottery
+- Fake Amazon order
+- Fake bank email
+- Phishing emails
+
+---
+
+## 4. Spreading Malware
+
+One infected computer infects many others.
+
+The malware spreads rapidly.
+
+---
+
+## 5. Cryptocurrency Mining
+
+Instead of using their own computers,
+
+hackers secretly use yours.
+
+Your CPU mines cryptocurrency.
+
+Result:
+
+- Slow PC
+- High electricity usage
+- Overheating
+
+---
+
+## 6. Click Fraud
+
+Botnets repeatedly click online advertisements.
+
+Hackers earn advertising money.
+
+Businesses lose money.
+
+---
+
+## 7. Cyber Espionage
+
+Some governments and organizations use botnets to
+
+- Spy
+- Steal confidential documents
+- Collect military information
+
+---
+
+# Evolution of Botnets
+
+## 2000 — Mafiaboy Attack
+
+A teenager launched massive DDoS attacks.
+
+Targets included:
+
+- Yahoo
+- CNN
+- eBay
+
+This showed how dangerous botnets could become.
+
+---
+
+## 2016 — Mirai Botnet
+
+One of the most famous botnets.
+
+Instead of computers,
+
+it infected IoT devices.
+
+Examples
+
+- CCTV cameras
+- Smart TVs
+- Routers
+- Baby monitors
+
+Millions of IoT devices attacked Dyn DNS.
+
+Many websites became unavailable including:
+
+- Netflix
+- PayPal
+- Amazon
+
+---
+
+## 2017 Google Cloud Attack
+
+Attack size:
+
+2.54 Tbps
+
+One of the largest DDoS attacks ever.
+
+---
+
+## 2021 Azure Attack
+
+Microsoft Azure experienced
+
+3.47 Tbps DDoS attack.
+
+Successfully defended.
+
+---
+
+# How Hackers Control Botnets
+
+## 1. Centralized Model
+
+```
+          Hacker
+             |
+        C2 Server
+       /   |   \
+    Bot Bot Bot
+```
+
+Advantages
+
+- Easy to manage
+
+Disadvantages
+
+- If C2 server is shut down,  
+    whole botnet dies.
+
+---
+
+## 2. Peer-to-Peer (P2P)
+
+```
+Bot ---- Bot ---- Bot
+ |         |        |
+Bot ---- Bot ---- Bot
+```
+
+No central server.
+
+Every bot communicates with others.
+
+Harder to destroy.
+
+More common today.
+
+---
+
+# Signs Your Computer is Part of a Botnet
+
+- Computer becomes slow
+- Internet usage increases
+- High CPU usage
+- Battery drains quickly
+- Unknown programs appear
+- Random pop-ups
+- Strange emails sent from your account
+- Frequent crashes
+- Overheating
+
+---
+
+# Preventing Botnets
+
+- Install antivirus
+- Keep software updated
+- Use strong passwords
+- Enable firewall
+- Don't download pirated software
+- Don't click unknown links
+- Enable MFA
+- Monitor network traffic
+# Spyware
+
+## What is Spyware?
+
+Spyware is malware that secretly monitors your activities and sends your personal information to an attacker without your permission.
+It works silently.
+Usually,
+you don't even know it's installed.
+
+# How Spyware Enters a Computer
+
+### 1. Phishing
+
+Fake email
+
+Example
+
+```
+Your bank account has been blocked.
+
+Click here.
+```
+
+You click.
+
+Spyware installs.
+
+---
+
+### 2. Spoofing
+
+Fake emails pretending to be
+
+- Amazon
+- PayPal
+- Google
+- Microsoft
+
+---
+
+### 3. Free Software
+
+Many cracked software packages include spyware.
+
+Example
+
+Free Video Editor
+
+↓
+
+Installs spyware in the background.
+
+# Types of Spyware
+
+## Keylogger
+
+Records every key you type.
+
+Can steal
+
+- Passwords
+- ATM PINs
+- Emails
+
+---
+
+## Adware
+
+Shows unwanted advertisements.
+
+Tracks browsing habits.
+
+---
+
+## Trojan
+
+Pretends to be useful software.
+
+Actually steals information.
+
+---
+
+## Tracking Cookies
+
+Monitor browsing habits.
+
+Usually used for advertising.
+
+---
+
+## System Monitor
+
+Monitors everything
+
+- Files
+- Applications
+- Browsing
+- Chats
+
+---
+
+## Data Harvester
+
+Collects personal information.
+
+Example
+
+- Phone number
+- Credit card
+- Email
+## RAT (Remote Access Trojan)
+
+Very dangerous.
+
+Attacker gets complete remote control.
+
+Can
+
+- Watch screen
+- Open camera
+- Access files
+- Delete files
+
+---
+
+# What Spyware Does
+
+- Steals passwords
+- Captures keystrokes
+- Records browsing
+- Takes screenshots
+- Opens webcam
+- Gives remote access
+- Steals banking information
+
+---
+
+# How Spyware Attacks
+
+Usually through
+
+- Phishing emails
+- Malicious downloads
+- Drive-by downloads
+- Software vulnerabilities
+- Social engineering
+
+---
+
+# Problems Caused by Spyware
+
+- Identity theft
+- Financial loss
+- Privacy violation
+- Slow computer
+- Browser changes
+- Unauthorized access
+
+---
+
+# Signs of Spyware
+
+- Slow PC
+- Strange ads
+- Pop-ups
+- Browser homepage changes
+- Unknown software installed
+- High network usage
+
+---
+
+# Removing Spyware
+
+1. Scan using antivirus.
+2. Update Windows.
+3. Remove suspicious software.
+4. Clear browser cache.
+5. Reset browser settings.
+
+---
+
+# Preventing Spyware
+
+- Install antivirus
+- Avoid pirated software
+- Download only from trusted websites
+- Keep Windows updated
+- Don't click suspicious links
+- Read installation prompts carefully
+- Use strong browser security settings
+# Ransomware
+
+## What is Ransomware?
+
+Ransomware is malware that encrypts your files and demands money (a ransom) to restore access.
+
+Imagine someone locks all your documents in a safe and says:
+
+> "Pay ₹50,000, and I'll give you the key."
+
+That's exactly how ransomware works.
+
+---
+
+## How It Infects a Computer
+
+Common infection methods include:
+
+- Phishing emails with malicious attachments
+- Fake software or updates
+- Malicious pop-ups
+- Drive-by downloads from compromised websites
+- Exposed or weak Remote Desktop Protocol (RDP)
+
+---
+
+## How Ransomware Works
+
+1. **Infection:** Malware enters the system.
+2. **Execution:** It searches for important files.
+3. **Encryption:** Files are encrypted with a secret key.
+4. **Ransom Note:** A message demands payment, often in cryptocurrency.
+5. **Possible Decryption:** Even if the ransom is paid, there is no guarantee the attacker will provide a working decryption key.
+
+---
+
+## Types of Ransomware
+
+- **Crypto Ransomware:** Encrypts files.
+- **Locker Ransomware:** Locks the entire device.
+- **Scareware:** Displays fake infection warnings and demands payment.
+- **Ransomware-as-a-Service (RaaS):** Criminals rent ransomware to other attackers.
+- **Doxware (Extortionware):** Threatens to publish stolen data if payment is not made.
+
+---
+
+## Effects on Businesses
+
+- Financial losses
+- Operational downtime
+- Permanent data loss
+- Reputation damage
+- Legal and regulatory penalties
+
+---
+
+## Famous Ransomware Attacks
+
+- **AIDS Trojan (1989):** One of the first ransomware attacks.
+- **CryptoLocker (2013):** Popularized Bitcoin ransom payments.
+- **WannaCry (2017):** Infected over 230,000 computers in 150+ countries.
+- **Petya / NotPetya (2016–2017):** Encrypted entire disks and caused massive global disruption.
+- **LockBit (2020–2024):** One of the largest Ransomware-as-a-Service operations.
+
+---
+
+## Signs of a Ransomware Attack
+
+- Files suddenly become inaccessible.
+- File extensions change unexpectedly.
+- The system becomes unusually slow.
+- A ransom note appears.
+- Antivirus or firewall alerts report suspicious activity.
+
+---
+
+## Prevention
+
+- Keep regular offline or immutable backups.
+- Update operating systems and applications promptly.
+- Use reputable antivirus/anti-malware software.
+- Enable Multi-Factor Authentication (MFA).
+- Train users to recognize phishing attempts.
+- Limit user privileges and segment networks.
+
+---
+
+# Trojan Horse
+
+## What is a Trojan Horse?
+
+A **Trojan Horse** is malware that disguises itself as a legitimate or useful program to trick users into installing it. Unlike viruses or worms, a Trojan **does not replicate itself**; it relies on user action to run.
+
+The name comes from the ancient Greek story of the Trojan Horse, where soldiers hid inside a wooden horse to enter the city.
+
+---
+
+## How a Trojan Works
+
+1. The attacker disguises malware as a useful file or application.
+2. The user downloads and runs it.
+3. The Trojan installs silently.
+4. The attacker can then:
+    - Steal data
+    - Delete or modify files
+    - Install additional malware
+    - Gain remote access
+    - Turn the computer into part of a botnet
+
+---
+
+## Common Infection Methods
+
+- Malicious email attachments
+- Fake software downloads
+- Social engineering
+- Malicious advertisements and pop-ups
+
+---
+
+## Types of Trojans
+
+- **Backdoor Trojan:** Gives remote access.
+- **Banker Trojan:** Steals banking credentials.
+- **Downloader Trojan:** Downloads additional malware.
+- **Dropper Trojan:** Installs other malware while avoiding detection.
+- **GameThief Trojan:** Steals gaming accounts.
+- **Ransom Trojan:** Encrypts files and demands payment.
+
+---
+
+## Famous Examples
+
+- **Zeus (Zbot):** Stole banking credentials.
+- **Tiny Banker:** Targeted online banking users.
+- **Rakhni:** Installed ransomware or cryptocurrency miners.
+
+---
+
+## Prevention
+
+- Download software only from trusted sources.
+- Avoid suspicious email attachments.
+- Keep antivirus software updated.
+- Be cautious of pop-up advertisements.
+- Keep your operating system and applications updated.
+
+---
+
+# Computer Worm
+
+## What is a Computer Worm?
+
+A **computer worm** is self-replicating malware that spreads automatically from one computer to another **without any user action**.
+
+Unlike a Trojan, a worm does not need the user to execute it after the initial infection. Unlike a virus, it does not need to attach itself to another file.
+
+## How a Worm Works
+
+1. Finds a vulnerability (e.g., outdated software or open network ports).
+2. Infects one computer.
+3. Makes copies of itself.
+4. Scans the network for other vulnerable systems.
+5. Infects them automatically.
+6. Repeats the process, spreading rapidly.
+
+---
+
+## Types of Worms
+
+- **Email Worms:** Spread through infected email attachments (e.g., ILOVEYOU).
+- **Network Worms:** Exploit network vulnerabilities (e.g., Conficker).
+- **File-Sharing Worms:** Spread via shared folders or peer-to-peer networks.
+- **Instant Messaging Worms:** Spread through messaging apps with malicious links.
+- **Internet Worms:** Exploit vulnerable web servers (e.g., Code Red).
+
+---
+
+## Effects of Worms
+
+- Consume bandwidth and system resources.
+- Slow down networks.
+- Damage files.
+- Steal information.
+- Install additional malware.
+- Cause widespread outages.
+
+---
+
+## Prevention
+
+- Keep operating systems and applications updated.
+- Use strong passwords.
+- Enable firewalls.
+- Install reputable antivirus software.
+- Be cautious with email attachments and links.
+- Avoid suspicious websites and downloads.
+
+# Antivirus
+
+## What is Antivirus?
+
+An **Antivirus** is a software program that protects your computer from viruses and other malicious software (malware).
+
+Its main jobs are to:
+
+- Detect viruses
+- Prevent viruses from entering the computer
+- Remove viruses
+- Protect the computer continuously
+
+Think of antivirus as a **security guard** for your computer.
+
+# Why Do We Need Antivirus?
+
+Without antivirus,
+
+a virus can
+
+- Delete files
+- Steal passwords
+- Encrypt documents (Ransomware)
+- Slow down the computer
+- Spy on you
+- Control your PC remotely
+
+Antivirus protects against all these threats.
+
+# Malware Protected By Antivirus
+
+Modern antivirus protects against many threats:
+
+| Threat                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | What it Does                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Virus                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Infects files and spreads                               |
+| Worm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Spreads automatically over networks                     |
+| Trojan                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Pretends to be useful software                          |
+| Spyware                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Steals information secretly                             |
+| Rootkit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Hides malware from the operating system                 |
+| Keylogger                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Records everything typed on the keyboard                |
+| Adware                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Shows unwanted advertisements                           |
+| Ransomware                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Encrypts files and demands money                        |
+| Botnet Malware                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Turns your computer into a zombie controlled by hackers |
+| Browser Hijacker                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Changes browser settings without permission             |
+# Types of Antivirus Software
+
+There are different ways an antivirus protects your computer.
+
+---
+
+## 1. On-Demand Scan
+
+This scan only happens when **you tell it to scan**.
+
+### Example
+
+You download a movie.
+
+You think something looks suspicious.
+
+You right-click
+
+```
+Scan with Windows Defender
+```
+
+The antivirus checks only that file.
+
+This is an **On-Demand Scan**.
+
+### Features
+
+- Manual
+- User starts scan
+- Good for checking individual files
+
+---
+
+## 2. Real-Time Protection
+
+This is the most important feature.
+
+It works continuously in the background.
+
+You don't need to start it.
+
+Whenever
+
+- USB is inserted
+- File is downloaded
+- Program is opened
+- Website is visited
+
+the antivirus immediately scans it.
+
+### Example
+
+You insert a pendrive.
+
+Before Windows even opens it,
+
+the antivirus scans it.
+
+If malware is found,
+
+it blocks it.
+
+### Advantages
+
+- Automatic
+- Fast
+- Stops infection before damage
+
+---
+
+## 3. Smart Scan
+
+Instead of scanning the entire computer,
+
+it scans only the places where malware is most likely to exist.
+
+Example
+
+- Downloads folder
+- Desktop
+- Running processes
+- Startup programs
+
+This makes scanning much faster.
+
+---
+
+## 4. Spyware Scanner
+
+Specifically looks for spyware.
+
+It checks whether software is secretly
+
+- Tracking browsing
+- Recording passwords
+- Sending data to hackers
+
+If found,
+
+it removes it.
+
+---
+
+## 5. Machine Learning (ML) Antivirus
+
+Traditional antivirus only recognizes known viruses.
+
+Machine Learning Antivirus can recognize **new malware**.
+
+It learns patterns from millions of malware samples.
+
+### Example
+
+Suppose a new virus has never been seen before.
+
+Machine learning notices that the program
+
+- Encrypts files
+- Deletes backups
+- Connects to suspicious servers
+
+It predicts
+
+"This looks dangerous."
+
+and blocks it.
+
+---
+
+## 6. Database Antivirus
+
+This is the traditional antivirus.
+
+It compares files against a huge virus database.
+
+Every known virus has a unique fingerprint called a **signature**.
+
+If the signature matches,
+
+the file is infected.
+
+---
+
+## 7. Malware Remover
+
+Sometimes malware is already inside your PC.
+
+This software specializes in removing existing malware instead of preventing infections.
+
+Example
+
+Malwarebytes
+
+---
+
+## 8. Email Antivirus
+
+Scans emails.
+
+Checks
+
+- Attachments
+- Links
+- Scripts
+
+before they reach your inbox.
+
+Example
+
+If someone sends
+
+```
+invoice.pdf.exe
+```
+
+the antivirus blocks it.
+
+---
+
+## 9. Heuristic Antivirus
+
+Looks for suspicious code rather than exact virus signatures.
+
+Example
+
+Suppose a program suddenly tries to
+
+- Delete system files
+- Encrypt thousands of documents
+- Disable Task Manager
+
+Even though it's a new virus,
+
+the antivirus recognizes these suspicious behaviors.
+
+# How Antivirus Works
+
+Let's understand the complete process.
+
+---
+
+## Step 1
+
+A file enters your computer.
+
+Example
+
+```
+game.exe
+```
+
+---
+
+## Step 2
+
+The antivirus immediately scans it.
+
+It compares the file with millions of virus signatures.
+
+```
+File
+
+↓
+
+Virus Database
+
+↓
+
+Match?
+```
+
+---
+
+## Step 3
+
+If a match is found
+
+```
+Virus Detected
+```
+
+---
+
+## Step 4
+
+If no signature matches,
+
+the antivirus performs heuristic analysis.
+
+It checks
+
+- File structure
+- Program behavior
+- Memory access
+- Registry modifications
+
+---
+
+## Step 5
+
+If the behavior is dangerous,
+
+the antivirus blocks the program.
+
+---
+
+## Step 6
+
+If malware is confirmed,
+
+the antivirus
+
+- Deletes it
+- Quarantines it
+- Repairs infected files
+
+---
+
+## Step 7
+
+The antivirus updates its virus database regularly.
+
+New viruses appear every day.
+
+Without updates,
+
+the antivirus cannot recognize new threats.
+
+---
+
+# Detection Techniques Used by Antivirus
+
+## 1. Signature-Based Detection
+
+Compares the file with known virus signatures.
+
+### Advantages
+
+- Very accurate
+- Very fast
+
+### Disadvantages
+
+Cannot detect brand-new viruses.
+
+---
+
+## 2. Heuristic Detection
+
+Looks for suspicious code patterns.
+
+Example
+
+A program tries to
+
+- Delete Windows files
+- Encrypt documents
+
+Even though it's unknown,
+
+the antivirus blocks it.
+
+---
+
+## 3. Behavior-Based Detection
+
+Instead of looking at code,
+
+it watches what the program actually does.
+
+Example
+
+A program suddenly
+
+- Opens thousands of files
+- Encrypts them
+- Deletes backups
+
+This resembles ransomware.
+
+The antivirus stops it immediately.
+
+---
+
+## 4. Machine Learning Detection
+
+Uses Artificial Intelligence.
+
+Learns from millions of malware samples.
+
+Can recognize new malware.
+
+---
+
+# What Happens After Detection?
+
+There are three possibilities.
+
+## 1. Delete
+
+The infected file is permanently removed.
+
+---
+
+## 2. Quarantine
+
+The file is isolated.
+
+It cannot run.
+
+It stays in a safe folder.
+
+If it turns out to be a false alarm,
+
+you can restore it.
+
+---
+
+## 3. Repair
+
+Some antivirus software removes only the malicious code while keeping the original file.
+
+---
+
+# Scheduling Scans
+
+Antivirus allows automatic scanning.
+
+Example
+
+```
+Daily at 2 AM
+
+Weekly
+
+Monthly
+```
+
+No manual effort needed.
+
+---
+
+# Why Antivirus Needs Administrator Permission
+
+The antivirus must scan
+
+- Windows files
+- Registry
+- Memory
+- Startup programs
+- Running applications
+
+Without administrator privileges,
+
+it cannot inspect these protected areas.
+
+---
+
+# Other Ways to Protect Your Computer
+
+Antivirus alone is not enough.
+
+### Firewall
+
+Blocks unauthorized network access.
+
+### Avoid Suspicious Links
+
+Never click unknown emails or websites.
+
+### SIEM (Security Information and Event Management)
+
+Used mostly in organizations.
+
+It collects logs from many systems, detects suspicious activity, and alerts security teams.
+
+---
+
+# Advantages of Antivirus
+
+## 1. Detects Malware
+
+Finds viruses before they damage the system.
+
+---
+
+## 2. Removes Malware
+
+Deletes infected files safely.
+
+---
+
+## 3. Real-Time Protection
+
+Stops malware before it starts.
+
+---
+
+## 4. Blocks Dangerous Websites
+
+Warns before opening phishing or malicious websites.
+
+---
+
+## 5. Automatic Updates
+
+Downloads the latest virus definitions.
+
+---
+
+## 6. Protects Personal Data
+
+Keeps passwords, banking details, and documents safe.
+
+---
+
+## 7. Performance Tools
+
+Some antivirus programs also include
+
+- Junk file cleanup
+- Startup optimization
+- Performance tuning
+
+---
+
+# Disadvantages of Antivirus
+
+## 1. Uses System Resources
+
+Consumes CPU, RAM, and disk activity.
+
+Older computers may become slower.
+
+---
+
+## 2. False Positives
+
+Sometimes safe software is mistakenly identified as malware.
+
+---
+
+## 3. Paid Features
+
+Many advanced protections require a subscription.
+
+---
+
+## 4. Not 100% Effective
+
+A brand-new (zero-day) attack may bypass traditional signature-based detection until updates are released.
+
+# Anti-Malware
+
+## What is Anti-Malware?
+
+**Anti-Malware** is software designed to **detect, prevent, block, and remove all kinds of malware** from a computer.
+Think of it as a **security team** that protects your entire computer from every type of cyber attack.
+# What is Malware?
+
+The word **Malware** comes from
+
+```
+Malicious + Software = Malware
+```
+
+Malware is any software intentionally created to harm a computer.
+
+# Why Do We Need Anti-Malware?
+
+Suppose you download a cracked game.
+
+Hidden inside it are
+
+- Trojan
+- Spyware
+- Ransomware
+- Keylogger
+
+Without anti-malware,
+
+all of these could infect your PC.
+
+With anti-malware,
+
+the threats are detected and blocked before they can cause damage.
+
+---
+
+# What Does Anti-Malware Do?
+
+Anti-malware performs four major tasks:
+
+1. Detects malware
+2. Blocks malware
+3. Removes malware
+4. Protects the system continuously
+
+---
+
+# Uses of Anti-Malware
+
+## 1. Block Malware Infiltration
+
+### Meaning
+
+It prevents malware from entering your computer.
+
+### How?
+
+It scans every external source such as:
+
+- USB drives
+- Pen drives
+- CDs/DVDs
+- SD cards
+- Downloaded files
+- Email attachments
+
+### Example
+
+You insert a USB drive.
+
+```
+USB
+
+↓
+
+Anti-Malware Scan
+
+↓
+
+Virus Found
+
+↓
+
+USB Blocked
+```
+
+The malware never reaches your computer.
+
+---
+
+### It also scans Internet Downloads
+
+Suppose you download
+
+```
+Free Photoshop Crack.exe
+```
+
+The anti-malware notices
+
+- Trojan
+- Spyware
+- Keylogger
+
+It blocks the download immediately.
+
+---
+
+### Email Protection
+
+Suppose you receive
+
+```
+Invoice.pdf.exe
+```
+
+It looks like a PDF.
+
+Actually,
+
+it's malware.
+
+The anti-malware blocks it before you open it.
+
+---
+
+# 2. Detect Ongoing Intrusions
+
+Sometimes malware is already inside your computer.
+
+Anti-malware continuously watches for suspicious activities.
+
+This is called **Heuristic Monitoring**.
+
+---
+
+## Example 1
+
+Suppose your PC is idle.
+
+Suddenly
+
+```
+CPU Usage
+
+2%
+
+↓
+
+95%
+```
+
+The antivirus notices something unusual.
+
+It investigates.
+
+A hidden crypto miner is found.
+
+---
+
+## Example 2
+
+Thousands of files begin changing rapidly.
+
+```
+Photos
+
+↓
+
+Encrypted
+
+↓
+
+Documents
+
+↓
+
+Encrypted
+
+↓
+
+Videos
+
+↓
+
+Encrypted
+```
+
+The anti-malware recognizes this behavior as ransomware and immediately blocks the process.
+
+---
+
+## Memory Analysis
+
+Some malware hides only in RAM (memory).
+
+It never creates files on the hard disk.
+
+Anti-malware scans memory to detect:
+
+- Hidden processes
+- Malicious scripts
+- Injected code
+
+---
+
+## Network Monitoring (Beaconing Detection)
+
+Many malware programs secretly communicate with hackers.
+
+Example
+
+```
+Your Computer
+
+↓
+
+Unknown Server
+
+↓
+
+Sending Passwords
+```
+
+This secret communication is called **Beaconing**.
+
+Anti-malware detects unusual network traffic and blocks it.
+
+---
+
+# 3. Prevent Remote Hacking
+
+Hackers often try to access computers remotely.
+
+Anti-malware prevents this in several ways.
+
+---
+
+## Intrusion Prevention System (IPS)
+
+It watches incoming network traffic.
+
+If someone tries to
+
+- Guess passwords
+- Exploit vulnerabilities
+- Access restricted ports
+
+the IPS blocks them.
+
+Example
+
+```
+Hacker
+
+↓
+
+Port 3389 (Remote Desktop)
+
+↓
+
+Blocked
+```
+
+---
+
+## Firewall Protection
+
+A firewall acts like a gatekeeper.
+
+```
+Internet
+
+↓
+
+Firewall
+
+↓
+
+Computer
+```
+
+It checks every incoming and outgoing connection.
+
+Safe traffic is allowed.
+
+Suspicious traffic is blocked.
+
+---
+
+## VPN Protection
+
+Public Wi-Fi is unsafe.
+
+A VPN encrypts your internet traffic.
+
+Example
+
+Without VPN:
+
+```
+Laptop
+
+↓
+
+Public Wi-Fi
+
+↓
+
+Anyone Can Spy
+```
+
+With VPN:
+
+```
+Laptop
+
+↓
+
+Encrypted Tunnel
+
+↓
+
+Internet
+```
+
+Hackers cannot easily read your data.
+
+---
+
+## Encryption
+
+Even if malware steals a file,
+
+encryption makes it unreadable without the decryption key.
+
+---
+
+# 4. Clean Malware Infections
+
+Suppose malware has already infected your PC.
+
+The anti-malware removes it.
+
+---
+
+## Boot-Time Scan
+
+Some malware loads before Windows starts.
+
+Normal antivirus cannot remove it while Windows is running.
+
+So,
+
+the anti-malware scans **before Windows boots**.
+
+```
+Power ON
+
+↓
+
+Anti-Malware Scan
+
+↓
+
+Windows Starts
+```
+
+This allows hidden malware (such as rootkits) to be removed before it becomes active.
+
+---
+
+## Quarantine
+
+Instead of deleting files immediately,
+
+anti-malware often moves them to a secure area called **Quarantine**.
+
+```
+Infected File
+
+↓
+
+Quarantine
+
+↓
+
+Cannot Run
+```
+
+If it's a false alarm,
+
+the user can restore the file.
+
+---
+
+## Rollback
+
+Some advanced anti-malware solutions keep restore points.
+
+Example
+
+Yesterday
+
+```
+Healthy System
+```
+
+Today
+
+```
+Ransomware Attack
+```
+
+The software rolls the system back to yesterday's clean state, reducing data loss.
+
+---
+
+# 5. System Immunization
+
+Anti-malware also prevents future attacks.
+
+---
+
+## Automatic Updates
+
+Hackers create new malware every day.
+
+The anti-malware regularly downloads:
+
+- New malware signatures
+- New detection rules
+- Improved scanning engines
+
+This keeps protection current.
+
+---
+
+## Patch Vulnerabilities
+
+Old software often has security holes.
+
+Anti-malware may recommend or automatically apply security updates to close these vulnerabilities.
+
+---
+
+# How Anti-Malware Works
+
+Anti-malware uses several techniques together.
+
+---
+
+# 1. Signature-Based Detection
+
+This is the oldest and fastest detection method.
+
+Every malware has a unique **signature** (digital fingerprint).
+
+The anti-malware compares every file against its signature database.
+
+### Process
+
+```
+Downloaded File
+
+↓
+
+Compare With Database
+
+↓
+
+Signature Match?
+
+↓
+
+Yes
+
+↓
+
+Malware Detected
+```
+
+### Advantages
+
+- Fast
+- Accurate
+- Few false positives
+
+### Disadvantages
+
+Cannot detect brand-new malware until its signature is added to the database.
+
+---
+
+# 2. Heuristic Analysis
+
+Hackers constantly create new malware.
+
+These threats won't have signatures yet.
+
+Heuristic analysis examines a program's structure and behavior to identify suspicious characteristics.
+
+### What Does It Check?
+
+- File extension
+- Hidden code
+- Encryption routines
+- Registry modifications
+- Password-stealing functions
+- Attempts to disable security software
+- Unexpected network connections
+
+### Example
+
+A program suddenly tries to:
+
+- Encrypt all files
+- Disable Windows Defender
+- Modify startup settings
+
+Even if it's never been seen before,
+
+the anti-malware recognizes the suspicious behavior and blocks it.
+
+### Advantages
+
+- Detects unknown malware
+- Helps stop zero-day threats
+
+### Disadvantages
+
+- May occasionally flag legitimate software (false positives)
+
+---
+
+# 3. Sandboxing
+
+Sometimes a file is suspicious but not clearly malicious.
+
+Instead of running it on your real computer,
+
+the anti-malware runs it in a **Sandbox**.
+
+A sandbox is an isolated virtual environment.
+
+```
+Unknown Program
+
+↓
+
+Sandbox
+
+↓
+
+Observe Behavior
+```
+
+The software monitors whether the program:
+
+- Creates hidden files
+- Modifies the registry
+- Contacts suspicious servers
+- Disables antivirus
+- Encrypts files
+
+If it behaves maliciously,
+
+it is blocked before it ever runs on your actual system.
+
+### Advantage
+
+Safely detects unknown malware without risking your computer.
+
+---
+
+# 4. Cloud-Based Lookups
+
+Modern anti-malware connects to cloud servers maintained by the security vendor.
+
+When an unknown file appears,
+
+the software sends its hash (a unique identifier) or reputation information to the cloud.
+
+```
+Unknown File
+
+↓
+
+Vendor Cloud Database
+
+↓
+
+Known Safe?
+
+Known Malware?
+
+Unknown?
+```
+
+Millions of users contribute threat intelligence, allowing new threats to be recognized quickly.
+
+### Advantages
+
+- Faster updates
+- Global threat intelligence
+- Detects newly discovered malware quickly
+
+---
+
+# 5. Real-Time Protection
+
+This is the most important feature.
+
+The anti-malware continuously monitors:
+
+- Files
+- USB devices
+- Downloads
+- Running programs
+- Memory
+- Network traffic
+
+Example:
+
+You download a file.
+
+Before it opens,
+
+the anti-malware scans it automatically.
+
+If malware is found,
+
+it is blocked immediately.
+
+---
+
+# 6. Rootkit Detection
+
+Rootkits are among the most dangerous malware because they hide deep inside the operating system.
+
+They often evade normal scans.
+
+Anti-malware uses advanced techniques such as:
+
+- Memory analysis
+- Boot-time scanning
+- Behavioral monitoring
+- Kernel integrity checks
+
+to detect and remove rootkits.
+
+---
+
+# 7. Automatic Updates
+
+New malware appears every day.
+
+If the anti-malware isn't updated,
+
+it won't recognize new threats.
+
+Automatic updates provide:
+
+- New malware signatures
+- Improved detection engines
+- Better heuristic rules
+- Latest cloud threat intelligence
+
+---
+
+# Complete Anti-Malware Working Flow
+
+```
+File Arrives
+      │
+      ▼
+Real-Time Scan Starts
+      │
+      ▼
+Signature Detection
+      │
+ ┌────┴─────┐
+ │          │
+Match     No Match
+ │          │
+ ▼          ▼
+Block   Heuristic Analysis
+              │
+              ▼
+        Still Suspicious?
+         ┌────┴─────┐
+         │          │
+        Yes        No
+         │          │
+         ▼          ▼
+     Run in Sandbox  Allow Execution
+         │
+         ▼
+Malicious Behavior?
+    ┌────┴─────┐
+    │          │
+   Yes        No
+    │          │
+    ▼          ▼
+Quarantine/Delete  Allow Program
+```
+
+---
+
+# Advantages of Anti-Malware
+
+- Protects against all types of malware.
+- Detects both known and unknown threats.
+- Provides continuous real-time protection.
+- Blocks malicious websites, downloads, and email attachments.
+- Detects hidden threats like rootkits.
+- Frequently updates to defend against emerging attacks.
+
+---
+
+# Disadvantages of Anti-Malware
+
+- Uses CPU, RAM, and disk resources.
+- Some advanced features require a paid subscription.
+- Can occasionally generate false positives.
+- No security solution can guarantee 100% protection, especially against sophisticated zero-day attacks.
+
+# Antivirus vs Antimalware
+
+Although these terms are often used interchangeably today, there is a slight difference.
+
+| Feature             | Antivirus                                            | Antimalware                                                                             |
+| ------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| **Main Purpose**    | Protects mainly against traditional viruses          | Protects against all types of malware                                                   |
+| **Threats Covered** | Viruses, some worms and Trojans                      | Viruses, worms, Trojans, spyware, ransomware, rootkits, adware, etc.                    |
+| **Detection**       | Mainly signature-based with some heuristic detection | Signature-based, behavior analysis, sandboxing, machine learning, and traffic filtering |
+| **Updates**         | Regular updates                                      | Typically more frequent updates to address emerging threats                             |
+| **Best For**        | Personal computers and common threats                | Modern environments facing advanced and evolving attacks                                |
+| **Examples**        | Windows Defender, Avast, AVG, Quick Heal             | Malwarebytes, Spybot Search & Destroy                                                   |
+
+# Browser Sandboxing 
+
+Browser sandboxing is one of the **most important security features** in modern web browsers. It prevents malicious websites, ads, and downloaded files from damaging your computer by **isolating**them from the rest of the operating system.
+# What is Browser Sandboxing?
+
+Think of a **sandbox** like a child's sandbox.
+
+- A child can play inside the sandbox.
+- The sand stays inside.
+- It cannot spread throughout the house.
+
+A browser sandbox works in exactly the same way.
+
+Whenever you visit a website, the browser places that website inside a **restricted environment (sandbox)** where it can run but **cannot freely access your computer**.
+
+Without sandboxing:
+
+```
+Website
+   │
+   ▼
+Operating System
+   │
+   ▼
+Files, Passwords, Camera, Documents
+```
+
+With sandboxing:
+
+```
+Website
+   │
+   ▼
+┌──────────────────────────┐
+│       SANDBOX            │
+│ Limited permissions      │
+│ Limited memory           │
+│ No direct file access    │
+└──────────────────────────┘
+```
+
+Everything the website does remains inside this "box."
+
+---
+
+# Why is Browser Sandboxing Important?
+
+Every website runs code.
+
+For example:
+
+- JavaScript
+- HTML
+- CSS
+- WebAssembly
+
+Normally this code should only display webpages.
+
+However, hackers may insert malicious code into websites.
+
+Without sandboxing that code could:
+
+- Install malware
+- Delete files
+- Read passwords
+- Spy through webcam
+- Encrypt files (ransomware)
+
+Sandboxing blocks these actions.
+
+# Why is Browser Sandboxing Needed?
+
+The Internet contains many dangers.
+
+---
+
+## 1. Malware
+
+Malware means **Malicious Software**.
+
+Examples:
+
+- Virus
+- Worm
+- Trojan
+- Spyware
+- Ransomware
+
+Some websites automatically attempt to download malware.
+
+Sandboxing prevents it from affecting your computer.
+
+---
+
+## 2. Zero-Day Exploits
+
+A Zero-Day Vulnerability is a software flaw that developers **don't know about yet**.
+
+Since no patch exists:
+
+- Antivirus may miss it.
+- Operating system isn't updated.
+- Hackers exploit it immediately.
+
+Sandboxing limits the damage.
+
+Example:
+
+A hacker discovers a bug in Chrome.
+
+They create a website that crashes Chrome and attempts to gain access to Windows.
+
+Sandboxing stops Chrome from accessing Windows directly.
+
+---
+
+## 3. Data Theft
+
+Some malicious websites try to steal:
+
+- Passwords
+- Cookies
+- Credit card details
+- Personal information
+
+The sandbox restricts access.
+
+---
+
+# How Browser Sandboxing Works
+
+Modern browsers split work into different processes.
+
+Instead of one giant browser:
+
+```
+Browser
+
+Tab 1
+Tab 2
+Tab 3
+Extensions
+GPU
+Network
+```
+
+Each part runs separately.
+
+---
+
+## Step 1: New Process
+
+Suppose you open YouTube.
+
+Browser creates:
+
+```
+Chrome
+
+┌────────────┐
+│ YouTube    │
+└────────────┘
+```
+
+Open Gmail:
+
+```
+Chrome
+
+┌────────────┐
+│ YouTube    │
+└────────────┘
+
+┌────────────┐
+│ Gmail      │
+└────────────┘
+```
+
+Each process is isolated.
+
+If one crashes,
+
+others continue working.
+
+---
+
+## Step 2: Restricted Permissions
+
+Each browser tab gets very few permissions.
+
+It cannot:
+
+❌ Delete Windows files
+
+❌ Access System32
+
+❌ Install programs
+
+❌ Modify Registry
+
+❌ Access another tab's memory
+
+Instead it can only:
+
+✅ Render webpage
+
+✅ Execute JavaScript
+
+✅ Display images
+
+---
+
+## Step 3: Limited File Access
+
+Suppose JavaScript tries:
+
+```
+Delete C:\Windows
+```
+
+Browser replies:
+
+```
+Permission Denied
+```
+
+Why?
+
+Because sandbox rules forbid it.
+
+---
+
+## Step 4: Memory Restrictions
+
+Each sandbox gets limited memory.
+
+Suppose malware tries:
+
+```
+Create infinite data
+```
+
+Eventually memory limit is reached.
+
+Browser terminates it.
+
+This prevents:
+
+- Memory exhaustion
+- System slowdown
+- Crashes
+
+---
+
+## Step 5: Communication Restrictions
+
+Processes cannot freely communicate.
+
+Example:
+
+```
+Tab A
+      X
+Tab B
+```
+
+Tab A cannot steal data from Tab B.
+
+---
+
+# Techniques Used in Browser Sandboxing
+
+## 1. Restricted Processes
+
+Every tab runs separately.
+
+```
+Chrome
+
+Tab 1
+
+Tab 2
+
+Tab 3
+
+Extensions
+```
+
+Even if Tab 1 gets infected,
+
+Tab 2 remains safe.
+
+---
+
+## 2. Limited Permissions
+
+Browser removes dangerous privileges.
+
+Example:
+
+Normal program:
+
+```
+Read Files ✔
+
+Delete Files ✔
+
+Install Software ✔
+```
+
+Sandboxed webpage:
+
+```
+Read Files ❌
+
+Delete Files ❌
+
+Install Software ❌
+```
+
+---
+
+## 3. Memory Constraints
+
+Browser controls:
+
+- RAM usage
+- CPU usage
+- Resource allocation
+
+This prevents malicious code from consuming all system resources.
+
+---
+
+# Types of Browser Sandboxing
+
+---
+
+## 1. Local Sandboxing
+
+This is what almost everyone uses.
+
+Examples:
+
+- Google Chrome
+- Microsoft Edge
+- Firefox
+- Brave
+
+Sandbox runs directly on your computer.
+
+```
+Website
+
+↓
+
+Browser Sandbox
+
+↓
+
+Operating System
+```
+
+---
+
+## 2. Remote Sandboxing
+
+Used mainly by companies.
+
+Instead of opening websites on your computer:
+
+```
+Website
+
+↓
+
+Remote Server
+
+↓
+
+Only Safe Output
+
+↓
+
+Your Computer
+```
+
+Even if malware infects the browser,
+
+it infects the **remote server**, not your PC.
+
+This is common in:
+
+- Banks
+- Government organizations
+- Large companies
+
+---
+
+# Benefits of Browser Sandboxing
+
+## 1. Prevents Malware
+
+Stops malware from accessing:
+
+- Documents
+- Photos
+- Videos
+- Passwords
+
+---
+
+## 2. Protects Against Unknown Threats
+
+Even if antivirus doesn't recognize the malware,
+
+sandboxing still restricts its actions.
+
+---
+
+## 3. Better Stability
+
+If one browser tab crashes,
+
+other tabs continue working.
+
+Example:
+
+```
+Tab 1 → Crash
+
+Tab 2 → Running
+
+Tab 3 → Running
+```
+
+---
+
+## 4. Minimal User Interaction
+
+You don't have to enable it.
+
+Modern browsers activate sandboxing automatically.
+
+---
+
+## 5. Easier Cleanup
+
+If malicious code affects only the browser:
+
+- Clear cookies
+- Delete cache
+- Close the tab
+
+The damage is usually confined to the sandbox.
+
+---
+
+# Limitations of Browser Sandboxing
+
+Sandboxing is **not perfect**.
+
+Some advanced attacks may attempt a **sandbox escape**, where malicious code exploits a browser or operating system vulnerability to break out of the sandbox. These attacks are rare but can be very serious, which is why keeping your browser updated is so important.
+
+Other limitations include:
+
+- Very slight performance overhead due to process isolation.
+- Sandboxing doesn't protect you if you willingly download and run a malicious program outside the browser.
+- It doesn't stop phishing websites from tricking users into entering passwords.
 
 
 
