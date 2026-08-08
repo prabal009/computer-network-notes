@@ -15951,6 +15951,2271 @@ Other limitations include:
 - Sandboxing doesn't protect you if you willingly download and run a malicious program outside the browser.
 - It doesn't stop phishing websites from tricking users into entering passwords.
 
+# What is ARP?
+
+**ARP = Address Resolution Protocol**
+
+Suppose your computer wants to send data to:
+
+```
+Destination IP = 192.168.1.20
+```
+
+Your computer knows the destination's **IP address**, but to actually put the packet onto an Ethernet network, it needs a **MAC address**.
+ARP performs this conversion:
+
+```
+        ARP
+IP  ───────────→  MAC
+```
+
+So the most important thing to remember is:
+ **ARP resolves an IPv4 address into a MAC address.**
+
+# Why do we need both IP and MAC?
+
+This is where many beginners get confused.
+
+Think of the two addresses as having different jobs.
+
+### IP address
+
+Used for **logical addressing and routing**.
+
+Example:
+
+```
+192.168.1.20
+```
+
+It helps determine **where the packet ultimately needs to go**.
+
+### MAC address
+
+Used for **local/link-layer delivery**.
+
+Example:
+
+```
+AA:BB:CC:DD:EE:FF
+```
+
+It identifies the network interface that should receive the Ethernet frame on the local link.
+
+# ARP Cache
+
+Before sending an ARP request, PC A checks its **ARP cache**.
+
+The ARP cache is basically a small table containing recently learned:
+
+```
+IP → MAC
+```
+
+mappings.
+If PC A wants to send something to `192.168.1.20`, it looks here first.
+
+It finds:
+
+```
+192.168.1.20
+      ↓
+BB:BB:BB:BB:BB:BB
+```
+
+So it doesn't need to perform ARP again.
+
+### Why is this useful?
+
+Without an ARP cache, the computer would repeatedly broadcast:
+
+```
+Who has 192.168.1.20?
+```
+
+That creates unnecessary network traffic.
+
+The cache therefore reduces repeated ARP requests.
+
+---
+
+# 5. ARP Cache Timeout
+
+ARP cache entries aren't kept forever.
+
+Suppose the cache contains:
+
+```
+192.168.1.20 → BB:BB:BB:BB:BB:BB
+```
+
+Later, PC B's network interface changes and its MAC becomes:
+
+```
+DD:DD:DD:DD:DD:DD
+```
+
+If PC A kept the old information forever, it would continue sending frames to the wrong MAC address.
+
+Therefore, ARP entries eventually **expire**.
+
+```
+ARP Entry
+   ↓
+Valid for some time
+   ↓
+Timeout
+   ↓
+Entry removed/invalidated
+   ↓
+ARP may be performed again
+```
+
+That's what **ARP Cache Timeout** means.
+
+---
+
+# 6. ARP Request
+
+Now suppose PC A checks its cache and doesn't find PC B.
+
+It needs to ask the local network:
+
+**"Who has 192.168.1.20?"**
+
+This is called an **ARP Request**.
+
+The request is sent as a **broadcast**.
+Every device receives the request.
+# What do the other computers do?
+
+Each computer looks at the requested IP address.
+
+Suppose the request says:
+
+```
+Who has 192.168.1.20?
+```
+
+PC C checks:
+
+```
+My IP = 192.168.1.30
+
+192.168.1.30 ≠ 192.168.1.20
+```
+
+So PC C ignores the request.
+
+PC B checks:
+
+```
+My IP = 192.168.1.20
+
+192.168.1.20 = 192.168.1.20
+```
+
+So PC B knows:
+
+> "They're looking for me."
+
+---
+
+# 8. ARP Reply
+
+PC B sends an **ARP Reply** back to PC A.
+
+It says, essentially:
+
+> **"192.168.1.20 is my IP, and my MAC address is BB:BB:BB:BB:BB:BB."**
+
+Unlike the request, the reply is normally **unicast**.
+
+That means it goes specifically to PC A.
+
+```
+ARP Request:
+
+PC A ─────────────→ Everyone
+       Broadcast
+
+
+ARP Reply:
+
+PC B ─────────────→ PC A
+        Unicast
+```
+
+This distinction is extremely important:
+
+> **ARP Request = Broadcast**  
+> **ARP Reply = Unicast**
+
+---
+
+# 9. What happens after the reply?
+
+PC A receives:
+
+```
+192.168.1.20 → BB:BB:BB:BB:BB:BB
+```
+
+It stores that mapping in its ARP cache.
+
+Then it can create the Ethernet frame:
+
+```
+Source MAC:
+AA:AA:AA:AA:AA:AA
+
+Destination MAC:
+BB:BB:BB:BB:BB:BB
+```
+
+And the actual IP packet contains:
+
+```
+Source IP:
+192.168.1.10
+
+Destination IP:
+192.168.1.20
+```
+
+# Complete ARP process
+
+This is the most important flow to understand:
+
+
+PC A wants to send data
+          ↓
+Destination IP known
+          ↓
+Check ARP Cache
+          ↓
+     MAC found?
+      /       \
+    YES        NO
+     ↓          ↓
+Use MAC     Send ARP Request
+                ↓
+            Broadcast
+                ↓
+        All local devices receive
+                ↓
+      Device with matching IP
+                ↓
+           ARP Reply
+                ↓
+             Unicast
+                ↓
+       Sender learns MAC
+                ↓
+        Update ARP Cache
+                ↓
+        Send Ethernet Frame
+
+# What does "local network" mean?
+
+This is very important.
+
+ARP is used to resolve a MAC address **on the local network/link**.
+
+Suppose:
+
+```
+PC A
+192.168.1.10
+     |
+   Router
+     |
+Internet
+     |
+8.8.8.8
+```
+
+PC A doesn't normally send an ARP request asking:
+
+```
+Who has 8.8.8.8?
+```
+
+because `8.8.8.8` isn't on PC A's local network.
+
+Instead, PC A determines that the destination is remote and sends the frame to its **next-hop router/default gateway**.
+
+So ARP may be used to find:
+
+```
+Gateway IP → Gateway MAC
+```
+
+Then:
+
+```
+PC A
+  ↓
+Router
+  ↓
+Internet
+  ↓
+Destination
+```
+
+# Proxy ARP
+
+Now we get into the different types.
+
+## What is Proxy ARP?
+
+Normally:
+
+```
+PC A → asks about destination
+```
+
+With **Proxy ARP**, a router can answer an ARP request **on behalf of another device**.
+
+Imagine:
+
+```
+Network A                Network B
+
+PC A ───── Router ───── PC B
+```
+
+PC A asks:
+
+```
+Who has PC B's IP?
+```
+
+The router can answer:
+
+> "I have it."
+
+But the router provides **its own MAC address**.
+
+So:
+
+```
+PC A
+  ↓
+ARP Request
+  ↓
+Router
+  ↓
+Router says:
+"That IP is reachable through me."
+  ↓
+PC A sends frame to Router
+  ↓
+Router forwards packet to PC B
+```
+
+# RARP
+
+Now we reverse ARP.
+
+Normal ARP:
+
+```
+IP → MAC
+```
+
+RARP:
+
+```
+MAC → IP
+```
+
+RARP stands for:
+
+**Reverse Address Resolution Protocol**
+
+Imagine an old diskless computer.
+
+It knows its MAC address:
+
+```
+AA:BB:CC:DD:EE:FF
+```
+
+but doesn't know its IP address.
+
+It sends:
+
+> "My MAC is AA:BB:CC:DD:EE:FF. What is my IP?"
+
+A RARP server has a table:
+
+```
+MAC                    IP
+--------------------------------
+AA:BB:CC:DD:EE:FF      192.168.1.20
+```
+
+The server responds:
+
+```
+Your IP is:
+192.168.1.20
+```
+
+RARP was historically useful for diskless workstations during startup.
+
+---
+
+# 15. Why is RARP obsolete?
+
+RARP had limited functionality.
+
+It mainly answered:
+
+```
+"What IP address belongs to this MAC?"
+```
+
+Modern devices need much more:
+
+```
+IP address
+Subnet mask
+Default gateway
+DNS server
+Other network configuration
+```
+
+That's why protocols such as:
+
+- **BOOTP**
+- **DHCP**
+
+replaced RARP.
+
+So remember:
+
+```
+RARP
+  ↓
+Old technology
+  ↓
+Replaced by BOOTP/DHCP
+```
+
+---
+
+# 16. Inverse ARP (InARP)
+
+InARP is another protocol that can obtain an IP address when the Layer-2 address is already known.
+
+The important thing is its **environment**.
+
+It was designed for networks using **virtual circuits**, such as:
+
+- Frame Relay
+- ATM
+
+**RARP**
+Historically used by devices such as diskless workstations to obtain their IP.
+
+**InARP**
+Used in specific virtual-circuit networking environments to discover Layer-3 addresses.
+
+# ARP Message Format
+Now let's understand the ARP packet.
+There are several fields:
+
+```
+HTYPE
+PTYPE
+HLEN
+PLEN
+OPER
+SHA
+SPA
+THA
+TPA
+```
+
+# HTYPE — Hardware Type
+
+HTYPE tells us:
+
+> **What type of hardware/network technology is being used?**
+
+For Ethernet:
+
+```
+HTYPE = 1
+```
+
+So:
+
+```
+HTYPE
+  ↓
+Hardware type
+  ↓
+Ethernet = 1
+```
+
+---
+
+# 19. PTYPE — Protocol Type
+
+PTYPE tells us:
+
+> **Which network-layer protocol are we resolving?**
+
+For IPv4:
+
+```
+PTYPE = 0x0800
+```
+
+So:
+
+```
+PTYPE
+  ↓
+Protocol type
+  ↓
+IPv4 = 0x0800
+```
+
+---
+
+# 20. HLEN — Hardware Address Length
+
+HLEN tells us:
+
+> **How long is the hardware address?**
+
+Ethernet MAC addresses are 6 bytes.
+
+Therefore:
+
+```
+HLEN = 6
+```
+
+---
+
+# 21. PLEN — Protocol Address Length
+
+PLEN tells us:
+
+> **How long is the protocol address?**
+
+IPv4 addresses are 4 bytes.
+
+Therefore:
+
+```
+PLEN = 4
+```
+
+---
+
+# 22. OPER — Operation
+
+OPER tells us what the ARP message is doing.
+
+For normal ARP:
+
+```
+1 = Request
+2 = Reply
+```
+
+So:
+
+```
+OPER = 1
+```
+
+means:
+
+> "This is an ARP request."
+
+And:
+
+```
+OPER = 2
+```
+
+means:
+
+> "This is an ARP reply."
+
+---
+
+# 23. SHA — Sender Hardware Address
+
+SHA means:
+
+**Sender Hardware Address**
+
+In Ethernet, this is the sender's MAC address.
+
+Example:
+
+```
+SHA = AA:AA:AA:AA:AA:AA
+```
+
+---
+
+# 24. SPA — Sender Protocol Address
+
+SPA means:
+
+**Sender Protocol Address**
+
+For IPv4 ARP, this is the sender's IP address.
+
+Example:
+
+```
+SPA = 192.168.1.10
+```
+
+---
+
+# 25. THA — Target Hardware Address
+
+THA means:
+
+**Target Hardware Address**
+
+This is the target's MAC address.
+
+But there's a problem during an ARP request:
+
+> We don't know the target's MAC address yet!
+
+So in an ARP request it is typically:
+
+```
+00:00:00:00:00:00
+```
+
+After the target is known, the field can contain the target MAC.
+
+---
+
+# 26. TPA — Target Protocol Address
+
+TPA means:
+
+**Target Protocol Address**
+
+For IPv4 ARP, this is the IP address we're trying to resolve.
+
+Example:
+
+```
+TPA = 192.168.1.20
+```
+
+---
+
+# 27. Put all ARP fields together
+
+Suppose:
+
+```
+PC A:
+IP  = 192.168.1.10
+MAC = AA:AA:AA:AA:AA:AA
+
+PC B:
+IP  = 192.168.1.20
+MAC = BB:BB:BB:BB:BB:BB
+```
+
+PC A sends an ARP request.
+
+Conceptually:
+
+| Field | Value             |
+| ----- | ----------------- |
+| HTYPE | 1                 |
+| PTYPE | `0x0800`          |
+| HLEN  | 6                 |
+| PLEN  | 4                 |
+| OPER  | 1                 |
+| SHA   | AA:AA:AA:AA:AA:AA |
+| SPA   | 192.168.1.10      |
+| THA   | 00:00:00:00:00:00 |
+| TPA   | 192.168.1.20      |
+# Advantages of ARP
+
+Your notes mention several advantages.
+
+### 1. Automatic resolution
+
+You don't manually configure:
+
+```
+192.168.1.20 → AA:BB:CC:DD:EE:FF
+```
+
+ARP discovers it dynamically.
+
+### 2. Easy local communication
+
+It allows IPv4 devices to communicate over Ethernet.
+
+### 3. Works automatically
+
+Applications generally don't need to manually perform ARP.
+
+The operating system/network stack handles it.
+
+### 4. ARP caching
+
+Once a mapping is learned:
+
+```
+IP → MAC
+```
+
+it can be reused.
+
+That reduces repeated broadcasts.
+
+### 5. Adapts to network changes
+
+ARP information can be refreshed when mappings change.
+
+# One important limitation
+
+ARP uses **broadcasts** for requests.
+
+Imagine a huge broadcast domain with thousands of devices.
+
+An ARP request can reach many devices:
+
+```
+             ARP Request
+                  ↓
+       ┌──────────┼──────────┐
+       ↓          ↓          ↓
+      PC1        PC2        PC3
+       ↓          ↓          ↓
+      PC4        PC5        PC6
+```
+
+This is one reason ARP traffic can become undesirable at large scale.
+
+Your source lists broadcast traffic as one of ARP's disadvantages.
+
+# nother important limitation: security
+
+ARP does not inherently provide strong authentication.
+
+Therefore, an attacker can potentially send false ARP information.
+
+This leads to:
+
+**ARP Spoofing / ARP Cache Poisoning**
+
+For example:
+
+```
+Real Router:
+
+192.168.1.1
+      ↓
+RR:RR:RR:RR:RR:RR
+```
+
+Attacker falsely claims:
+
+```
+192.168.1.1
+      ↓
+XX:XX:XX:XX:XX:XX
+```
+
+A victim may then send traffic to the attacker instead of the router.
+
+This can contribute to attacks such as:
+
+- Man-in-the-Middle
+- Denial of Service
+- Session hijacking
+
+# The whole topic in one example
+
+Let's put **everything** together.
+
+Suppose:
+
+```
+Your PC
+
+IP:
+192.168.1.10
+
+MAC:
+AA:AA:AA:AA:AA:AA
+```
+
+You want to communicate with:
+
+```
+Friend's PC
+
+IP:
+192.168.1.20
+
+MAC:
+BB:BB:BB:BB:BB:BB
+```
+
+### Step 1
+
+Your PC checks:
+
+```
+ARP Cache
+```
+
+Does it know:
+
+```
+192.168.1.20 → ?
+```
+
+No.
+
+### Step 2
+
+Your PC sends:
+
+```
+Who has 192.168.1.20?
+```
+
+This is an:
+
+**ARP Request**
+
+and it is:
+
+**Broadcast**
+
+### Step 3
+
+Friend's PC receives it.
+
+It recognizes:
+
+```
+192.168.1.20
+```
+
+as its own IP.
+
+### Step 4
+
+Friend's PC sends:
+
+```
+192.168.1.20 is at
+BB:BB:BB:BB:BB:BB
+```
+
+This is an:
+
+**ARP Reply**
+
+and it is:
+
+**Unicast**
+
+### Step 5
+
+Your PC stores:
+
+```
+192.168.1.20
+      ↓
+BB:BB:BB:BB:BB:BB
+```
+
+### Step 6
+
+Your PC can now send the Ethernet frame:
+
+```
+Destination MAC
+BB:BB:BB:BB:BB:BB
+```
+
+containing the IP packet:
+
+```
+Destination IP
+192.168.1.20
+```
+
+That's the entire basic ARP process.
+
+# Why was RARP needed?
+
+To understand this, we need to understand **diskless workstations**.
+
+A normal computer has storage, such as an SSD or hard drive.
+
+It can store configuration information such as:
+
+```
+IP address
+Subnet information
+Network configuration
+```
+
+But an old **diskless workstation** might not have permanent storage.
+
+It could boot from ROM/network resources, but it wouldn't have a configuration file containing its IP address.
+
+However, it does have a network interface card (NIC), and therefore it knows its:
+
+```
+MAC address
+```
+
+For example:
+
+```
+MAC = AA:BB:CC:DD:EE:FF
+IP  = ???
+```
+
+The machine needs to somehow discover its IP.
+
+That's where RARP was useful.
+
+---
+
+# 3. Main components of RARP
+
+Your notes identify four important components.
+
+## 1. IP Address Assignment
+
+The machine needs an IP address to communicate on an IP network.
+
+Normally, the IP address can be stored in a configuration file.
+
+But a diskless machine cannot rely on such permanent storage.
+
+So it asks a RARP server.
+
+---
+
+## 2. Physical Address
+
+The machine does have a **MAC address**.
+
+The MAC address is associated with its network interface/NIC.
+
+For example:
+
+```
+MAC:
+AA:BB:CC:DD:EE:FF
+```
+
+This becomes the device's identity in the RARP request.
+
+---
+
+## 3. RARP Request
+
+The client broadcasts a request containing its MAC address.
+
+Conceptually:
+
+```
+"Who knows the IP address associated
+with MAC AA:BB:CC:DD:EE:FF?"
+```
+
+The request is broadcast because the client needs to reach the appropriate RARP server on the local network.
+
+---
+
+## 4. RARP Server
+
+The RARP server maintains a mapping such as:
+
+```
+MAC Address             IP Address
+-----------------------------------------
+AA:BB:CC:DD:EE:FF       192.168.1.20
+11:22:33:44:55:66       192.168.1.30
+```
+
+When it receives a RARP request, it looks for the client's MAC address.
+
+If it finds a match, it sends back the corresponding IP address.
+
+### How RARP works
+# Step 1 — RARP Request
+
+The client knows:
+
+```
+MAC = AA:BB:CC:DD:EE:FF
+```
+
+but:
+
+```
+IP = ???
+```
+
+So it broadcasts a **RARP Request**.
+
+Conceptually:
+
+> **"I have MAC AA:BB:CC:DD:EE:FF. What IP address is assigned to me?"**
+
+---
+
+# 6. Step 2 — Server Lookup
+
+The RARP server receives the request.
+
+It has a table:
+
+```
+MAC Address             IP Address
+-----------------------------------------
+AA:BB:CC:DD:EE:FF       192.168.1.20
+BB:CC:DD:EE:FF:00       192.168.1.21
+CC:DD:EE:FF:00:11       192.168.1.22
+```
+
+The server searches for:
+
+```
+AA:BB:CC:DD:EE:FF
+```
+
+It finds:
+
+```
+192.168.1.20
+```
+
+---
+
+# 7. Step 3 — RARP Reply
+
+The server sends a **RARP Reply**.
+
+It tells the client:
+
+```
+Your IP address is:
+
+192.168.1.20
+```
+
+So the mapping is:
+
+```
+AA:BB:CC:DD:EE:FF
+          ↓
+    192.168.1.20
+```
+
+---
+
+# 8. Step 4 — Client Configuration
+
+The client receives the reply.
+
+It now knows:
+
+```
+MAC = AA:BB:CC:DD:EE:FF
+IP  = 192.168.1.20
+```
+
+It can configure its network interface with that IP address and begin IP communication.
+
+So the complete process is:
+
+```
+        RARP
+
+MAC Address
+     │
+     ▼
+RARP Request
+     │
+     ▼
+RARP Server
+     │
+     │ MAC → IP lookup
+     ▼
+RARP Reply
+     │
+     ▼
+IP Address
+```
+
+# What is a MITM attack?
+
+**MITM = Man-in-the-Middle**
+
+A MITM attack occurs when an attacker manages to position themselves between two communicating parties.
+
+Normally:
+
+```
+Client ───────────────────→ Server
+Client ←─────────────────── Server
+```
+
+With MITM:
+
+```
+Client ←────→ Attacker ←────→ Server
+```
+
+The attacker is now sitting between the two parties.
+
+Depending on the attack and encryption, the attacker may be able to:
+
+- observe traffic,
+- capture information,
+- modify traffic,
+- inject traffic,
+However, **being in the middle does not automatically mean the attacker can read everything**.
+That's extremely important.
+If the communication uses properly configured HTTPS/TLS:
+
+The attacker may be able to see that communication exists and possibly some metadata, but the encrypted application data should remain unreadable.
+
+# What is ARP spoofing?
+
+Remember what ARP does:
+
+```
+IP Address → MAC Address
+```
+
+For example:
+
+```
+192.168.1.1 → BB:BB:BB:BB:BB:BB
+```
+
+Your computer stores this information in its **ARP cache**.
+
+The attacker abuses this mechanism.
+
+This is called:
+
+- **ARP spoofing**
+- **ARP poisoning**
+
+The basic idea is:
+
+> The attacker sends false ARP information so that devices associate the attacker's MAC address with another device's IP address.
+
+---
+
+# 4. Normal ARP situation
+
+Imagine:
+
+```
+Victim
+IP: 192.168.1.10
+MAC: VICTIM-MAC
+
+        │
+        │
+        ▼
+
+Router
+IP: 192.168.1.1
+MAC: ROUTER-MAC
+```
+
+The victim's ARP table might contain:
+
+```
+IP              MAC
+-------------------------------
+192.168.1.1     ROUTER-MAC
+```
+
+Therefore:
+
+```
+Victim
+   │
+   │ Ethernet frame → ROUTER-MAC
+   ▼
+Router
+```
+
+Everything is normal.
+
+---
+
+# 5. What happens with ARP poisoning?
+
+Now imagine an attacker:
+
+```
+Attacker
+IP: 192.168.1.50
+MAC: ATTACKER-MAC
+```
+
+The attacker tries to convince the victim:
+
+```
+192.168.1.1 = ATTACKER-MAC
+```
+
+instead of:
+
+```
+192.168.1.1 = ROUTER-MAC
+```
+
+The victim's ARP cache can then become conceptually:
+
+```
+IP              MAC
+-------------------------------
+192.168.1.1     ATTACKER-MAC
+```
+
+The victim now believes:
+
+> "The router's MAC address is the attacker's MAC address."
+
+That's the fundamental trick.
+
+---
+
+# 6. The attacker also targets the router
+
+To create a true MITM position, the attacker generally needs the router to associate the **victim's IP address** with the attacker's MAC as well.
+
+Conceptually:
+
+### Victim's view
+
+```
+Router IP
+    ↓
+Attacker MAC
+```
+
+### Router's view
+
+```
+Victim IP
+    ↓
+Attacker MAC
+```
+
+So the resulting topology becomes:
+
+```
+             Attacker
+             /      \
+            /        \
+        Victim       Router
+```
+
+Instead of:
+
+```
+Victim ─────────────── Router
+```
+
+The traffic can now pass through:
+
+```
+Victim → Attacker → Router
+Router → Attacker → Victim
+```
+
+This is why the attacker is called the **Man in the Middle**.
+
+---
+
+# 7. Why doesn't the connection simply stop?
+
+There's an important networking detail here.
+
+Suppose the victim sends:
+
+```
+Victim → Attacker
+```
+
+The attacker has received the packet.
+
+But the packet still needs to reach:
+
+```
+Router → Internet
+```
+
+The attacker therefore has to forward traffic onward if the goal is to maintain connectivity.
+
+Conceptually:
+
+```
+Victim
+   │
+   │ packet
+   ▼
+Attacker
+   │
+   │ forwards packet
+   ▼
+Router
+   │
+   ▼
+Internet
+```
+
+And return traffic:
+
+```
+Internet
+   │
+   ▼
+Router
+   │
+   ▼
+Attacker
+   │
+   ▼
+Victim
+```
+
+This is why **IP forwarding** is relevant in an ARP-based MITM setup.
+
+---
+
+# 8. What can the attacker actually see?
+
+This is where people often misunderstand MITM.
+
+Suppose the victim visits an old unencrypted HTTP website.
+
+The traffic might contain readable information:
+
+```
+Username: abc
+Password: xyz
+```
+
+If an attacker can capture that traffic, the contents may be exposed.
+
+But with modern HTTPS:
+
+```
+Victim
+   │
+   │ encrypted
+   ▼
+Attacker
+   │
+   │ encrypted
+   ▼
+Server
+```
+
+The attacker cannot simply look at the captured packets and read:
+
+```
+password = xyz
+```
+
+because TLS encrypts the application data.
+
+So:
+
+> **ARP poisoning gives an attacker a position in the network. It does not automatically defeat encryption.**
+
+# What is DNS spoofing?
+First understand normal DNS.
+
+You type:
+
+```
+example.com
+```
+
+Your computer needs an IP address.
+
+DNS performs approximately:
+
+```
+example.com
+      ↓
+     DNS
+      ↓
+93.x.x.x
+```
+
+The attacker attempts to provide a false DNS answer.
+
+For example:
+
+```
+example.com
+     ↓
+Fake DNS response
+     ↓
+Attacker-controlled IP
+```
+
+The victim could potentially be redirected to a fraudulent website.
+
+However, modern HTTPS/TLS provides an important additional protection: if the fraudulent site doesn't possess a certificate valid for the requested domain, the browser should warn the user rather than silently treating it as the legitimate HTTPS site.
+
+### MITM techniques
+- Packet sniffing
+- Session hijacking
+- SSL stripping
+- Packet injection
+## 1 Packet sniffing
+
+**Packet sniffing** means capturing network packets.
+
+Imagine:
+
+```
+Computer ─────── Network ─────── Server
+                    ↑
+                 Sniffer
+```
+
+The sniffer captures packets traveling through a network interface.
+
+A legitimate administrator might use packet capture for:
+
+- troubleshooting,
+- performance analysis,
+- debugging,
+- security monitoring.
+
+An attacker might use it to look for sensitive information.
+
+### Important distinction
+
+Capturing a packet does **not** necessarily mean understanding its contents.
+
+For example:
+
+```
+HTTP:
+Readable application data
+```
+
+versus:
+
+```
+HTTPS:
+Encrypted application data
+```
+
+---
+
+# 12. Session Hijacking
+
+This is another major concept.
+
+First understand what a **session** is.
+
+Suppose you log into a website.
+
+The website needs to remember:
+
+> "This browser is authenticated as User A."
+
+Instead of asking for your password on every request, the server can give your browser a **session identifier**, often stored in a cookie.
+
+Conceptually:
+
+```
+Login
+  ↓
+Server authenticates you
+  ↓
+Session created
+  ↓
+Session cookie/token
+  ↓
+Browser sends token with future requests
+```
+
+For example:
+
+```
+Browser
+   │
+   │ Session token
+   ▼
+Server
+   │
+   │ "This token belongs to User A"
+   ▼
+Access granted
+```
+
+---
+
+# 13. What is session hijacking?
+
+If an attacker obtains a valid session token, they may be able to impersonate the user.
+
+Conceptually:
+
+```
+Victim
+   │
+   │ legitimate session token
+   ▼
+Server
+```
+
+Attacker somehow obtains:
+
+```
+SESSION_TOKEN = ABC123...
+```
+
+Then:
+
+```
+Attacker
+   │
+   │ stolen session token
+   ▼
+Server
+```
+
+If the server accepts the token, the attacker may be treated as the authenticated user.
+
+The important point is:
+
+> The attacker doesn't necessarily need the user's password if they have a usable authenticated session token.
+
+---
+
+# 14. How can session hijacking happen?
+
+Your source mentions several methods.
+
+### Packet sniffing
+
+If a session token travels over an insecure connection, it could potentially be captured.
+
+### XSS
+
+Cross-Site Scripting can allow malicious JavaScript to execute in a victim's browser.
+
+If a vulnerable application's cookies aren't adequately protected, this can potentially expose session information.
+
+### MITM
+
+An attacker who can position themselves between the client and server may attempt to obtain or manipulate session information.
+
+### IP spoofing
+
+Your source discusses IP spoofing in relation to session hijacking.
+
+The important conceptual point is:
+
+> IP spoofing means forging the source IP address of network packets.
+
+# Why HTTPS/TLS matters
+
+Now we reach **SSL/TLS**, which is extremely important for understanding MITM attacks.
+```
+SSL → old protocol
+TLS → successor
+```
+
+Modern systems use **TLS**, not the old SSL protocols.
+
+People still commonly say:
+
+> "SSL certificate"
+
+even though modern websites generally use TLS.
+
+---
+
+# 16. What does TLS actually provide?
+
+There are three major security properties to remember:
+
+```
+Confidentiality
+Authentication
+Integrity
+```
+
+### Confidentiality
+
+Other people shouldn't be able to read the data.
+
+```
+Original:
+Hello, my password is XYZ
+
+Encrypted:
+8fA$91...xQ2...
+```
+
+### Authentication
+
+The client can verify that it is communicating with the intended server.
+
+### Integrity
+
+If someone modifies the data during transmission, the cryptographic protections should detect the modification.
+
+---
+
+# 17. How TLS helps against MITM
+
+Suppose an attacker successfully performs ARP poisoning.
+
+You now have:
+
+```
+Victim
+   │
+   ▼
+Attacker
+   │
+   ▼
+Router
+   │
+   ▼
+Internet
+```
+
+The attacker can potentially observe the network traffic.
+
+But suppose the victim connects to a legitimate HTTPS website:
+
+```
+Victim ←──── TLS encrypted connection ────→ Server
+                    ↑
+                 Attacker
+```
+
+The attacker cannot simply say:
+
+> "I am in the middle, therefore I can read the password."
+
+The TLS encryption prevents that.
+
+---
+
+# 18. TLS handshake
+
+Before secure application data is exchanged, the client and server perform a **TLS handshake**.
+
+Very simplified:
+
+```
+Client                         Server
+  │                              │
+  │──── ClientHello ────────────→│
+  │                              │
+  │←─── ServerHello ─────────────│
+  │←─── Certificate ─────────────│
+  │                              │
+  │──── Key exchange ───────────→│
+  │                              │
+  │==== Encrypted connection ====│
+```
+
+The exact handshake depends on the TLS version and cryptographic configuration.
+
+The important concept is:
+
+> The handshake establishes the cryptographic parameters needed for the secure connection and authenticates the server using certificates.
+
+# Handshake Protocol
+
+The handshake establishes the secure session.
+
+It involves things such as:
+
+- protocol negotiation,
+- cryptographic algorithm negotiation,
+- server authentication,
+- key establishment.
+
+After the handshake:
+
+```
+Client ═══════════════════ Server
+       Encrypted traffic
+```
+
+---
+
+# 24. Change Cipher Spec
+
+Your source describes this as a signal that cryptographic parameters should become active.
+
+Historically this was an important TLS/SSL message.
+
+However, don't over-focus on it when studying **modern TLS 1.3** because TLS 1.3 significantly simplified the handshake and does not use Change Cipher Spec in the same way as older TLS versions.
+# Alert Protocol
+
+TLS also has an alert mechanism.
+
+It communicates things such as:
+
+```
+Warning / error
+Handshake failure
+Cryptographic failure
+Connection termination
+```
+
+A serious/fatal TLS error can terminate the connection.
+
+---
+
+# 26. What is SSL stripping?
+
+Your source lists **SSL stripping** as a MITM technique.
+
+The basic idea is associated with trying to downgrade a user's connection from:
+
+```
+HTTPS
+```
+
+to:
+
+```
+HTTP
+```
+
+so that communication becomes unencrypted.
+
+Historically, this could be relevant when websites supported both HTTP and HTTPS and didn't enforce HTTPS correctly.
+
+Modern protections such as:
+
+- HTTPS-only behavior,
+- HSTS,
+- secure redirects,
+- proper TLS configuration
+
+make these attacks substantially harder.
+
+---
+
+# 27. What is HSTS?
+
+**HSTS = HTTP Strict Transport Security**
+
+It tells the browser:
+
+> "This website must be accessed using HTTPS."
+
+So instead of allowing:
+
+```
+http://example.com
+```
+
+the browser enforces:
+
+```
+https://example.com
+```
+
+This helps prevent certain downgrade attacks.
+
+---
+
+# 28. What is packet injection?
+
+Packet injection means deliberately inserting crafted packets/data into network communication.
+
+Conceptually:
+
+```
+Normal:
+
+Client ───────────────→ Server
+
+
+Injection:
+
+Client ───────→ Attacker ───────→ Server
+                    │
+                    └── Injected data
+```
+
+Whether this succeeds depends heavily on the protocol and its security mechanisms.
+
+TLS provides integrity/authentication mechanisms that make arbitrary modification of properly protected application traffic much harder.
+
+---
+
+# 29. How MITM, ARP poisoning, TLS and session hijacking connect
+
+This is probably the **most useful way to understand the entire chapter**.
+
+Start with:
+
+```
+ARP
+```
+
+ARP maps:
+
+```
+IP → MAC
+```
+
+An attacker abuses ARP:
+
+```
+ARP Spoofing
+```
+
+to potentially position themselves between:
+
+```
+Victim ↔ Router
+```
+
+This creates a potential:
+
+```
+MITM
+```
+
+Once in the middle, the attacker may attempt:
+
+```
+Packet sniffing
+Packet modification
+Session-token theft
+Packet injection
+```
+
+But then:
+
+```
+HTTPS / TLS
+```
+
+protects application data through:
+
+```
+Encryption
+Authentication
+Integrity
+```
+
+Therefore:
+
+```
+ARP Poisoning
+      ↓
+Potential MITM position
+      ↓
+Traffic interception
+      ↓
+       ├── HTTP → potentially readable
+       │
+       └── HTTPS/TLS → encrypted/protected
+```
+
+That's the big picture.
+
+# How to prevent session hijacking
+
+Your source gives several good defenses.
+
+## 1. HTTPS
+
+Use HTTPS/TLS so session information isn't transmitted in plaintext.
+
+```
+HTTP  ❌
+HTTPS ✅
+```
+
+---
+
+## 2. HSTS
+
+Forces browsers to use HTTPS.
+
+```
+HTTP
+ ↓
+Blocked/redirected according to policy
+ ↓
+HTTPS
+```
+
+---
+
+## 3. Secure cookies
+
+A cookie with the **Secure** attribute should only be transmitted over HTTPS.
+
+Conceptually:
+
+```
+Secure cookie
+      ↓
+HTTPS only
+```
+
+---
+
+## 4. HttpOnly
+
+An **HttpOnly** cookie cannot normally be accessed through client-side JavaScript.
+
+This helps reduce cookie theft through some XSS scenarios.
+
+```
+JavaScript
+    ✕
+    │
+    │ cannot directly read HttpOnly cookie
+    ▼
+Session cookie
+```
+
+It does **not** make an XSS vulnerability harmless, but it can protect the session cookie itself from direct JavaScript access.
+
+---
+
+## 5. Strong session IDs
+
+Session identifiers should be:
+
+- long,
+- unpredictable,
+- generated using secure randomness.
+
+An attacker shouldn't be able to guess:
+
+```
+SESSION = 12345
+```
+
+Instead, session identifiers should be cryptographically difficult to predict.
+
+---
+
+## 6. Session expiration
+
+Sessions shouldn't remain valid forever.
+
+For example:
+
+```
+Login
+ ↓
+Session created
+ ↓
+Timeout
+ ↓
+Session invalid
+```
+
+This limits the damage if a session token is stolen.
+
+# Fault Injection Testing
+
+Fault injection means:
+
+> **Intentionally introducing faults into a system to see whether the system handles them correctly.**
+
+This is generally a **legitimate software testing technique**.
+
+Imagine you build a web application.
+
+Normally:
+
+```
+Application
+    ↓
+Database
+    ↓
+Success
+```
+
+But what happens if the database suddenly becomes unavailable?
+
+You deliberately simulate:
+
+```
+Application
+    ↓
+Database ❌
+```
+
+Then you observe:
+
+> Does the application crash?
+
+> Does it retry?
+
+> Does it show a useful error?
+
+> Does it recover?
+
+That's fault injection.
+
+---
+
+# 33. Fault → Error → Failure
+
+This is an important concept.
+
+### Fault
+
+The intentionally introduced problem.
+
+```
+Database connection fails
+```
+
+↓
+
+### Error
+
+The system enters an incorrect/unexpected state.
+
+```
+Application cannot obtain required data
+```
+
+↓
+
+### Failure
+
+The problem becomes visible externally.
+
+```
+Application crashes
+```
+
+So:
+
+```
+FAULT
+  ↓
+ERROR
+  ↓
+FAILURE
+```
+
+---
+
+# 34. Compile-time fault injection
+
+The fault is introduced into the source code before/during compilation.
+
+For example, suppose the original code is conceptually:
+
+```
+a = a - 1
+```
+
+and the test version changes it to:
+
+```
+a = a + 1
+```
+
+Now the program behaves differently.
+
+The purpose isn't to create a real production bug.
+
+It's to test:
+
+> "Can our tests detect this kind of failure?"
+
+---
+
+# 35. Code modification vs code insertion
+
+### Code modification
+
+Change existing code.
+
+```
+Original:
+a = a - 1
+
+Test:
+a = a + 1
+```
+
+### Code insertion
+
+Add new faulty behavior.
+
+```
+Original:
+a = a - 1
+
+Test:
+a = a - 1
+a = a + 1
+```
+
+The testing system observes whether the resulting behavior is detected.
+
+---
+
+# 36. Runtime fault injection
+
+Here the program is already running.
+
+A fault is introduced while the system is executing.
+
+Examples from your source include:
+
+### Memory corruption
+
+Deliberately create invalid memory conditions.
+
+### System-call interposition
+
+Intercept operating-system calls and simulate failures.
+
+For example:
+
+```
+Application
+    ↓
+open()
+    ↓
+Test system
+    ↓
+"Simulate failure"
+```
+
+### Network-level faults
+
+Simulate:
+
+```
+Packet loss
+Packet corruption
+Packet delay
+Packet reordering
+Network congestion
+```
+
+This is particularly useful for testing distributed applications.
+
+---
+
+# 37. Why do fault injection?
+
+Suppose your application depends on a server.
+
+You don't want to discover in production that:
+
+```
+Server unavailable
+       ↓
+Application crashes
+```
+
+Instead, test it beforehand:
+
+```
+Server unavailable
+       ↓
+Fault injection
+       ↓
+Application tested
+       ↓
+Developer discovers weakness
+       ↓
+Application improved
+```
+
+Therefore, fault injection can improve:
+
+- reliability,
+- resilience,
+- robustness,
+- debugging,
+- recovery behavior.
+
+---
+
+# 38. Advantages and disadvantages
+
+### Advantages
+
+**Improved resilience**
+
+You discover how the system behaves during failures.
+
+**Increased reliability**
+
+Problems can be fixed before production.
+
+**Improved debugging**
+
+You intentionally create a known failure and investigate the response.
+
+### Disadvantages
+
+**Complexity**
+
+Testing infrastructure becomes more complicated.
+
+**Cost**
+
+It requires additional development/testing resources.
+
+**Time**
+
+Designing meaningful failure scenarios takes time.
+
+**Risk**
+
+If performed carelessly on production systems, fault injection can cause real outages.
 
 
 
