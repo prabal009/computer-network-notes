@@ -18217,6 +18217,5808 @@ Designing meaningful failure scenarios takes time.
 
 If performed carelessly on production systems, fault injection can cause real outages.
 
+# What is ICMP?
+
+**ICMP = Internet Control Message Protocol**
+ICMP is a **Network Layer protocol** used along with IP.
+Its main purpose is **not to carry normal application data**. Instead, it helps network devices communicate information such as:
+
+- Something went wrong while delivering a packet.
+- A destination cannot be reached.
+- A packet's TTL expired.
+- A device is responding to a connectivity test.
+Suppose your computer wants to communicate with:
+
+```
+Your PC ─── Router ─── Router ─── Server
+```
+
+If the server cannot be reached, IP itself doesn't have a built-in mechanism for explaining the problem to your computer.
+
+ICMP can send a message back saying something like:
+
+> "Destination unreachable."
+
+That's why ICMP is often described as a **control and error-reporting protocol for IP
+# Why do we need ICMP?
+
+IP is primarily concerned with **moving packets from one network to another**.
+
+But packets can encounter problems:
+
+```
+Packet
+  ↓
+Router
+  ↓
+Destination unreachable
+```
+
+The router may need to tell the sender:
+
+> "I couldn't deliver this packet."
+
+ICMP provides that communication.
+
+Your material therefore identifies two major purposes:
+
+### A. Error reporting
+
+ICMP can report problems such as:
+
+- Destination unreachable
+- Time exceeded
+- Fragmentation-related problems
+- Parameter problems
+
+### B. Network diagnostics
+
+ICMP is also used by tools such as:
+
+- **ping**
+- **traceroute/tracert**
+
+The supplied material specifically describes ping as using ICMP Echo Request and Echo Reply messages.
+
+---
+
+# 3. Is ICMP like TCP?
+
+No.
+
+ICMP is **not a connection-oriented protocol like TCP**.
+
+TCP generally does something like:
+
+```
+SYN
+ ↓
+SYN-ACK
+ ↓
+ACK
+ ↓
+Connection established
+```
+
+ICMP doesn't establish a TCP-style connection.
+
+For example, with ping:
+
+```
+Computer
+   │
+   │ ICMP Echo Request
+   ↓
+Server
+   │
+   │ ICMP Echo Reply
+   ↓
+Computer
+```
+
+There is no TCP handshake involved.
+
+---
+
+# 4. Where does ICMP exist in the network stack?
+
+ICMP operates alongside IP at the **Network Layer**.
+
+A simplified IPv4 packet looks like:
+
+```
+┌─────────────────────────┐
+│       IPv4 Header       │
+├─────────────────────────┤
+│      ICMP Header        │
+├─────────────────────────┤
+│      ICMP Data          │
+└─────────────────────────┘
+```
+
+So ICMP messages are carried inside IP packets.
+
+# ICMP Packet/Header Format
+
+The material describes the important fields of an ICMP message.
+
+For basic ICMPv4 messages, the beginning looks like:
+
+```
+  0                   7 8                  15 16                 31
+ ┌─────────────────────┬─────────────────────┬─────────────────────┐
+ │       Type          │        Code         │      Checksum       │
+ ├─────────────────────┴─────────────────────┴─────────────────────┤
+ │                 Rest of Header / Message-specific                │
+ ├──────────────────────────────────────────────────────────────────┤
+ │                         Data / Payload                             │
+ └──────────────────────────────────────────────────────────────────┘
+```
+
+## Type — 8 bits
+
+**Type tells us what kind of ICMP message it is.**
+
+Examples:
+
+|Type|Meaning|
+|---|---|
+|0|Echo Reply|
+|3|Destination Unreachable|
+|5|Redirect|
+|8|Echo Request|
+|11|Time Exceeded|
+|12|Parameter Problem|
+
+For example:
+
+```
+Type = 8
+```
+
+means:
+
+> ICMP Echo Request
+
+while:
+
+```
+Type = 0
+```
+
+means:
+
+> ICMP Echo Reply
+
+---
+
+# 6. Code — 8 bits
+
+The **Code** provides additional information about the Type.
+
+For example:
+
+```
+Type = 3
+```
+
+means:
+
+> Destination Unreachable
+
+But there are different reasons why the destination may be unreachable.
+
+The Code tells us **which reason**.
+
+# Data / Payload
+
+After the ICMP header, there can be additional information.
+
+The exact contents depend on the ICMP message type.
+
+For example, an Echo Request can contain some data that the receiver can return in the Echo Reply.
+
+Conceptually:
+
+```
+ICMP Echo Request
+
+┌───────────────┐
+│ Type = 8      │
+│ Code = 0      │
+│ Checksum      │
+│ Other fields  │
+│ Data          │
+└───────────────┘
+```
+
+---
+
+# 9. Ping — the easiest way to understand ICMP
+
+When you run:
+
+```
+ping google.com
+```
+
+your computer normally sends an **ICMP Echo Request**.
+
+The destination may respond with:
+
+**ICMP Echo Reply**
+
+So:
+
+```
+Your computer
+      │
+      │ Echo Request
+      ↓
+Destination
+      │
+      │ Echo Reply
+      ↓
+Your computer
+```
+
+This lets you determine things such as:
+
+- Is the destination reachable?
+- How long did the round trip take?
+- Are packets being lost?
+
+That's why ping is primarily a **network diagnostic tool**.
+
+---
+
+# 10. Traceroute and ICMP
+
+Traceroute is another important use.
+
+Suppose:
+
+```
+PC
+ ↓
+R1
+ ↓
+R2
+ ↓
+R3
+ ↓
+Server
+```
+
+Traceroute attempts to discover the path.
+
+One important mechanism involves manipulating the **TTL (Time To Live)**.
+
+Suppose a packet has:
+
+```
+TTL = 1
+```
+
+It reaches R1.
+
+The router decreases TTL:
+
+```
+1 → 0
+```
+
+The packet expires.
+
+The router can then send an:
+
+**ICMP Time Exceeded**
+
+message back.
+
+So the computer learns:# Important ICMP message types
+
+Let's understand the major ones in your notes.
+
+## Type 0 — Echo Reply
+
+Response to an Echo Request.
+
+```
+PC ── Echo Request ──→ Server
+PC ←── Echo Reply ──── Server
+```
+
+Used by ping.
+
+---
+
+## Type 3 — Destination Unreachable
+
+Means:
+
+> "The destination cannot be reached."
+
+There are different codes.
+
+For example:
+
+```
+Type 3
+ ├── Code 0 → Network unreachable
+ ├── Code 1 → Host unreachable
+ ├── Code 2 → Protocol unreachable
+ ├── Code 3 → Port unreachable
+ └── Code 4 → Fragmentation needed
+```
+
+This is extremely important.
+
+---
+
+## Type 5 — Redirect
+
+A router can tell a host that a **better route may be available**.
+
+Imagine:
+
+```
+PC
+ │
+ ↓
+R1
+ │
+ ↓
+R2
+ │
+ ↓
+Destination
+```
+
+If the PC can communicate with R2 directly, R1 might send a redirect informing the host about a better route.
+
+Conceptually:
+
+```
+PC → R1 → R2
+```
+
+could potentially become:
+
+```
+PC ─────→ R2
+```
+
+---
+
+# 12. Type 8 — Echo Request
+
+This is the request sent by ping.
+
+```
+Type = 8
+Code = 0
+```
+
+The destination can respond with:
+
+```
+Type = 0
+Code = 0
+```
+
+which is Echo Reply.
+
+So remember:
+
+> **8 = Request**
+
+> **0 = Reply**
+
+---
+
+# 13. Type 11 — Time Exceeded
+
+This happens when a packet's TTL expires.
+
+For example:
+
+```
+PC
+ ↓
+R1
+ ↓
+R2
+```
+
+If TTL reaches zero before reaching the destination:
+
+```
+TTL expires
+      ↓
+Router generates ICMP
+      ↓
+ICMP Time Exceeded
+      ↓
+PC
+```
+
+This is particularly important for understanding traceroute.
+
+---
+
+# 14. Type 12 — Parameter Problem
+
+This indicates that there is a problem with some part of the IP packet's header.
+
+The material describes the general idea as the router detecting an invalid/problematic parameter and informing the sender.
+
+Think:
+
+```
+Malformed/problematic IP header
+             ↓
+          Router
+             ↓
+    ICMP Parameter Problem
+             ↓
+          Sender
+```
+
+
+```
+Hop 1 = R1
+```
+
+Traceroute can repeat this process with different TTL values:
+
+```
+TTL 1 → R1 responds
+TTL 2 → R2 responds
+TTL 3 → R3 responds
+...
+```
+
+That's the basic idea behind discovering the route.
+
+# ICMP Flood
+
+This is where ICMP becomes relevant to cybersecurity.
+
+An **ICMP Flood** is a type of DoS/DDoS attack in which a target receives a very large number of ICMP packets, commonly Echo Requests.
+
+Your supplied material describes the basic mechanism as overwhelming the target with ICMP requests, consuming bandwidth and system resources and potentially preventing legitimate traffic from being handled.
+
+Think of it like this:
+
+### Normal situation
+
+```
+User 1 ────── Ping ──────→ Server
+User 2 ────── Request ───→ Server
+User 3 ────── Request ───→ Server
+```
+
+The server can handle the traffic.
+
+### Flood
+
+```
+Attacker ──┐
+Bot 1 ─────┤
+Bot 2 ─────┤
+Bot 3 ─────┤
+Bot 4 ─────┤──────→ Server
+Bot 5 ─────┤
+Bot 6 ─────┤
+...        │
+Thousands ─┘
+```
+
+The amount of traffic becomes excessive.
+
+---
+
+# 17. Why does an ICMP Flood cause problems?
+
+A target receiving huge amounts of traffic may have to spend resources handling packets.
+
+Those resources can include:
+
+- Network bandwidth
+- CPU
+- Memory
+- Packet-processing capacity
+
+The result can be:
+
+```
+Huge ICMP traffic
+       ↓
+Resource consumption
+       ↓
+Network congestion
+       ↓
+Legitimate traffic affected
+       ↓
+Slowdown / unavailability
+```
+
+Your source describes this same progression: excessive requests → resource consumption → inability to handle legitimate traffic → denial of service.
+
+---
+
+# 18. DoS vs DDoS
+
+This distinction is important.
+
+### DoS
+
+**Denial of Service**
+
+Generally, the attack comes from a single source or a relatively limited set of sources.
+
+```
+Attacker
+   │
+   │ massive traffic
+   ↓
+Target
+```
+
+### DDoS
+
+**Distributed Denial of Service**
+
+Traffic comes from many distributed systems.
+
+```
+Bot 1 ──┐
+Bot 2 ──┤
+Bot 3 ──┤
+Bot 4 ──┤
+Bot 5 ──┤──→ Target
+Bot 6 ──┤
+...     │
+```
+
+A **botnet** is commonly used to generate distributed traffic.
+
+---
+
+# 19. What is IP spoofing?
+
+Attackers can sometimes manipulate the source IP address in packets.
+
+This is called:
+
+**IP spoofing**
+
+Instead of:
+
+```
+Real attacker IP
+       ↓
+     Target
+```
+
+the packet may claim:
+
+```
+Fake source IP
+       ↓
+     Target
+```
+
+This can make attribution and filtering more difficult.
+
+Your source specifically mentions spoofing as something attackers may use during ICMP floods.
+
+---
+
+# 20. What is a Smurf Attack?
+
+A **Smurf attack** is a particular type of ICMP-based amplification/reflection attack.
+
+The simplified idea is:
+
+```
+Attacker
+   │
+   │ ICMP request
+   │ with spoofed victim IP
+   ↓
+Broadcast network
+   │
+   ├── Device 1 → Reply
+   ├── Device 2 → Reply
+   ├── Device 3 → Reply
+   └── Device 4 → Reply
+             ↓
+           Victim
+```
+
+Instead of one machine responding, multiple machines may respond to the request.
+
+This can amplify the traffic reaching the victim.
+
+Modern networks have protections that make classic Smurf attacks much less practical than they once were.
+
+---
+
+# 21. Ping of Death vs ICMP Flood
+
+These are **not the same attack**.
+
+### Ping of Death
+
+Historically involved malformed/oversized IP packets that could cause problems in vulnerable systems.
+
+Think:
+
+```
+Malformed/oversized packet
+          ↓
+     Vulnerable system
+          ↓
+       Crash/failure
+```
+
+### ICMP Flood
+
+The main idea is **volume**:
+
+```
+Huge number of ICMP packets
+          ↓
+Resource exhaustion
+          ↓
+DoS
+```
+
+So:
+
+> **Ping of Death → problematic packet size/fragmentation**
+
+> **ICMP Flood → excessive packet volume**
+
+Modern systems generally have protections against the classic Ping of Death vulnerability.
+
+---
+
+# 22. ICMP Flood vs other DDoS attacks
+
+Your source provides this comparison.
+
+|Attack|Main target/idea|
+|---|---|
+|**ICMP Flood**|Overwhelm with ICMP packets|
+|**SYN Flood**|Exhaust TCP connection resources|
+|**UDP Flood**|Overload network/UDP processing|
+|**HTTP Flood**|Overwhelm web/application servers|
+|**Smurf**|ICMP reflection/amplification|
+|**DNS Amplification**|Abuse DNS responses for amplification|
+|**NTP Amplification**|Abuse NTP responses for amplification|
+|**Botnet DDoS**|Use many compromised devices|
+
+The important thing is that **DDoS is a category**, while ICMP Flood is one particular technique.
+
+---
+
+# 23. How do you detect an ICMP Flood?
+
+Your material gives several defensive techniques.
+
+### 1. Traffic monitoring
+
+Look for an unusual increase in ICMP traffic.
+
+For example:
+
+```
+Normal:
+ICMP traffic ───────────
+
+Attack:
+ICMP traffic █████████████████████
+```
+
+A sudden spike can be suspicious.
+
+### 2. Firewall logs
+
+Check whether the firewall is receiving an unusually high number of ICMP packets.
+
+### 3. IDS/IPS
+
+An:
+
+**IDS = Intrusion Detection System**
+
+can detect suspicious traffic.
+
+An:
+
+**IPS = Intrusion Prevention System**
+
+can additionally take action to block suspicious traffic.
+
+### 4. Wireshark
+
+Wireshark can be used to inspect captured packets and filter for ICMP traffic.
+
+### 5. Rate-based alerts
+
+You can create alerts when ICMP traffic exceeds a defined threshold.
+
+---
+
+# 24. How can ICMP Flood attacks be prevented?
+
+There isn't one universal solution.
+
+Common defensive techniques include:
+
+### A. Rate limiting
+
+Instead of accepting unlimited ICMP requests:
+
+```
+Allowed:
+1
+2
+3
+...
+```
+
+excessive requests can be dropped.
+
+The source gives rate limiting as one of the main prevention approaches.
+
+### B. Firewall filtering
+
+A firewall can filter unwanted ICMP traffic.
+
+### C. IDS/IPS
+
+Security systems can identify abnormal ICMP patterns.
+
+### D. DDoS protection
+
+Organizations may use specialized DDoS mitigation services capable of filtering large volumes of malicious traffic.
+
+### E. Continuous monitoring
+
+Monitor:
+
+- Traffic volume
+- ICMP packet rates
+- Source patterns
+- Firewall events
+- Network performance
+
+---
+
+# 25. Should you completely disable ICMP?
+
+**Not necessarily.**
+
+This is an important point.
+
+If you completely block ICMP:
+
+```
+Block ICMP
+    ↓
+Ping may stop working
+Traceroute may be affected
+Some network diagnostics stop working
+```
+
+The source itself acknowledges this tradeoff: disabling ICMP can prevent certain attacks but also disables legitimate activities such as ping and traceroute.
+
+Therefore, in real networks, **selective filtering and rate limiting** can often be preferable to blindly blocking everything.
+
+# What is a Ping?
+
+Before understanding a **Ping Flood**, you need to understand normal **ping**.
+
+Ping is a network diagnostic mechanism that normally uses **ICMP Echo Request** and **ICMP Echo Reply**.
+
+Imagine you want to know:
+
+> "Is this computer reachable?"
+
+You send:
+
+```
+Your PC
+   │
+   │ ICMP Echo Request
+   ▼
+Destination
+   │
+   │ ICMP Echo Reply
+   ▼
+Your PC
+```
+
+It's basically:
+
+> **PC:** "Are you there?"
+
+> **Destination:** "Yes, I'm here."
+
+For example:
+
+```
+ping google.com
+```
+
+can be used to test connectivity and measure response time.
+So **ping itself is not an attack**.
+It is a completely legitimate network troubleshooting tool.
+
+# Then what is a Ping Flood?
+
+Now imagine that instead of sending:
+
+```
+1 ping
+```
+
+someone sends:
+
+```
+10 pings
+100 pings
+10,000 pings
+1,000,000+ pings
+```
+
+in a very short period.
+
+That's the basic idea behind a:
+
+> **Ping Flood / ICMP Flood**
+
+The attacker overwhelms the target with a huge amount of ICMP traffic.
+
+Your source describes it as flooding the target with ICMP Echo Requests so that normal traffic becomes difficult or impossible to handle.
+
+---
+
+# 3. Normal Ping vs Ping Flood
+
+This is probably the easiest way to remember it.
+
+### Normal ping
+
+```
+PC ────────→ Server
+    Request
+
+PC ←──────── Server
+     Reply
+```
+
+Only a small amount of traffic.
+
+The server can easily handle it.
+
+### Ping Flood
+
+```
+Attacker ──┐
+           │
+           ├── Ping
+           ├── Ping
+           ├── Ping
+           ├── Ping
+           ├── Ping
+           ├── Ping
+           ├── Ping
+
+```
+Now the server/network may have to process an excessive number of packets.
+# Why would the target respond?
+
+This is an important part.
+
+Normally, when a computer receives an ICMP Echo Request, it may send an ICMP Echo Reply.
+
+So:
+
+```
+Request
+   ↓
+Target processes it
+   ↓
+Reply
+```
+
+If the target receives an enormous number of requests, processing those requests and generating responses can consume resources.
+
+However, **not every modern system will automatically respond to every ping**, and network devices/firewalls can filter or rate-limit ICMP. So the attack's effectiveness depends heavily on the target's configuration and network capacity.
+
+---
+
+# 6. What exactly is being attacked?
+
+The attack isn't necessarily about "destroying" the computer.
+
+The goal is usually:
+
+> **Make the service unavailable to legitimate users.**
+
+For example, imagine a gaming server:
+
+```
+Normal:
+
+Players ─────────→ Game Server
+                    ↓
+                 Game running
+```
+
+During a successful flood:
+
+```
+Massive ICMP traffic
+         ↓
+    Game Server
+         ↓
+Resources/connections overwhelmed
+         ↓
+Players cannot connect properly
+```
+
+The server might become:
+
+- Extremely slow
+- Unresponsive
+- Partially unavailable
+- Completely unavailable
+
+That's why it is called **Denial of Service**.
+
+---
+
+# 7. What does DoS mean?
+
+**DoS = Denial of Service**
+
+The objective is to prevent legitimate users from using a service.
+
+For example:
+
+```
+Legitimate user
+      │
+      │ "I want to access website"
+      ▼
+   Website
+      X
+   unavailable
+```
+
+The user is denied the service.
+
+---
+
+# 8. What is DDoS?
+
+Now suppose one attacker isn't generating enough traffic.
+
+The attacker can use many compromised machines.
+
+These machines may be:
+
+- Infected computers
+- Compromised servers
+- IoT devices
+- Other compromised systems
+
+Together they can form a:
+
+> **Botnet**
+
+Then:
+
+```
+                 ┌── Bot 1
+                 ├── Bot 2
+                 ├── Bot 3
+Attacker ────────┼── Bot 4
+                 ├── Bot 5
+                 ├── Bot 6
+                 └── ...
+                       │
+                       ▼
+                    TARGET
+```
+
+This becomes a **Distributed Denial of Service (DDoS)** attack.
+
+The important distinction:
+
+**DoS:** attack traffic can come from one/fewer sources.
+
+**DDoS:** attack traffic comes from many distributed systems.
+
+---
+
+# 9. Why are botnets dangerous?
+
+Suppose you have:
+
+```
+1 attacker
+```
+
+A firewall may be able to identify and block that source.
+
+But imagine:
+
+```
+10,000 different devices
+        ↓
+      Target
+```
+
+Blocking one IP doesn't solve the problem.
+
+The attacker can potentially have traffic coming from many different locations.
+
+That's why DDoS attacks can be much harder to handle.
+
+---
+
+# 10. What is the "virtual traffic jam" analogy?
+
+The source compares a Ping Flood to traffic congestion.
+
+That's actually a useful analogy.
+
+Imagine a road normally looks like:
+
+```
+Normal traffic:
+
+Car → Car → Car → Car
+```
+
+Everything moves normally.
+
+Now imagine:
+
+```
+Car Car Car Car Car Car Car Car
+Car Car Car Car Car Car Car Car
+Car Car Car Car Car Car Car Car
+Car Car Car Car Car Car Car Car
+```
+
+The road becomes congested.
+
+Now an ambulance can't get through.
+
+In the network:
+
+```
+Normal traffic
+      ↓
+Website / server
+```
+
+becomes:
+
+```
+Legitimate traffic ───────┐
+                          │
+Massive attack traffic ───┼──→ Network
+                          │
+                          ↓
+                    Congestion
+```
+
+The legitimate traffic can get delayed or dropped.
+
+---
+
+# 11. What does "false requests" mean?
+
+Your source uses the phrase **"false requests."**
+
+This doesn't necessarily mean that the ICMP packet itself is fake or malformed.
+
+It means the requests are **unnecessary/malicious requests generated for the purpose of overwhelming the target**, rather than legitimate diagnostic activity.
+
+A normal user might send:
+
+```
+1 ping
+```
+
+to check connectivity.
+
+An attacker might generate huge amounts of ICMP requests specifically to consume resources.
+
+---
+
+# 12. What is amplification?
+
+The source mentions:
+
+> "one ping causes a massive response"
+
+This is referring to **amplification/reflection-style attacks**.
+
+The basic idea is:
+
+```
+Small attacker traffic
+        ↓
+Intermediate systems
+        ↓
+Larger amount of traffic
+        ↓
+Victim
+```
+
+However, don't confuse a straightforward **ICMP Ping Flood** with every type of amplification attack.
+
+A basic ping flood is simply:
+
+```
+Lots of ICMP traffic → Target
+```
+
+An amplification/reflection attack involves additional systems or mechanisms that increase/refelect the traffic.
+
+---
+
+# 13. What happens when the attack succeeds?
+## A. Website becomes unavailable
+
+Suppose:
+
+```
+Website
+   ↓
+Server
+```
+
+Users normally send:
+
+```
+HTTP requests
+```
+
+But if the network is overwhelmed:
+
+```
+Users ──────→ X
+             Server unavailable
+```
+
+Users can't access the website.
+
+---
+
+## B. Game server becomes unreachable
+
+For example:
+
+```
+Player 1 ──┐
+Player 2 ──┤
+Player 3 ──┤
+            ↓
+        Game Server
+```
+
+If the network/server becomes overloaded:
+
+```
+Players
+   ↓
+Connection problems
+   ↓
+Players disconnected
+```
+
+---
+
+## C. Business transactions can be affected
+
+If an online store becomes unavailable:
+
+```
+Customer
+   ↓
+Website
+   X
+Unavailable
+```
+
+The customer can't:
+
+- Browse products
+- Place orders
+- Make purchases
+
+Therefore the business can lose revenue.
+
+---
+
+# 14. Can it affect other devices?
+
+Yes.
+
+Suppose a small network has:
+
+```
+                Internet
+                   │
+                Router
+             ┌─────┼─────┐
+             ↓     ↓     ↓
+            PC    PC    Server
+```
+
+If the internet connection is saturated with malicious traffic:
+
+```
+Massive traffic
+       ↓
+    Router
+       ↓
+Bandwidth exhausted
+       ↓
+Other legitimate devices suffer
+```
+
+So the problem isn't necessarily limited to the target machine.
+
+The surrounding network infrastructure can also be affected.
+
+# What is a CDN and how can it help?
+
+The source mentions a **CDN (Content Delivery Network)**.
+
+A CDN distributes content through multiple geographically distributed servers/locations.
+
+Very simplified:
+
+```
+Without CDN:
+
+Users
+  ↓
+One server
+```
+
+With CDN:
+
+```
+                CDN
+          ┌─────┼─────┐
+          ↓     ↓     ↓
+        Edge  Edge  Edge
+        Server Server Server
+```
+
+This can improve resilience and distribute legitimate traffic.
+
+However, a CDN by itself isn't a magic solution to every ICMP flood. DDoS mitigation usually involves **network-level filtering, traffic scrubbing, rate limiting, firewalls, and/or specialized DDoS protection**.
+
+---
+
+# 18. How do you detect a Ping Flood?
+
+This is one of the most important cybersecurity sections.
+
+## Step 1: Monitor ICMP traffic
+
+Suppose normal traffic is:
+
+```
+ICMP packets/sec
+
+10
+12
+9
+11
+13
+10
+```
+
+Suddenly:
+
+```
+15
+18
+20
+500
+10,000
+50,000
+```
+
+That's a significant anomaly.
+
+---
+
+# 19. Firewall logs
+
+A firewall can record traffic.
+
+You may notice:
+
+```
+Large number of ICMP requests
+       ↓
+Many packets from suspicious sources
+       ↓
+Unusual traffic pattern
+```
+
+This can help security teams investigate.
+
+---
+
+# 20. IDS/IPS
+
+### IDS
+
+**Intrusion Detection System**
+
+Detects suspicious activity.
+
+Think:
+
+> "Something unusual is happening."
+
+### IPS
+
+**Intrusion Prevention System**
+
+Can detect and take action against suspicious traffic.
+
+Think:
+
+> "Something unusual is happening — block it."
+
+---
+
+# 21. Wireshark
+
+Wireshark is a packet-analysis tool.
+
+You can use it to inspect network traffic and identify ICMP packets.
+
+Conceptually:
+
+```
+Network traffic
+      ↓
+ Wireshark capture
+      ↓
+Filter ICMP
+      ↓
+Analyze traffic
+```
+
+If you see an abnormal number of ICMP Echo Requests, that can be an indicator of a flood.
+
+---
+
+# 22. How do you prevent Ping Flood attacks?
+
+Now we reach the most important defensive section.
+
+There are several layers.
+
+---
+
+## Method 1: Firewall filtering
+
+A firewall can filter unwanted incoming ICMP traffic.
+
+For example:
+
+```
+Internet
+   ↓
+Firewall
+   ↓
+Server
+```
+
+Instead of:
+
+```
+All ICMP → Server
+```
+
+you can have:
+
+```
+ICMP
+ ↓
+Firewall
+ ↓
+Filter
+ ├── Allowed traffic → Server
+ └── Unwanted traffic → Dropped
+```
+
+---
+
+# 23. Method 2: Rate limiting
+
+This is extremely important.
+
+Instead of saying:
+
+> "Block every ping."
+
+you can say:
+
+> "Allow a reasonable number of pings, but drop excessive ones."
+
+For example, conceptually:
+
+```
+Normal:
+5 requests → Allow
+
+Excessive:
+50,000 requests → Rate-limit/drop
+```
+
+This allows legitimate diagnostic activity while reducing the impact of floods.
+
+---
+
+# 24. Why not simply block every ping?
+
+Because ping can be useful.
+
+For example:
+
+```
+Network administrator
+        ↓
+ping server
+        ↓
+Check connectivity
+```
+
+If you block all ICMP:
+
+```
+ping
+ ↓
+BLOCKED
+```
+
+You may lose useful diagnostic functionality.
+
+The supplied material also points out this tradeoff: disabling ICMP can interfere with legitimate network activities such as ping and traceroute.
+
+Therefore:
+
+> **Security is about controlling ICMP appropriately, not automatically eliminating all ICMP traffic.**
+
+---
+
+# 25. Method 3: Network firewall
+
+For a server exposed to the internet:
+
+```
+Internet
+    ↓
+Network Firewall
+    ↓
+Server
+```
+
+The firewall can filter unwanted traffic before it reaches the server.
+
+This is better than allowing all traffic directly to the server.
+
+---
+
+# 26. Method 4: DDoS protection
+
+For large organizations, specialized DDoS mitigation services can help absorb/filter large attacks.
+
+Conceptually:
+
+```
+Attack traffic
+      ↓
+DDoS protection
+      ↓
+Filter malicious traffic
+      ↓
+Clean traffic
+      ↓
+Your infrastructure
+```
+
+This becomes particularly important when the attack is larger than the organization's own internet connection.
+
+---
+
+# 27. Method 5: Monitoring
+
+Prevention isn't just blocking.
+
+You should also monitor:
+
+- ICMP traffic
+- Bandwidth usage
+- Firewall logs
+- Network latency
+- Server CPU
+- Packet rates
+- IDS/IPS alerts
+
+You want to detect:
+
+> **"Something abnormal is happening."**
+
+as early as possible.
+
+### IGMP allows devices on an IPv4 network to tell their local router which multicast groups they want to receive traffic from.
+
+# what does IGMP actually do?
+
+This is the most important concept.
+
+Imagine your network has a multicast group:
+
+```
+239.1.1.1
+```
+
+PC1 wants to receive traffic from this group.
+
+PC1 effectively tells the local router:
+
+> "I want to join multicast group 239.1.1.1."
+
+The router keeps track of that membership.
+
+```
+PC1 ──┐
+PC2 ──┼── Multicast Group 239.1.1.1
+PC3 ──┘
+```
+
+The router knows:
+
+```
+Group 239.1.1.1
+       │
+       ├── PC1
+       ├── PC2
+       └── PC3
+```
+
+That's the fundamental job of **IGMP**.
+
+# IGMP does NOT carry the actual video/audio
+
+This is a common misunderstanding.
+
+Suppose you're watching a multicast video stream.
+
+IGMP isn't the actual video stream.
+
+Instead:
+
+```
+IGMP
+ ↓
+Manages membership
+ ↓
+"Who wants this multicast traffic?"
+```
+
+Then multicast routing/forwarding mechanisms handle the actual multicast traffic.
+
+# The multicast group
+
+A multicast group is identified by a **multicast IP address**.
+
+For IPv4, multicast addresses are:
+
+```
+224.0.0.0 – 239.255.255.255
+```
+
+These are traditionally called **Class D addresses**.
+
+For example:
+
+```
+239.1.1.1
+```
+
+could represent a multicast group.
+
+Imagine a TV channel:
+
+```
+239.1.1.1 = Sports Channel
+```
+# What happens when a host wants to join?
+
+Let's say PC1 wants a multicast stream.
+
+### Step 1
+
+PC1 decides:
+
+> "I want multicast group 239.1.1.1."
+
+### Step 2
+
+PC1 sends an **IGMP Membership Report**.
+
+Conceptually:
+
+```
+PC1
+ │
+ │ "I want group 239.1.1.1"
+ ↓
+Router
+```
+
+### Step 3
+
+The router records the membership.
+
+```
+Router's table
+
+239.1.1.1
+    ↓
+PC1
+```
+
+Now the router knows that traffic for that multicast group is needed on that network segment.
+
+# What if multiple hosts want the same group?
+
+Suppose:
+
+```
+PC1 → 239.1.1.1
+PC2 → 239.1.1.1
+PC3 → 239.1.1.1
+```
+
+The router can maintain:
+
+```
+Group: 239.1.1.1
+
+Members:
+ ├── PC1
+ ├── PC2
+ └── PC3
+```
+
+The multicast traffic can then be delivered to the interested receivers.
+
+This is much more efficient than sending a completely separate copy to every receiver.
+
+# What happens when a host leaves?
+
+Suppose PC2 stops watching the multicast stream.
+
+It can send an:
+
+> **IGMP Leave Group**
+
+message.
+
+```
+PC2
+ │
+ │ "I don't need this anymore."
+ ↓
+Router
+```
+
+The router can then update its membership information.
+
+This feature was introduced in **IGMPv2**.
+
+# What is IGMP Snooping?
+
+Now we introduce **switches**.
+
+Imagine:
+
+```
+             Router
+               │
+             Switch
+        ┌──────┼──────┐
+        ↓      ↓      ↓
+       PC1    PC2    PC3
+```
+
+Suppose only PC1 wants:
+
+```
+239.1.1.1
+```
+
+Without proper multicast handling, the switch may unnecessarily send multicast traffic toward ports that don't need it.
+
+That's inefficient.
+
+---
+
+# 15. IGMP Snooping solves this problem
+
+**IGMP Snooping** is a feature on network switches.
+
+The switch observes IGMP messages.
+
+For example:
+
+```
+PC1 ── "I want 239.1.1.1" ──→ Router
+             ↑
+          Switch sees it
+```
+
+The switch learns:
+
+```
+239.1.1.1
+      ↓
+Port 1
+```
+
+Then when multicast traffic arrives:
+
+```
+Multicast traffic
+       ↓
+    Switch
+       ↓
+Only interested port(s)
+```
+
+Instead of flooding it everywhere.
+
+---
+
+# 16. Why is IGMP Snooping useful?
+
+Suppose there are 50 computers.
+
+Only 3 want the multicast stream.
+
+Without efficient multicast forwarding:
+
+```
+Multicast
+    ↓
+Switch
+ ┌──┼──┼──┼──┼──┼──┐
+ ↓  ↓  ↓  ↓  ↓  ↓  ↓
+All ports
+```
+
+With IGMP snooping:
+
+```
+Multicast
+    ↓
+Switch
+    ├──→ PC 4
+    ├──→ PC 20
+    └──→ PC 37
+```
+
+So it:
+
+- Reduces unnecessary traffic
+- Saves bandwidth
+- Prevents unnecessary multicast flooding
+
+Your source specifically describes IGMP snooping as maintaining a mapping between multicast groups and switch ports.
+
+---
+
+# 17. What is multicast routing?
+
+So far we've talked about devices on the **same local network**.
+
+But what if the multicast source is on another network?
+
+For example:
+
+```
+Network A
+   │
+ Router A
+   │
+   │
+ Router B
+   │
+Network B
+```
+
+Routers need a mechanism to determine how multicast traffic should travel between networks.
+
+Your material mentions:
+
+> **PIM — Protocol Independent Multicast**
+
+PIM is used for multicast routing.
+
+So you can think of the roles as:
+
+```
+IGMP
+ ↓
+Manages local host membership
+
+PIM
+ ↓
+Helps routers distribute multicast
+between networks
+```
+
+This distinction is very useful.
+
+---
+
+# 18. IGMP vs PIM
+
+|Protocol|Main purpose|
+|---|---|
+|**IGMP**|Host ↔ local router multicast membership|
+|**PIM**|Router ↔ router multicast routing|
+
+So:
+
+```
+PC ── IGMP ──→ Local Router
+```
+
+while:
+
+```
+Router A ── PIM ──→ Router B
+```
+
+---
+
+# 19. IGMP Versions
+
+There are three main versions you need to know:
+
+```
+IGMPv1
+   ↓
+IGMPv2
+   ↓
+IGMPv3
+```
+
+Each version added capabilities.
+
+---
+
+# 20. IGMPv1
+
+IGMPv1 is the oldest version in your notes.
+
+The important concept is:
+
+> Hosts could join multicast groups, but there was **no explicit Leave Group message**.
+
+So imagine:
+
+```
+PC
+ │
+ │ "I want this group"
+ ↓
+Router
+```
+
+Later:
+
+```
+PC
+ │
+ │ stops watching
+ X
+```
+
+There wasn't an explicit leave mechanism in IGMPv1.
+
+The router would eventually determine that the host was no longer interested through the membership-query/timeout process.
+
+### Remember:
+
+> **IGMPv1 = Join, but no explicit Leave**
+
+---
+
+# 21. IGMPv2
+
+IGMPv2 improved this.
+
+It introduced:
+
+> **Leave Group**
+
+So:
+
+```
+PC
+ │
+ │ Join
+ ↓
+Router
+
+later...
+
+PC
+ │
+ │ Leave
+ ↓
+Router
+```
+
+This allows multicast membership to be removed more quickly rather than simply waiting for timeout.
+
+### Remember:
+
+> **IGMPv2 = IGMPv1 + Leave**
+
+---
+
+# 22. IGMPv3
+
+IGMPv3 adds a major capability:
+
+> **Source-Specific Multicast (SSM)**
+
+This allows a host to specify not only:
+
+> "I want multicast group X"
+
+but also:
+
+> "I want multicast traffic for group X from this particular source."
+
+Imagine:
+
+```
+Group = 239.1.1.1
+
+Source A ──┐
+Source B ──┼── Group
+Source C ──┘
+```
+
+A host might say:
+
+> "I want 239.1.1.1, but specifically from Source B."
+
+That's more precise control.
+
+---
+
+# 23. Why is Source-Specific Multicast useful?
+
+Imagine multiple sources are associated with the same multicast group.
+
+Without source selection:
+
+```
+Group
+ ├── Source A
+ ├── Source B
+ └── Source C
+```
+
+A receiver may potentially receive traffic from sources it doesn't want.
+
+With SSM:
+
+```
+Receiver
+   │
+   └── "Give me Group X from Source B"
+```
+
+That's the major concept behind IGMPv3.
+
+---
+
+# 24. IGMP message types
+
+Your material lists these important messages:
+
+### Membership Query
+
+Router asks:
+
+> "Who is interested?"
+
+### Membership Report
+
+Host says:
+
+> "I want to receive this multicast group."
+
+### Leave Group
+
+Host says:
+
+> "I no longer want this multicast group."
+
+### IGMPv3 Membership Report
+
+Provides the more advanced source-selection information.
+
+---
+
+# 25. Understanding the IGMPv2 Type values
+
+Your notes list:
+
+|Type|Meaning|
+|---|---|
+|`0x11`|Membership Query|
+|`0x12`|IGMPv1 Membership Report|
+|`0x16`|IGMPv2 Membership Report|
+|`0x22`|IGMPv3 Membership Report|
+|`0x17`|Leave Group|
+
+You don't necessarily need to memorize every hexadecimal value immediately.
+
+For understanding, remember:
+
+```
+Query
+Report
+Leave
+```
+
+Then learn the numeric values if your course/exam requires packet-level knowledge.
+
+---
+
+# 26. IGMP packet formats
+
+The versions have somewhat different message structures.
+
+The key idea is:
+
+> Different IGMP versions added more functionality, so their message formats contain different fields.
+
+### IGMPv1
+
+The basic fields include:
+
+```
+Version
+Type
+Unused
+Checksum
+Group Address
+```
+
+### IGMPv2
+
+Important fields include:
+
+```
+Type
+Max Response Time
+Checksum
+Group Address
+```
+
+### IGMPv3
+
+More information is needed because it supports source filtering.
+
+The material mentions fields such as:
+
+```
+Max Response Time
+Checksum
+Group Address
+Flags
+QQIC
+Source Address list
+```
+
+The important conceptual difference is:
+
+```
+v1 → basic membership
+v2 → membership + leaving
+v3 → membership + source-specific control
+```
+
+---
+
+# 27. What does "include/exclude sources" mean in IGMPv3?
+
+This is one of the harder concepts.
+
+Suppose:
+
+```
+Multicast Group = G
+Sources = A, B, C
+```
+
+A receiver can express source preferences.
+
+### Include
+
+> "I want traffic from these sources."
+
+For example:
+
+```
+Group G
+Include:
+  Source A
+  Source B
+```
+
+Meaning:
+
+> Receive traffic from A and B.
+
+### Exclude
+
+Conceptually:
+
+> "I don't want traffic from these sources."
+
+For example:
+
+```
+Group G
+Exclude:
+  Source C
+```
+
+Meaning:
+
+> Don't receive traffic from C.
+
+This gives hosts more precise multicast control.
+
+---
+
+# 28. What is multicast?
+
+Let's return to the bigger picture.
+
+Suppose a server wants to send the same video to 1,000 users.
+
+### Unicast
+
+It may need to send separate streams:
+
+```
+Server
+ ├──→ User 1
+ ├──→ User 2
+ ├──→ User 3
+ ├──→ User 4
+ ├──→ ...
+ └──→ User 1000
+```
+
+That's potentially a lot of duplicated traffic.
+
+### Multicast
+
+The network can distribute one multicast stream to interested receivers:
+
+```
+             Server
+                │
+                │ One multicast stream
+                ↓
+             Network
+          ┌─────┼─────┐
+          ↓     ↓     ↓
+        Group Group Group
+        users users users
+```
+
+This can be much more bandwidth-efficient when many receivers want the same content.
+
+---
+
+# 29. Applications of multicast
+
+Your material mentions:
+
+### Streaming media
+
+For example:
+
+- IPTV
+- Live video
+- Audio streams
+
+### Online gaming
+
+Multicast can be useful for distributing certain group updates.
+
+### Web conferencing
+
+Multicast can support group communication in environments where multicast infrastructure is available.
+
+Other common multicast applications can include:
+
+- Financial market data
+- Enterprise video distribution
+- Network service discovery
+
+The exact use depends on the network architecture.
+
+---
+
+# 30. What about IPv6?
+
+This is important:
+
+> **IGMP is for IPv4 multicast.**
+
+IPv6 uses:
+
+> **MLD — Multicast Listener Discovery**
+
+So remember:
+
+```
+IPv4
+  ↓
+IGMP
+
+IPv6
+  ↓
+MLD
+```
+
+That's a common exam question.
+
+---
+
+# 31. Complete example: IPTV
+
+Let's put everything together.
+
+Suppose an ISP has:
+
+```
+Sports TV Stream
+Multicast Group:
+239.1.1.1
+```
+
+Three customers want the channel.
+
+```
+Customer A
+Customer B
+Customer C
+```
+
+### Step 1 — A wants the channel
+
+A sends an IGMP Membership Report.
+
+```
+A
+ │
+ │ "Join 239.1.1.1"
+ ↓
+Router
+```
+
+### Step 2 — Router records membership
+
+```
+Router
+
+239.1.1.1
+   └── A
+```
+
+### Step 3 — B joins
+
+```
+239.1.1.1
+   ├── A
+   └── B
+```
+
+### Step 4 — C joins
+
+```
+239.1.1.1
+   ├── A
+   ├── B
+   └── C
+```
+
+### Step 5 — multicast stream arrives
+
+```
+Sports Stream
+      ↓
+   Router
+      ↓
+ ┌────┼────┐
+ ↓    ↓    ↓
+ A    B    C
+```
+
+### Step 6 — B stops watching
+
+B sends Leave Group:
+
+```
+B
+ │
+ │ Leave
+ ↓
+Router
+```
+
+Router updates:
+
+```
+239.1.1.1
+   ├── A
+   └── C
+```
+
+That's IGMP in action.
+
+---
+
+# 32. Where does IGMP Snooping fit?
+
+Now put a switch between the router and customers:
+
+```
+                 Router
+                   │
+                Switch
+            ┌──────┼──────┐
+            ↓      ↓      ↓
+           A       B      C
+```
+
+Suppose only A wants the multicast stream.
+
+IGMP snooping allows the switch to learn:
+
+```
+239.1.1.1 → Port connected to A
+```
+
+Therefore:
+
+```
+Multicast
+    ↓
+ Switch
+    ↓
+   A
+```
+
+rather than unnecessarily forwarding the multicast traffic to B and C.
+
+---
+
+# 33. The entire IGMP architecture
+
+This is the diagram I recommend remembering:
+
+```
+                 Multicast Source
+                        │
+                        │
+                        ▼
+                 Multicast Network
+                        │
+                      Router
+                        │
+                    IGMP
+                        │
+                     Switch
+                ┌───────┼───────┐
+                ↓       ↓       ↓
+               PC1     PC2     PC3
+                │               │
+             Member           Member
+             of group         of group
+```
+
+IGMP handles the **host ↔ local router membership relationship**.
+
+IGMP snooping helps the **switch** understand which ports need multicast traffic.
+
+PIM can help **routers** move multicast traffic between networks.
+
+---
+
+# 34. The easiest way to remember everything
+
+Think of a **WhatsApp group**.
+
+Imagine:
+
+```
+Multicast group = WhatsApp group
+```
+
+### Joining
+
+```
+Host → "Add me to the group"
+```
+
+### Membership
+
+```
+Router → "These devices belong to the group."
+```
+
+### Query
+
+```
+Router → "Who is still in the group?"
+```
+
+### Report
+
+```
+Host → "I'm still interested."
+```
+
+### Leave
+
+```
+Host → "Remove me from the group."
+```
+
+### IGMP Snooping
+
+The switch is like someone keeping track of:
+
+> "Which people are connected to which group?"
+
+That's not technically how IGMP works, but it's a useful mental model.
+
+# What is OSPF?
+
+**OSPF = Open Shortest Path First**
+
+It is a **link-state routing protocol** used to find the best path between routers within an **Autonomous System (AS)**.
+
+For example:
+
+```
+        R1
+       /  \
+      /    \
+     R2----R3
+```
+
+Suppose R1 needs to reach a network behind R3.
+
+OSPF allows routers to learn the network topology and calculate the best path.
+
+OSPF uses the **Shortest Path First (SPF)** algorithm to calculate routes.
+
+---
+
+# 2. Why do OSPF routers need states?
+
+Imagine R1 and R2 are connected:
+
+```
+R1 ───────── R2
+```
+
+R1 can't simply assume:
+
+> "R2 is my neighbor, let's exchange everything."
+
+It needs to go through several steps.
+
+It first asks:
+
+1. **Is there another OSPF router here?**
+2. **Can we communicate in both directions?**
+3. **Are we going to become fully adjacent?**
+4. **Who is master and who is slave for database exchange?**
+5. **What information does each router have?**
+6. **What information am I missing?**
+7. **Are our databases synchronized?**
+
+Those steps correspond to the OSPF states.
+
+---
+
+# 3. First understand Neighbor vs Adjacency
+
+This is extremely important.
+
+### OSPF Neighbor
+
+Two routers have discovered each other through Hello packets.
+
+```
+R1 ←──── Hello ────→ R2
+```
+
+They know:
+
+> "There is another OSPF router here."
+
+But that doesn't necessarily mean they have synchronized their complete LSDB.
+
+### OSPF Adjacency
+
+Two routers have gone further and synchronized their Link-State Databases.
+
+```
+R1 ═════════ R2
+   Adjacent
+```
+
+So:
+
+> **Neighbor = discovered router**
+
+> **Adjacency = routers that have completed the database synchronization process**
+# 4. Hello Packets
+
+OSPF uses **Hello packets** to discover and maintain neighbors.
+
+Imagine:
+
+```
+R1                     R2
+ │                      │
+ │──── Hello ──────────→│
+ │←──── Hello ──────────│
+ │                      │
+```
+
+The Hello packet contains information about the router and OSPF parameters.
+
+The routers use this information to determine whether they can form a neighbor relationship.
+
+# The complete OSPF state sequence
+
+Remember this:
+
+```
+DOWN
+  ↓
+INIT
+  ↓
+2-WAY
+  ↓
+EXSTART
+  ↓
+EXCHANGE
+  ↓
+LOADING
+  ↓
+FULL
+```
+
+Now let's understand each one properly.
+
+---
+
+# 6. State 1 — Down
+
+This is the starting point.
+
+Suppose:
+
+```
+R1 ───────── R2
+```
+
+R1 hasn't received an OSPF Hello from R2.
+
+Therefore:
+
+```
+R1 → Down
+```
+
+It basically means:
+
+> **"I haven't heard an OSPF Hello from this neighbor."**
+
+### Important
+
+**Down does NOT necessarily mean the physical interface is down.**
+
+The interface could be physically working perfectly.
+
+# State 2 — Init
+
+Now R1 receives a Hello from R2.
+
+```
+R1
+ │
+ │ ← Hello from R2
+ │
+ ↓
+INIT
+```
+
+R1 now knows:
+
+> "R2 exists and is running OSPF."
+
+But R1 hasn't yet confirmed **two-way communication**.
+
+# State 3 — 2-Way
+
+Now the routers confirm that they can see each other.
+
+For example:
+
+```
+R1 sends Hello:
+"I know R2."
+
+R2 sends Hello:
+"I know R1."
+```
+
+Conceptually:
+
+```
+R1 ─── "I see R2" ───→ R2
+R1 ←── "I see R1" ─── R2
+```
+
+Now:
+
+> **Two-way communication has been established.**
+
+# DR and BDR election
+
+Your material mentions that on **broadcast/multi-access networks**, DR and BDR election takes place around the **2-Way** stage.
+
+Let's understand why.
+
+Suppose there are four routers connected to the same network:
+
+```
+        R1
+         │
+R2 ───── Network ───── R3
+         │
+        R4
+```
+
+If every router had to form a full adjacency with every other router, there would be many relationships.
+
+For 4 routers:
+
+```
+R1 ↔ R2
+R1 ↔ R3
+R1 ↔ R4
+R2 ↔ R3
+R2 ↔ R4
+R3 ↔ R4
+```
+
+That becomes inefficient as the number of routers increases.
+
+OSPF therefore uses:
+
+### DR — Designated Router
+
+and
+
+### BDR — Backup Designated Router
+
+to reduce unnecessary adjacencies on broadcast networks.
+
+---
+
+# 10. DR and BDR election
+
+The material gives these criteria:
+
+### First: Router Priority
+
+Higher priority wins.
+
+For example:
+
+```
+R1 priority = 1
+R2 priority = 5
+R3 priority = 2
+```
+
+R2 has the highest priority.
+
+So R2 is preferred for DR.
+
+### If priority is tied
+
+The **highest Router ID** wins.
+
+For example:
+
+```
+R1 → Router ID 1.1.1.1
+R2 → Router ID 2.2.2.2
+R3 → Router ID 3.3.3.3
+```
+
+If priorities are equal:
+
+```
+3.3.3.3 wins
+```
+
+---
+
+# 11. What is Router ID?
+
+The Router ID uniquely identifies an OSPF router.
+
+# State 4 — ExStart
+
+Now things become more interesting.
+
+The routers have discovered each other and confirmed two-way communication.
+
+They now need to exchange information about their Link-State Databases.
+
+But first, they need to establish how that exchange will work.
+
+This is the **ExStart state**.
+
+The routers establish a:
+
+> **Master/Slave relationship**
+
+The router with the **higher Router ID becomes the master**, according to the material you provided.
+
+```
+R1 Router ID = 1.1.1.1
+R2 Router ID = 2.2.2.2
+
+R2 → Master
+R1 → Slave
+```
+
+This doesn't mean R2 is permanently more important.
+
+# Why do they need Master/Slave?
+
+Imagine two people trying to speak at exactly the same time:
+
+```
+R1: "Here's my database!"
+R2: "Here's my database!"
+R1: "Wait..."
+R2: "Wait..."
+```
+
+The exchange needs coordination.
+
+So OSPF establishes who controls the sequencing of the Database Description exchange.
+
+# State 5 — Exchange
+
+Now the routers actually begin comparing their databases.
+
+They exchange:
+
+> **Database Description (DBD) packets**
+
+# Simple example of DBD
+
+Imagine R1 has:
+
+```
+LSA 1
+LSA 2
+LSA 3
+LSA 4
+```
+
+R2 has:
+
+```
+LSA 1
+LSA 2
+LSA 3
+LSA 5
+```
+
+They exchange DBD information.
+
+R1 discovers:
+
+> "R2 has LSA 5, which I don't have."
+
+R2 discovers:
+
+> "R1 has LSA 4, which I don't have."
+
+They now know which information is missing.
+
+That's why the **Exchange** state is important.
+
+# LSDB — Link-State Database
+
+Before going further, understand **LSDB**.
+
+Each OSPF router maintains a database describing the topology of its OSPF area.
+
+The LSDB contains information that allows routers to build this topology picture.
+
+The goal is for routers in the same OSPF area to have synchronized LSDB information.
+
+---
+
+# 17. State 6 — Loading
+
+Now the routers know what information they're missing.
+
+So they request it.
+
+They use:
+
+> **LSR — Link-State Request**
+
+For example:
+
+```
+R1:
+"I am missing LSA 5."
+
+R1 ─── LSR ───→ R2
+```
+
+R2 responds with:
+
+> **LSU — Link-State Update**
+
+```
+R2 ─── LSU ───→ R1
+```
+
+The LSU contains the requested LSA information.
+
+---
+
+# 18. LSR, LSU and LSA
+
+These three are easy to confuse.
+
+### LSA
+
+**Link-State Advertisement**
+
+The actual link-state information.
+
+Think:
+
+> **Information about the network topology**
+
+### LSR
+
+**Link-State Request**
+
+Router says:
+
+> "I need this LSA."
+
+### LSU
+
+**Link-State Update**
+
+Router says:
+
+> "Here is the requested LSA."
+
+# State 7 — Full
+
+Finally, the routers' LSDBs are synchronized.
+
+```
+R1 ═══════════ R2
+       FULL
+```
+
+This means:
+
+> **The OSPF adjacency is fully established and the databases are synchronized.**
+
+Now both routers have the information they need to calculate paths.
+
+# SPF calculation
+
+Once the topology information is available, OSPF can run its:
+
+> **Shortest Path First (SPF)** algorithm.
+
+The algorithm is commonly associated with **Dijkstra's algorithm**.
+
+Imagine:
+
+```
+       10
+R1 ───────── R2
+│            │
+│ 5          │ 2
+│            │
+R3 ───────── R4
+       1
+```
+
+OSPF knows the topology and link costs.
+
+It calculates the best paths based on the OSPF metric/cost.
+
+So:
+
+```
+LSDB
+ ↓
+Network topology
+ ↓
+SPF calculation
+ ↓
+Best paths
+ ↓
+Routing table
+```
+
+---
+
+# 22. Complete OSPF state journey
+
+Let's put everything together.
+
+```
+             OSPF Neighbor Formation
+                       │
+                       ▼
+                    DOWN
+                       │
+                Receive Hello
+                       │
+                       ▼
+                     INIT
+                       │
+             See yourself in
+             neighbor's Hello
+                       │
+                       ▼
+                    2-WAY
+                       │
+             DR/BDR election
+             where applicable
+                       │
+                       ▼
+                   EXSTART
+                       │
+             Master/Slave chosen
+                       │
+                       ▼
+                   EXCHANGE
+                       │
+              Exchange DBDs
+                       │
+                       ▼
+                   LOADING
+                       │
+            LSR → request LSAs
+            LSU → receive LSAs
+                       │
+                       ▼
+                     FULL
+                       │
+             LSDB synchronized
+                       │
+                       ▼
+                 SPF calculation
+```
+
+### Neighbor relationship
+
+Starts when routers discover each other using Hello packets.
+### Full adjacency
+
+After database synchronization
+
+What can prevent adjacency?
+For two routers to successfully form an adjacency, important OSPF parameters need to be compatible.
+
+Examples include:
+
+### Area ID
+
+If one router is in:
+
+```
+Area 0
+```
+
+and another is configured for:
+
+```
+Area 1
+```
+
+on that link, they won't form the expected adjacency.
+
+### Hello/Dead timers
+
+If the timers don't match appropriately, neighbor formation can fail.
+
+### Authentication
+
+If authentication is configured, the routers need compatible authentication settings.
+
+### MTU
+
+An MTU mismatch can cause problems during the database exchange stage.
+
+These are common things to check when an OSPF neighbor is stuck in a state.
+# What is IS-IS?
+
+**IS-IS = Intermediate System to Intermediate System**
+
+It is also a **link-state IGP**.
+
+It was originally designed for **OSI networking**, rather than specifically for IP.
+
+Later, IS-IS was extended to support IP routing.
+
+This is one of the most important differences.
+
+Think of it this way:
+
+```
+OSPF
+Designed primarily for IP
+        ↓
+IP-based operation
+
+IS-IS
+Originally designed for OSI
+        ↓
+Uses CLNS/Layer 2 mechanisms
+        ↓
+Can carry IP routing information
+```
+
+Today, IS-IS is particularly popular in **large service-provider/ISP networks**.
+
+---
+
+# 3. The biggest difference: Where they operate
+
+This is probably the most important point from your table.
+
+## OSPF
+
+OSPF is carried inside IP.
+
+Conceptually:
+
+```
+┌────────────────────┐
+│      OSPF          │
+├────────────────────┤
+│        IP          │
+├────────────────────┤
+│      Ethernet      │
+└────────────────────┘
+```
+
+Therefore, OSPF routers communicate using IP-based mechanisms.
+
+---
+
+## IS-IS
+
+IS-IS operates directly over the data-link layer rather than being carried inside IP.
+
+Conceptually:
+
+```
+┌────────────────────┐
+│      IS-IS         │
+├────────────────────┤
+│    Data Link       │
+├────────────────────┤
+│     Ethernet       │
+└────────────────────┘
+```
+
+This means IS-IS does **not require IP connectivity between neighboring routers for the IS-IS protocol itself**.
+
+That's a major advantage in some provider environments.
+
+---
+
+# 4. Why does IS-IS not need IP connectivity?
+
+Suppose:
+
+```
+R1 ───────── R2
+```
+
+With OSPF, OSPF communication is carried using IP.
+
+So IP addressing/configuration is involved in establishing OSPF communication.
+
+With IS-IS:
+
+```
+R1 ─── Layer 2 ─── R2
+       ↑
+      IS-IS
+```
+
+IS-IS messages are sent using Layer-2 mechanisms associated with CLNS.
+
+Therefore:
+
+> **IS-IS can establish its routing relationship without relying on IP as the transport for the routing protocol.**
+
+
+## Administrative Distance
+Your table says:
+
+|Protocol|Administrative Distance|
+|---|---|
+|OSPF|**110**|
+|IS-IS|**115**|
+
+Administrative Distance (AD) is used by routers to determine how trustworthy a route source is **when routes to the same destination are learned from different routing protocols**.
+
+Lower AD is preferred.
+# DR/BDR vs DIS
+
+This is a very important exam question.
+
+## OSPF
+
+On broadcast networks, OSPF elects:
+
+```
+DR
++
+BDR
+```
+
+### DR = Designated Router
+
+The main router for the shared broadcast network.
+
+### BDR = Backup Designated Router
+
+Backup for the DR.
+
+```
+        R1
+         \
+          \
+R2 ───── Network ───── R3
+          /
+         /
+        R4
+
+        ↓
+
+       DR
+       BDR
+```
+
+---
+
+## IS-IS
+
+IS-IS uses:
+
+> **DIS = Designated Intermediate System**
+
+Instead of DR + BDR.
+
+```
+IS-IS
+
+Single DIS
+```
+
+There isn't an OSPF-style BDR election.
+
+# IS-IS uses Levels
+
+Instead of OSPF's area structure, IS-IS primarily uses:
+
+### Level 1
+
+Responsible for routing **within an area**.
+
+### Level 2
+
+Responsible for routing **between areas**.
+
+### Level 1/Level 2
+
+Can perform both functions.
+
+Think:
+
+```
+IS-IS
+
+Area A                 Area B
+┌─────────┐           ┌─────────┐
+│ Level 1 │───────────│ Level 1 │
+└─────────┘   L2      └─────────┘
+       \               /
+        └── Level 2 ──┘
+```
+# Router identification
+
+## OSPF
+
+OSPF uses a:
+
+> **Router ID**
+
+Example:
+
+```
+Router ID = 1.1.1.1
+```
+
+The Router ID uniquely identifies the OSPF router.
+
+---
+
+## IS-IS
+
+IS-IS uses a:
+
+> **System ID**
+
+Example:
+
+```
+System ID = 0000.0000.0001
+```
+
+The System ID identifies the IS-IS router.
+
+# Virtual Links
+
+### OSPF
+
+OSPF supports:
+
+> **Virtual Links**
+
+A virtual link can be used to logically connect an area to the OSPF backbone under certain network designs.
+### IS-IS
+
+IS-IS doesn't use OSPF-style virtual links.
+# Security difference
+
+Your source says IS-IS is less exposed because it operates at Layer 2.
+
+The basic idea is reasonable, but don't interpret it as:
+
+> "IS-IS is completely secure."
+
+It isn't.
+
+IS-IS still needs appropriate security mechanisms and protection.
+# Flexibility
+
+Your source says:
+
+> IS-IS is more flexible, especially in provider networks.
+
+Why?
+
+One major reason is that IS-IS was designed around a flexible link-state database and can carry information beyond basic IP routing.
+
+This has made IS-IS particularly attractive in large service-provider environments.
+
+OSPF is also highly capable and widely deployed.
+
+# Why IS-IS is popular with ISPs
+
+Imagine a huge provider network:
+
+```
+             ISP Backbone
+
+        R1 ───── R2 ───── R3
+        │        │        │
+        │        │        │
+        R4 ───── R5 ───── R6
+        │                 │
+        R7 ────────────── R8
+```
+
+There could be hundreds or thousands of routers.
+
+IS-IS is popular in such environments because of characteristics such as:
+
+- Strong hierarchical design using L1/L2
+- Efficient link-state operation
+- Layer-2 protocol transport
+- Flexible TLV-based information encoding
+# TLVs — an important IS-IS concept
+
+One reason IS-IS is considered flexible is its extensive use of:
+
+> **TLV = Type-Length-Value**
+
+Think of it as a flexible information container.
+
+```
+Type | Length | Value
+```
+
+For example:
+
+```
+Type = X
+Length = 4
+Value = some information
+```
+
+New capabilities can be represented using additional TLVs without redesigning the entire basic protocol structure.
+
+This has helped IS-IS evolve over time.
+# EIGRP — Enhanced Interior Gateway Routing Protocol
+
+## What is EIGRP?
+
+**EIGRP (Enhanced Interior Gateway Routing Protocol)** is an **Interior Gateway Protocol (IGP)** used to exchange routing information **inside an Autonomous System (AS)**.
+
+It is commonly described as an **advanced distance-vector protocol**
+> **EIGRP is an IGP designed for routing within an organization/AS and uses DUAL to quickly calculate loop-free routes.**
+
+It operates at **Layer 3** and uses **IP protocol number 88**.
+
+---
+
+# 2. Where does EIGRP fit?
+
+Think about routing protocols like this:
+
+```
+                 Routing Protocols
+                       │
+          ┌────────────┴────────────┐
+          │                         │
+        IGP                        EGP
+   Inside an AS                Between ASes
+          │                         │
+   ┌──────┼──────┐                 BGP
+   │      │      │
+ OSPF   EIGRP   IS-IS
+```
+
+So:
+
+```
+EIGRP → Inside an AS
+OSPF  → Inside an AS
+IS-IS → Inside an AS
+BGP   → Between ASes
+```
+
+---
+
+# 3. Administrative Distance in EIGRP
+
+**Administrative Distance (AD)** tells a router how trustworthy a route source is.
+
+Generally:
+
+> **Lower AD = more preferred**
+
+EIGRP has different AD values depending on the type of route:
+
+|EIGRP Route|AD|
+|---|---|
+|Summary|5|
+|Internal|90|
+|External|170|
+
+### Internal route
+
+A route learned through normal EIGRP operation.
+
+```
+EIGRP internal → AD 90
+```
+
+### External route
+
+A route redistributed into EIGRP from another routing source.
+
+```
+Other protocol
+      ↓
+ Redistribution
+      ↓
+EIGRP external → AD 170
+```
+
+### Summary route
+
+An EIGRP summary route has:
+
+```
+AD = 5
+```
+
+The important exam numbers are:
+
+> **5, 90, 170**
+
+---
+
+# 4. How EIGRP discovers neighbors
+
+Before two routers can exchange routing information, they need to become **EIGRP neighbors**.
+
+Imagine:
+
+```
+R1 ───────── R2
+```
+
+R1 sends **Hello** messages.
+
+R2 receives them and responds appropriately.
+
+Eventually:
+
+```
+R1 ↔ R2
+   Neighbor
+```
+
+Once the relationship is established, the routers can exchange routing information.
+
+---
+
+# 5. EIGRP message types
+
+Your notes list several important EIGRP messages.
+
+## 1. Hello
+
+Used for:
+
+- Neighbor discovery
+- Maintaining neighbor relationships
+
+Typical default values in the notes:
+
+```
+Hello = 5 seconds
+```
+# Update
+
+An **Update** message carries routing information.
+
+There are two important ideas:
+
+### Full update
+
+Used when a neighbor relationship is initially established.
+
+The router provides the routing information needed to synchronize the neighbor.
+
+### Partial update
+
+When something changes:
+
+```
+Network X
+    ↓
+Path changes
+    ↓
+EIGRP sends update
+    ↓
+Only relevant changed information
+```
+
+This is more efficient than repeatedly sending the entire routing table.
+
+---
+
+# 7. Query
+
+Suppose:
+
+```
+R1 ─── R2 ─── Network X
+```
+
+R2 loses its route to Network X.
+
+R2 may ask neighboring EIGRP routers:
+
+> "Do you have another route to Network X?"
+
+That is the purpose of a **Query**.
+
+```
+R2
+ │
+ ├──── Query ────> R1
+ │
+ └──── Query ────> R3
+```
+
+---
+
+# 8. Reply
+
+The neighbors respond to the Query with a **Reply**.
+
+```
+R2 ─── Query ───> R1
+
+R1 ─── Reply ───> R2
+```
+
+The reply tells EIGRP whether an alternate path exists.
+
+---
+
+# 9. Acknowledgement
+
+Some EIGRP messages require reliable delivery.
+
+An acknowledgment confirms receipt.
+
+Your notes describe an acknowledgment as a Hello packet with no routing data.
+
+So:
+
+```
+Update → needs acknowledgment
+Query  → needs acknowledgment
+Reply  → needs acknowledgment
+```
+
+Whereas:
+
+```
+Hello → doesn't require acknowledgment
+ACK   → itself doesn't require acknowledgment
+```
+
+---
+
+# 10. Composite Metric
+
+This is one of the most important EIGRP concepts.
+
+EIGRP uses a **composite metric** to determine which path is preferable.
+
+The metric can consider:
+
+- Bandwidth
+- Load
+- Delay
+- Reliability
+- MTU
+# Why EIGRP is fast
+
+The key word is:
+
+> **DUAL**
+
+DUAL = **Diffusing Update Algorithm**
+
+It helps EIGRP calculate loop-free paths and react quickly to topology changes.
+
+Suppose:
+
+```
+        R2
+       /  \
+      /    \
+     R1     R3
+      \    /
+       \  /
+        R4
+```
+
+Suppose R1 normally uses:
+
+```
+R1 → R2 → destination
+```
+
+If R2 fails, EIGRP can potentially use an alternate route through R4/R3 without rebuilding everything from scratch.
+
+This contributes to EIGRP's fast convergence.
+
+---
+
+# 12. EIGRP's big advantage: unequal-cost load balancing
+
+This is an important feature.
+
+Many routing protocols traditionally prefer equal-cost paths.
+
+EIGRP can support:
+
+> **Unequal-cost load balancing**
+
+For example:
+
+```
+Path A = metric 100
+Path B = metric 150
+```
+
+EIGRP can potentially use both paths under appropriate conditions/configuration.
+
+That makes EIGRP useful when multiple paths have different capacities/costs.
+
+---
+
+# 13. EIGRP neighbor requirements
+
+For two routers to form an EIGRP neighbor relationship, important parameters must agree.
+
+Your notes mention:
+
+### 1. Same AS number
+
+```
+R1 → AS 100
+R2 → AS 100
+```
+
+Works.
+
+```
+R1 → AS 100
+R2 → AS 200
+```
+
+They won't form the intended EIGRP adjacency.
+
+### 2. Matching K values
+
+The metric-related K values need to match.
+
+### 3. Authentication
+
+If authentication is configured, the routers must use compatible authentication settings.
+
+Your notes specifically mention MD5.
+
+### 4. Address/subnet considerations
+
+The routers must be appropriately addressed and able to communicate over the relevant interfaces.
+# BGP
+
+Now we move from **inside an AS** to **between ASes**.
+
+## What is BGP?
+
+**BGP = Border Gateway Protocol**
+
+BGP is the primary routing protocol used for exchanging reachability information between **Autonomous Systems** on the Internet.
+
+It is classified as a:
+
+> **Path-vector routing protocol**
+
+This is different from:
+
+```
+OSPF  → Link-state
+EIGRP → Advanced distance-vector
+IS-IS → Link-state
+BGP   → Path-vector
+```
+
+---
+
+# 16. What is an Autonomous System?
+
+An **Autonomous System (AS)** is a collection of networks under a common administrative control that presents a common routing policy to the Internet.
+
+# Why do we need BGP?
+
+Imagine the Internet consisted of:
+
+```
+AS 100
+   │
+AS 200
+   │
+AS 300
+   │
+AS 400
+```
+
+Each AS has its own internal network.
+
+BGP tells the ASes:
+
+> "I can reach these networks, and here is the path/policy information associated with reaching them."
+
+So BGP essentially helps build an inter-AS view of reachability.
+
+---
+
+# 18. BGP is a path-vector protocol
+
+This is extremely important.
+
+Suppose:
+
+```
+AS 100 → AS 200 → AS 300
+```
+
+A BGP route may carry information such as:
+
+```
+Destination: Network X
+
+AS_PATH:
+100 200 300
+```
+
+The AS path provides information about which autonomous systems the route advertisement has traversed.
+
+This also helps prevent routing loops.
+
+If an AS sees its own AS number already in the AS_PATH, it can reject that route.
+
+---
+
+# 19. BGP runs over TCP
+
+This is another major exam point.
+
+```
+BGP
+ ↓
+TCP
+ ↓
+IP
+ ↓
+Ethernet
+```
+
+BGP uses:
+
+> **TCP port 179**
+
+Compare:
+
+```
+BGP  → TCP
+OSPF → IP protocol 89
+EIGRP → IP protocol 88
+```
+
+So don't say OSPF uses TCP or UDP.
+
+---
+
+# 20. eBGP vs iBGP
+
+There are two major forms.
+
+## eBGP
+
+**External BGP**
+
+Used between different ASes.
+
+```
+AS 100                 AS 200
+
+R1 ───── eBGP ───── R2
+```
+
+R1 belongs to AS 100.
+
+R2 belongs to AS 200.
+
+---
+
+## iBGP
+
+**Internal BGP**
+
+Used between BGP routers within the same AS.
+
+```
+          AS 100
+      ┌────────────┐
+      │            │
+     R1 ── iBGP ── R2
+      │            │
+      └────────────┘
+```
+
+So:
+
+```
+eBGP → different ASes
+iBGP → same AS
+```
+
+---
+
+# 21. How BGP establishes a relationship
+
+BGP routers establish a TCP connection.
+
+Conceptually:
+
+```
+R1                          R2
+│                           │
+│──── TCP connection ──────>│
+│                           │
+│──── BGP OPEN ────────────>│
+│<─── BGP OPEN ─────────────│
+│                           │
+│──── UPDATE ──────────────>│
+│<──── UPDATE ──────────────│
+```
+
+BGP then exchanges reachability information.
+
+BGP also periodically uses **KEEPALIVE** messages to maintain the session.
+
+---
+
+# 22. BGP path attributes
+
+BGP doesn't simply say:
+
+> "This path has the fewest hops, so use it."
+
+Instead, BGP uses **attributes and policies**.
+
+Important ones include:
+
+### Weight
+
+Cisco-specific attribute.
+
+```
+Higher Weight → preferred
+```
+
+It is local to the router.
+
+---
+
+### Local Preference
+
+Used to influence the preferred **outbound path from an AS**.
+
+```
+Higher Local Preference → preferred
+```
+
+Unlike Weight, Local Preference is intended to be shared within the AS.
+
+### AS_PATH
+
+Shows the sequence of ASes through which the route has passed.
+### NEXT_HOP
+
+Tells the router the next-hop address used to reach the advertised destination.
+
+---
+
+# 23. Why BGP is slower than OSPF
+
+BGP is designed for a completely different purpose.
+
+OSPF wants:
+
+> "Find the shortest path inside my network quickly."
+
+BGP wants:
+
+> "Choose a route according to reachability, policies, attributes and AS-level paths."
+
+Therefore:
+
+```
+OSPF
+Fast convergence
+       ↓
+Internal network
+
+BGP
+Policy-driven
+       ↓
+Internet-scale routing
+```
+
+BGP deliberately prioritizes **stability, scalability and policy control** rather than simply achieving the fastest possible convergence.
+
+---
+
+# 24. BGP vs OSPF
+
+The key differences:
+
+|Feature|BGP|OSPF|
+|---|---|---|
+|Type|Path-vector|Link-state|
+|Scope|Inter-domain/AS|Intra-domain|
+|Main purpose|Between ASes|Inside an AS|
+|Transport|TCP|IP|
+|TCP port|179|N/A|
+|Algorithm|Path-vector decision process|SPF/Dijkstra|
+|Convergence|Generally slower|Generally faster|
+|Policy|Very strong|More limited|
+|Internet routing|Yes|No, not as the Internet's inter-domain protocol|
+
+---
+
+# 25. Now MPLS
+
+This is a completely different concept.
+
+**MPLS = Multiprotocol Label Switching**
+
+Instead of forwarding packets purely by repeatedly examining the destination IP address, MPLS uses **labels**.
+
+Think of it like a railway system.
+
+An IP packet is like:
+
+> "I need to go to City X."
+
+MPLS gives it a label:
+
+```
+LABEL 42
+```
+
+The routers in the MPLS core can then make forwarding decisions based primarily on that label.
+
+---
+
+# 26. Why MPLS?
+
+Traditional IP forwarding:
+
+```
+Packet
+  ↓
+Look at destination IP
+  ↓
+Routing table lookup
+  ↓
+Determine next hop
+  ↓
+Forward
+```
+
+MPLS:
+
+```
+Packet
+  ↓
+Look at MPLS label
+  ↓
+Label lookup
+  ↓
+Swap label
+  ↓
+Forward
+```
+
+Historically this was associated with faster forwarding, although modern hardware can perform IP forwarding extremely quickly too.
+
+Today, MPLS's major value is not simply "speed."
+
+It is especially useful for:
+
+- Traffic engineering
+- VPN services
+- QoS
+- Provider networks
+- Predictable forwarding paths
+# Why is MPLS called Layer 2.5?
+
+MPLS doesn't fit neatly into the traditional Layer 2/Layer 3 model.
+
+Its label sits between the Layer 2 and Layer 3 headers.
+
+# MPLS label stack
+
+MPLS can use multiple labels.
+
+For example:
+
+```
+┌───────────────┐
+│ Label 100     │
+├───────────────┤
+│ Label 250     │
+├───────────────┤
+│ IP Packet     │
+└───────────────┘
+```
+
+This is called a:
+
+> **Label stack**
+
+Multiple labels are useful for hierarchical forwarding and services such as MPLS VPNs.
+
+---
+
+# 30. Important MPLS routers
+
+There are three important terms.
+
+## CE
+
+**Customer Edge**
+
+Customer-side router.
+
+```
+Customer
+   │
+  CE
+   │
+   PE
+```
+
+---
+
+## PE
+
+**Provider Edge**
+
+Router at the edge of the service-provider MPLS network.
+
+```
+Customer
+   │
+  CE
+   │
+  PE
+   │
+MPLS Core
+```
+
+The PE is where traffic enters or leaves the provider's MPLS domain.
+
+---
+
+## LSR
+
+**Label Switch Router**
+
+A router in the MPLS network that forwards packets using labels.
+
+---
+
+# 31. Ingress, intermediate and egress
+
+Think about an MPLS network like this:
+
+```
+Customer
+   │
+  CE
+   │
+   ▼
+Ingress PE
+   │
+   ▼
+LSR
+   │
+   ▼
+LSR
+   │
+   ▼
+Egress PE
+   │
+   ▼
+  CE
+   │
+Customer
+```
+
+Now let's follow a packet.
+
+---
+
+# 32. Step 1 — Ingress: PUSH
+
+The customer sends an IP packet:
+
+```
+CE
+ │
+ │ IP packet
+ ▼
+PE
+```
+
+The ingress PE determines the appropriate MPLS forwarding treatment.
+
+It adds a label.
+
+This operation is:
+
+> **PUSH**
+
+```
+Before:
+
+[IP Packet]
+
+After:
+
+[MPLS Label][IP Packet]
+```
+
+---
+
+# 33. Step 2 — Core: SWAP
+
+Now the packet enters the MPLS core.
+
+Suppose:
+
+```
+Label = 100
+```
+
+The next LSR might have a forwarding instruction:
+
+```
+Incoming label 100
+        ↓
+Outgoing label 250
+```
+
+So it replaces:
+
+```
+100 → 250
+```
+
+This is called:
+
+> **SWAP**
+
+```
+LSR
+ │
+ │ 100
+ ▼
+[SWAP]
+ │
+ │ 250
+ ▼
+Next LSR
+```
+
+The core can therefore forward based on labels rather than doing a normal IP routing lookup for every MPLS transit hop.
+
+---
+
+# 34. Step 3 — Egress: POP
+
+Eventually the packet reaches the egress side.
+
+The MPLS label is removed.
+
+This is:
+
+> **POP**
+
+```
+[MPLS Label][IP Packet]
+          ↓
+       POP
+          ↓
+     [IP Packet]
+```
+
+The IP packet can then be forwarded toward the destination customer.
+
+---
+
+# 35. PUSH, SWAP, POP
+
+This is probably the easiest MPLS concept to memorize:
+
+```
+Ingress → PUSH
+Core    → SWAP
+Egress  → POP
+```
+
+Remember:
+
+> **Push = add**
+> 
+> **Swap = replace**
+> 
+> **Pop = remove**
+
+---
+
+# 36. What is LDP?
+
+Your notes mention:
+
+> **LDP = Label Distribution Protocol**
+
+LDP can distribute label bindings between MPLS routers.
+
+Conceptually:
+
+```
+Router R1
+   │
+   │ Label information
+   ▼
+Router R2
+```
+
+This allows routers to establish label mappings used for MPLS forwarding.
+
+Important distinction:
+
+```
+Routing protocol
+      ↓
+Determines reachability/topology
+
+LDP
+      ↓
+Distributes labels associated with routes
+```
+
+MPLS can also be used with other control-plane mechanisms, such as RSVP-TE or Segment Routing, depending on the design.
+
+---
+
+# 37. MPLS and VPN
+
+This is another extremely important concept.
+
+Suppose one ISP provides service to two customers:
+
+```
+Customer A
+    │
+   PE
+    │
+ ┌──┴──────────┐
+ │ MPLS Core   │
+ └──┬──────────┘
+    │
+   PE
+    │
+Customer B
+```
+
+MPLS can keep different customers' traffic logically separated.
+
+But:
+
+> **MPLS itself does NOT encrypt the traffic.**
+
+This distinction is extremely important.
+
+---
+
+# 38. MPLS vs encryption
+
+Think:
+
+```
+MPLS
+  ↓
+Traffic isolation / forwarding
+
+Encryption
+  ↓
+Confidentiality
+```
+
+MPLS can provide logical separation, but if you need encryption against someone who can observe the traffic, you need an encryption mechanism such as an appropriate VPN/IPsec design.
+
+So:
+
+> **MPLS VPN ≠ automatically encrypted VPN**
+
+---
+
+# 39. Why providers like MPLS
+
+Imagine an ISP carrying traffic for:
+
+```
+Company A
+Company B
+Company C
+Company D
+```
+
+The provider can use MPLS mechanisms to separate and manage their traffic.
+
+It can support:
+
+- Layer 3 VPNs
+- Traffic engineering
+- QoS
+- Scalable provider services
+- Predictable forwarding behavior
+
+This is why MPLS became very important in carrier networks.
+
+---
+
+# 40. Advantages of MPLS
+
+### 1. Traffic engineering
+
+The provider can control how traffic travels through the network.
+
+For example:
+
+```
+Normal path:
+A → B → C → D
+
+Traffic-engineered path:
+A → E → F → D
+```
+
+This can help avoid congested links.
+
+---
+
+### 2. QoS
+
+Different traffic can receive different treatment.
+
+For example:
+
+```
+Voice → High priority
+Video → Medium/high priority
+File transfer → Normal priority
+```
+
+---
+
+### 3. VPN support
+
+MPLS is widely used to build provider-managed VPN services.
+
+---
+
+### 4. Scalability
+
+It can support large provider networks and many customer VPNs.
+
+---
+
+# 41. Disadvantages of MPLS
+
+### Expensive
+
+Provider MPLS infrastructure is more expensive than a simple small IP network.
+
+### Complex
+
+MPLS involves:
+
+- Labels
+- LSRs
+- PE/CE architecture
+- Routing protocols
+- Label distribution
+- VPN concepts
+
+So it requires specialized knowledge.
+# What is Internet Protocol (IP)?
+
+**IP = Internet Protocol.**
+
+It is a **Network Layer (Layer 3) protocol** used to deliver data from one device/network to another.
+
+The most important job of IP is:
+
+> **Give devices logical addresses and deliver packets toward the correct destination.**
+# Why is IP important?
+
+Imagine millions of devices connected to the Internet.
+
+How would your computer know where to send data?
+
+That's where IP addressing comes in.
+
+Every network interface participating in IP communication has an **IP address**.
+
+An IP address has two conceptual roles:
+
+### Identification
+
+It identifies a particular network interface/device within the network context.
+
+### Location
+
+It tells routers approximately **where in the network topology the destination belongs**.
+
+This second point is extremely important.
+
+An IP address isn't simply a permanent "name" of a computer. It also provides information that routers can use to determine **which network to forward the packet toward**.
+
+---
+
+# 3. IP is connectionless
+
+This is one of the most important characteristics of IP.
+
+IP is a **connectionless protocol**.
+
+That means IP does **not** first establish a dedicated connection between sender and receiver before sending every packet.
+IP itself doesn't guarantee:
+
+- delivery
+- ordering
+- duplicate prevention
+- retransmission
+
+Those responsibilities can be handled by higher-layer protocols such as **TCP**.
+
+# IP works with ICMP
+
+You previously looked at **ICMP**, so this connection is important.
+
+**ICMP = Internet Control Message Protocol.**
+
+ICMP is used to communicate things such as:
+
+- destination unreachable
+- time exceeded
+- echo request
+- echo reply
+## IP Address
+
+A logical address used by IP.
+
+Example IPv4:
+
+```
+192.168.1.10
+```
+
+Example IPv6:
+
+```
+2001:db8::1
+```
+
+---
+
+## Packet
+
+A **packet** is a unit of data transmitted across an IP network.
+
+An IP packet contains mainly:
+
+```
++----------------------+
+|      IP Header       |
++----------------------+
+|       Payload        |
++----------------------+
+```
+
+The header contains control information.
+
+The payload contains the data being carried.
+
+---
+
+## Router
+
+A router connects different networks and forwards packets between them.
+
+For example:
+
+```
+Network A
+   |
+   |
+ Router
+   |
+   |
+Network B
+```
+
+A router examines the **destination IP address** and consults its **routing table**.
+
+It then decides:
+
+> "Which interface should I send this packet out of?"
+
+---
+
+# 6. IPv4 vs IPv6
+
+There are two major versions of IP.
+
+## IPv4
+
+IPv4 uses **32-bit addresses**.
+
+Example:
+
+```
+192.168.1.10
+```
+
+IPv4 has approximately:
+
+**4.3 billion possible addresses** (2³²).
+
+Because the Internet grew enormously, IPv4 addresses became scarce.
+
+---
+
+## IPv6
+
+IPv6 uses **128-bit addresses**.
+
+Example:
+
+```
+2001:db8:abcd:1234::1
+```
+
+It provides an enormous address space:
+
+**2¹²⁸ addresses.**
+
+IPv6 was designed largely to solve the address-exhaustion problem and also introduces improvements in areas such as addressing, autoconfiguration, and packet handling
+
+## TOP 20 Essential Protocols
+
+These protocols and ports are fundamental for network communication, troubleshooting, and securing services.
+
+| Port | Protocol | Common Service       | Use Case                     |
+| ---- | -------- | -------------------- | ---------------------------- |
+| 20   | TCP      | FTP (Data)           | File transfers (active mode) |
+| 21   | TCP      | FTP (Control)        | File transfer control        |
+| 22   | TCP      | SSH                  | Secure remote login, SFTP    |
+| 23   | TCP      | Telnet               | Remote login (insecure)      |
+| 25   | TCP      | SMTP                 | Sending email                |
+| 53   | TCP/UDP  | DNS                  | Domain name resolution       |
+| 67   | UDP      | DHCP (Server)        | Assigning IP addresses       |
+| 68   | UDP      | DHCP (Client)        | Receiving IP addresses       |
+| 80   | TCP      | HTTP                 | Web traffic                  |
+| 110  | TCP      | POP3                 | Receiving email              |
+| 123  | UDP      | NTP                  | Time synchronization         |
+| 135  | TCP      | Microsoft RPC        | DCOM services on Windows     |
+| 137  | UDP      | NetBIOS Name Service | Windows file sharing         |
+| 138  | UDP      | NetBIOS Datagram     | Windows file sharing         |
+| 139  | TCP      | NetBIOS Session      | Windows SMB traffic          |
+| 143  | TCP      | IMAP                 | Email retrieval              |
+| 161  | UDP      | SNMP                 | Network management           |
+| 443  | TCP      | HTTPS                | Secure web traffic           |
+| 445  | TCP      | Microsoft-DS (SMB)   | File and printer sharing     |
+| 3389 | TCP      | RDP                  | Remote Desktop Protocol      |
+# TCP and UDP
+
+You'll see TCP and UDP repeatedly in the table.
+
+These are **Transport Layer protocols (Layer 4)**.
+Modern HTTPS can also run over **QUIC**, which uses UDP, so the simplified TCP-only picture isn't universally true today.
+
+---
+
+# 9. How IP addressing works
+
+Suppose your computer wants to communicate with another computer.
+
+Your computer has:
+
+```
+Source IP:
+192.168.1.10
+```
+
+The destination is:
+
+```
+Destination IP:
+192.168.5.20
+```
+
+The IP packet contains these addresses:
+
+```
++--------------------------------+
+| Source IP      192.168.1.10    |
+| Destination IP 192.168.5.20    |
++--------------------------------+
+|            Data                |
++--------------------------------+
+```
+
+The packet is then sent toward the destination.
+
+---
+
+# 10. Static vs Dynamic IP addresses
+
+An IP address can be assigned in different ways.
+
+## Static
+
+The address is manually/configurationally assigned and generally remains the same.
+
+Example:
+
+```
+Server
+↓
+192.168.1.100
+```
+
+## Dynamic
+
+The address is assigned automatically, commonly using **DHCP**.
+
+For example:
+
+```
+Computer
+   |
+   | DHCP
+   ↓
+DHCP Server
+   |
+   ↓
+192.168.1.25
+```
+
+Your home router commonly acts as the DHCP server for devices on your local network.
+
+---
+
+# 11. Where does DNS fit?
+
+Suppose you type:
+
+```
+google.com
+```
+
+Your computer doesn't directly put `"google.com"` into the IP packet as the destination.
+
+It needs to discover an IP address associated with the domain.
+
+DNS helps:
+
+```
+google.com
+     ↓
+    DNS
+     ↓
+IP address
+     ↓
+IP communication
+```
+
+# What happens when the destination is on another network?
+
+This is where the router becomes important.
+
+Suppose:
+
+```
+Your PC:
+192.168.1.10
+
+Destination:
+192.168.5.20
+```
+
+Your PC determines that:
+
+```
+192.168.5.20
+```
+
+is not on its local subnet.
+
+So it sends the frame to its **default gateway**.
+**The IP destination remains the final destination IP while routers forward the packet hop by hop.**
+
+At each local link, however, the Layer-2 frame is addressed to the **next hop's MAC address**.
+
+---
+
+# 14. What is a routing table?
+
+Every router has a **routing table**.
+
+It contains information about where different destination networks should be forward
+Suppose a packet arrives:
+
+```
+Destination:
+192.168.3.50
+```
+
+The router looks at the routing table and determines:
+
+```
+192.168.3.0/24
+       ↓
+Next hop: 10.0.0.3
+```
+
+It forwards the packet accordingly.
+# What are routing protocols?
+
+Routers need to learn about networks.
+
+Routing protocols help routers exchange routing information.
+
+Examples include:
+
+### OSPF
+
+An interior gateway routing protocol used within an organization/network.
+
+### EIGRP
+
+An advanced distance-vector routing protocol, traditionally associated with Cisco environments.
+
+### BGP
+
+Used to exchange routing information between **autonomous systems** and is fundamental to Internet routing.
+
+You were recently studying **OSPF, EIGRP and BGP**, so this is where they connect to IP.
+
+Think:
+
+```
+IP
+ ↓
+Packet needs a path
+ ↓
+Router
+ ↓
+Routing table
+ ↓
+Routing protocols help build/update routing information
+```
+
+---
+
+# 16. What is NAT?
+
+NAT = **Network Address Translation**.
+
+It is commonly used in private networks.
+
+Suppose your home has:
+
+```
+Laptop      192.168.1.10
+Phone       192.168.1.11
+PC          192.168.1.12
+```
+
+These are private IP addresses.
+
+Your router may have one public IP:
+
+```
+Public IP:
+203.x.x.x
+```
+
+NAT allows multiple internal devices to communicate with the Internet using that public address.
+
+# How IP routing actually happens
+
+Let's walk through a complete example.
+
+Suppose you open a website.
+
+Your computer eventually needs to send packets toward the server's IP address.
+
+Imagine:
+
+```
+Your PC
+192.168.1.10
+     |
+     ↓
+Home Router
+     |
+     ↓
+ISP Router
+     |
+     ↓
+Internet Router
+     |
+     ↓
+Destination Network
+     |
+     ↓
+Web Server
+```
+
+### Step 1 — Application generates data
+
+Your browser creates data.
+
+```
+Browser
+   ↓
+HTTPS/HTTP
+```
+
+### Step 2 — Transport layer processes it
+
+Depending on the protocol:
+
+```
+TCP / UDP / QUIC
+```
+
+### Step 3 — IP encapsulates it
+
+IP adds its header:
+
+```
+Source IP
+Destination IP
+Other IP information
+```
+
+Now we have an IP packet.
+
+### Step 4 — Packet goes to the next hop
+
+Your computer checks whether the destination is local.
+
+If not, it sends the packet toward its default gateway.
+
+### Step 5 — Router examines destination IP
+
+The router looks at:
+
+```
+Destination IP
+```
+
+and performs a routing-table lookup.
+
+### Step 6 — Router forwards the packet
+
+It sends the packet to the appropriate next hop.
+
+### Step 7 — More routers repeat the process
+
+```
+Router 1
+   ↓
+Router 2
+   ↓
+Router 3
+   ↓
+Router 4
+```
+
+Each router makes its own forwarding decision.
+
+### Step 8 — Destination receives it
+
+Eventually:
+
+```
+Destination Server
+```
+
+receives the packets.
+
+Higher-layer protocols then process the contents.
+
+---
+
+# 20. Can different packets take different routes?
+
+**Yes.**
+
+This is an important property of packet-switched networks.
+
+Suppose you send:
+
+```
+Packet 1
+Packet 2
+Packet 3
+```
+
+They may potentially travel through different paths:
+
+```
+Packet 1 → Router A → Router C → Server
+
+Packet 2 → Router B → Router C → Server
+
+Packet 3 → Router A → Router D → Server
+```
+
+IP itself does not promise that all packets will follow exactly the same path.
+
+This is one reason TCP is important: TCP can detect missing/out-of-order data and provide reliable, ordered delivery to the application.
+
+# Understanding the email example
+
+The article's email example is trying to explain **encapsulation and decapsulation**.
+
+Suppose you send an email.
+
+The data moves down the protocol stack:
+
+```
+Email Application
+       ↓
+     SMTP
+       ↓
+      TCP
+       ↓
+       IP
+       ↓
+Ethernet/Wi-Fi
+```
+
+Each layer adds its own information.
+
+Conceptually:
+
+```
+Application Data
+       ↓
++----------------+
+| TCP Header     |
+| Application    |
+| Data           |
++----------------+
+       ↓
++----------------+
+| IP Header      |
+| TCP Header     |
+| Application    |
+| Data           |
++----------------+
+       ↓
++----------------+
+| Ethernet/Wi-Fi |
+| Header         |
+| IP Header      |
+| TCP Header     |
+| Application    |
+| Data           |
++----------------+
+```
+
+This is called **encapsulation**.
+
+---
+
+# 22. What happens at the receiving server?
+
+The reverse happens.
+
+The receiving device removes/processes the headers at each layer.
+
+This is called **decapsulation**.
+
+# Generic Routing Encapsulation (GRE) Tunnel
+GRE is a **tunneling protocol**.
+
+Its main purpose is to take an existing packet and **encapsulate it inside another packet** so that it can travel across a network.
+
+Think of GRE like putting a letter inside another envelope:
+
+```
+Original packet
+      ↓
+┌──────────────────────┐
+│ GRE/Outer information│
+│ ┌──────────────────┐ │
+│ │ Original packet  │ │
+│ └──────────────────┘ │
+└──────────────────────┘
+```
+
+The outside packet is used to transport the original packet across the network.
+
+---
+
+# 2. Why do we need a GRE tunnel?
+
+Imagine two company networks:
+
+```
+Office A                         Office B
+
+PC1 ── R1 ── Internet ── R2 ── Server
+```
+
+R1 and R2 aren't directly connected.
+
+Normally, R1 would route packets through the intermediate network.
+
+But suppose the company wants the two routers to behave as though they have a **logical direct connection**.
+
+GRE can create:
+
+```
+Office A                         Office B
+
+PC1 ── R1 ================= R2 ── Server
+             GRE Tunnel
+```
+
+There may actually be many physical routers between R1 and R2:
+
+```
+R1 → ISP Router → Router → Router → R2
+```
+
+But GRE makes it look logically like:
+
+```
+R1 ================= R2
+       GRE Tunnel
+```
+
+That's why it's called a **tunnel**.
+# What does "encapsulation" mean?
+
+This is the most important concept.
+
+Suppose PC1 wants to send:
+
+```
+Source IP:      10.20.1.10
+Destination IP: 10.20.2.10
+```
+
+Normally the packet might look conceptually like:
+
+```
+┌─────────────────────────────┐
+│ Original IP Header          │
+│ Src: 10.20.1.10             │
+│ Dst: 10.20.2.10             │
+├─────────────────────────────┤
+│ Original Data               │
+└─────────────────────────────┘
+```
+
+R1 receives this packet.
+
+Instead of simply forwarding it normally, GRE **wraps the original packet**.
+
+Conceptually:
+
+```
+┌─────────────────────────────┐
+│ Outer IP Header             │
+│ Src: R1 tunnel endpoint     │
+│ Dst: R2 tunnel endpoint     │
+├─────────────────────────────┤
+│ GRE Header                  │
+├─────────────────────────────┤
+│ Original IP Header          │
+│ Src: 10.20.1.10             │
+│ Dst: 10.20.2.10             │
+├─────────────────────────────┤
+│ Original Data               │
+└─────────────────────────────┘
+```
+
+This is **GRE encapsulation**.
+
+---
+
+# 4. There are two sets of addresses
+
+This is where beginners often get confused.
+
+Suppose:
+
+```
+PC1 = 10.20.1.10
+Server = 10.20.2.10
+```
+
+The original packet contains:
+
+```
+Original Source:
+10.20.1.10
+
+Original Destination:
+10.20.2.10
+```
+
+But the GRE tunnel might have endpoints:
+
+```
+R1 = 10.40.20.1
+R2 = 10.40.20.2
+```
+
+So after encapsulation:
+
+```
+OUTER IP
+Source      = 10.40.20.1
+Destination = 10.40.20.2
+
+GRE HEADER
+
+INNER IP
+Source      = 10.20.1.10
+Destination = 10.20.2.10
+```
+
+Think of it this way:
+
+**Outer IP = "Where should this tunnel packet go?"**
+
+**Inner IP = "Where does the original packet ultimately belong**
+
+# GRE encapsulation process
+
+Let's follow the packet.
+
+## Step 1 — PC1 creates a packet
+
+PC1 wants to communicate with the server.
+
+```
+PC1
+10.20.1.10
+      ↓
+Server
+10.20.2.10
+```
+
+The original IP packet is:
+
+```
+Source      = 10.20.1.10
+Destination = 10.20.2.10
+```
+
+---
+
+## Step 2 — Packet reaches R1
+
+R1 is configured with a GRE tunnel toward R2.
+
+R1 decides:
+
+> "This traffic should be sent through my GRE tunnel."
+
+---
+
+## Step 3 — R1 adds GRE encapsulation
+
+R1 adds a **GRE header** and an **outer IP header**.
+
+Conceptually:
+
+```
+┌─────────────────────────────┐
+│ Outer IP Header             │
+│ 10.40.20.1 → 10.40.20.2    │
+├─────────────────────────────┤
+│ GRE Header                  │
+├─────────────────────────────┤
+│ Original IP Packet          │
+│ 10.20.1.10 → 10.20.2.10    │
+└─────────────────────────────┘
+```
+
+Now the packet can travel through the intermediate network.
+
+---
+
+# 6. What happens in the middle?
+
+This is important.
+
+Suppose the physical network is:
+
+```
+R1
+ |
+ISP Router
+ |
+Router A
+ |
+Router B
+ |
+R2
+```
+
+The intermediate routers don't need to understand the original communication.
+
+They simply see the **outer IP packet**.
+
+They essentially see:
+
+```
+Source      = 10.40.20.1
+Destination = 10.40.20.2
+```
+
+So they route the packet toward:
+
+```
+10.40.20.2
+```
+
+which is the tunnel's remote endpoint.
+
+Conceptually:
+
+```
+R1
+ │
+ ▼
+Router A
+ │
+ ▼
+Router B
+ │
+ ▼
+Router C
+ │
+ ▼
+R2
+```
+
+The GRE tunnel makes these physical hops behave like one logical connection between R1 and R2.
+
+---
+
+# 7. What happens at R2?
+
+R2 receives the GRE packet.
+
+It recognizes:
+
+> "This packet is for my GRE tunnel."
+
+R2 removes:
+
+```
+Outer IP Header
+       +
+GRE Header
+```
+
+This process is called **decapsulation**.
+
+The original packet remains:
+
+```
+Source      = 10.20.1.10
+Destination = 10.20.2.10
+```
+
+R2 then forwards it toward the server.
+
+```
+R2 ─────────→ Server
+              10.20.2.10
+```
+# What is a tunnel interface?
+
+When GRE is configured, routers create a **logical/virtual interface** called a tunnel interface.
+
+For example:
+
+```
+R1
+Tunnel0
+IP: 10.40.20.1
+```
+
+and:
+
+```
+R2
+Tunnel0
+IP: 10.40.20.2
+```
+
+These aren't necessarily physical interfaces like:
+
+```
+GigabitEthernet0/0
+GigabitEthernet0/1
+```
+
+They're logical interfaces representing the GRE tunnel.
+# . Why give the tunnel interfaces IP addresses?
+
+Because now routers can **route traffic through the tunnel like a normal IP link**.
+
+For example:
+
+```
+R1 Tunnel0
+10.40.20.1
+      │
+      │
+      │
+R2 Tunnel0
+10.40.20.2
+```
+
+R1 can have a route like:
+
+```
+10.20.2.0/24 → Tunnel0
+```
+
+Meaning:
+
+> "To reach the 10.20.2.0/24 network, send the traffic through the GRE tunnel."
+# What does "supports multiprotocol traffic" mean?
+
+GRE isn't limited to simply carrying IPv4 traffic.
+
+It can encapsulate different types of network-layer traffic, including things such as:
+
+- IPv4
+- IPv6
+- multicast traffic
+# Is GRE secure?
+
+### This is VERY important:
+
+**GRE does NOT provide encryption.**
+
+The article's wording saying GRE transports packets "securely" is misleading if it means **confidentiality**.
+
+GRE provides:
+
+> **Encapsulation and tunneling**
+
+It does **not** inherently provide:
+
+> **Encryption**
+
+So if someone can observe the GRE traffic, the contents aren't automatically protected by GRE encryption.
+
+---
+
+# 15. GRE + IPsec
+
+This is why GRE is often combined with **IPsec**.
+
+Think:
+
+```
+GRE
+ ↓
+Creates the tunnel / carries traffic
+```
+
+and:
+
+```
+IPsec
+ ↓
+Provides encryption/security
+```
+
+Together:
+
+```
+Original Packet
+      ↓
+     GRE
+      ↓
+    IPsec
+      ↓
+Encrypted traffic
+      ↓
+   Internet
+      ↓
+     IPsec
+      ↓
+     GRE
+      ↓
+Original Packet
+```
+
+# . GRE overhead
+
+GRE adds additional headers to the original packet.
+
+Original:
+
+```
+[ IP Header ][ Data ]
+```
+
+After GRE:
+
+```
+[ Outer IP ][ GRE ][ Original IP ][ Data ]
+```
+
+Therefore the packet becomes larger.
+
+This is called **overhead**.
+# GRE vs normal routing
+
+Without GRE:
+
+```
+PC1
+ ↓
+R1
+ ↓
+Router
+ ↓
+Router
+ ↓
+R2
+ ↓
+Server
+```
+
+R1 simply routes the original IP packet through the network.
+
+With GRE:
+
+```
+PC1
+ ↓
+R1
+ ↓
+GRE Encapsulation
+ ↓
+=================
+   GRE Tunnel
+=================
+ ↓
+R2
+ ↓
+GRE Decapsulation
+ ↓
+Server
+```
+
+The underlying routers transport the **outer packet**, while R1 and R2 handle the GRE tunnel.
+
+---
+
+# 19. The two IP addresses you MUST understand
+
+Suppose:
+
+```
+PC1 = 10.20.1.10
+Server = 10.20.2.10
+
+R1 tunnel = 10.40.20.1
+R2 tunnel = 10.40.20.2
+```
+
+When PC1 sends data:
+
+### Original/inner packet
+
+```
+10.20.1.10
+     ↓
+10.20.2.10
+```
+
+### GRE outer packet
+
+```
+10.40.20.1
+     ↓
+10.40.20.2
+```
+
+So:
+
+**Inner IP addresses = original communication**
+
+**Outer IP addresses = GRE tunnel endpoints**
+
+# Transport Layer
+The **Transport Layer is Layer 4 of the OSI model**. Its main job is to provide **process-to-process communication** between applications running on different devices.
+
+Think of it as the layer that makes sure data reaches the **correct application**, not just the correct computer.
+## 1. Main Functions
+
+### 🔹 End-to-end communication
+
+Provides communication between applications/processes on two different hosts.
+
+### 🔹 Port numbers
+
+IP addresses identify the **host**, while port numbers identify the **application/process**.
+
+For example:
+
+```
+192.168.1.10:443
+       │       │
+       │       └── Port → HTTPS service
+       └────────── IP → Host
+```
+
+### 🔹 Segmentation
+
+The Transport Layer breaks large application data into smaller units.
+
+```
+Large Data
+   ↓
+Segment 1
+Segment 2
+Segment 3
+```
+
+TCP calls them **segments**, while UDP calls them **datagrams**.
+
+### 🔹 Reliability
+
+TCP can provide:
+
+- acknowledgments
+- sequencing
+- retransmission
+- error detection
+
+UDP does not provide these reliability mechanisms.
+
+### 🔹 Flow control
+
+Prevents a fast sender from overwhelming a slow receiver.
+
+### 🔹 Multiplexing/Demultiplexing
+
+Allows many applications to use the network simultaneously using **port numbers**.
+
+# How the Transport Layer Works
+
+Suppose you have Chrome, Discord, and another application communicating simultaneously.
+
+The Transport Layer uses different ports to distinguish their data:
+
+```
+Chrome   → Port 443
+App      → Port 5000
+Service  → Port 6000
+```
+
+The Network Layer gets the data to the correct **device**, while the Transport Layer gets it to the correct **application**.
+
+Remember:
+
+> **IP address → Which device?**  
+> **Port number → Which application?**
+
+The Transport Layer exists primarily at the **end systems**. Intermediate routers normally operate at the Network Layer rather than implementing the end-to-end transport functions.
+
+---
+
+# 3. TCP 3-Way Handshake
+
+TCP establishes a connection before sending normal application data.
+
+### Step 1 — SYN
+
+Client → Server
+
+```
+SYN
+```
+
+Client says:
+
+> "I want to establish a TCP connection."
+
+### Step 2 — SYN-ACK
+
+Server → Client
+
+```
+SYN + ACK
+```
+
+Server says:
+
+> "I received your request, and I also want to establish the connection."
+
+### Step 3 — ACK
+
+Client → Server
+
+```
+ACK
+```
+
+Client confirms:
+
+> "I received your response."
+
+Now:
+
+```
+Connection ESTABLISHED
+```
+
+Simple memory trick:
+
+**SYN → SYN-ACK → ACK**
+
+---
+
+# 4. TCP
+
+**TCP = Transmission Control Protocol**
+
+TCP is:
+
+- **Connection-oriented**
+- **Reliable**
+- **Ordered**
+- Uses acknowledgments
+- Can retransmit lost data
+- Provides flow control
+- Generally has more overhead than UDP
+# UDP
+
+**UDP = User Datagram Protocol**
+
+UDP is:
+
+- **Connectionless**
+- Lightweight
+- Faster/simpler in many situations
+- No built-in acknowledgment
+- No built-in retransmission
+- No guarantee of ordered delivery
+- Uses an **8-byte header**
+
+Think:
+
+> **UDP = simplicity and low overhead**
+
+Applications can choose UDP when they can tolerate some loss or handle reliability themselves.
+
+---
+
+# 6. SCTP
+
+**SCTP = Stream Control Transmission Protocol**
+
+SCTP is another Transport Layer protocol.
+
+It provides reliable transport and has features such as:
+
+- **Multi-streaming** — multiple independent streams within one association
+- **Multi-homing** — an endpoint can use multiple IP addresses/interfaces for resilience
+
+It is less commonly encountered than TCP and UDP in basic networking.
+
+---
+
+# 7. TCP vs UDP
+
+| Feature        | TCP                     | UDP                      |
+| -------------- | ----------------------- | ------------------------ |
+| Connection     | Connection-oriented     | Connectionless           |
+| Reliability    | Reliable                | Best-effort              |
+| Ordering       | Yes                     | No guarantee             |
+| ACKs           | Yes                     | No                       |
+| Retransmission | Yes                     | No                       |
+| Flow control   | Yes                     | No                       |
+| Header         | 20–60 bytes             | 8 bytes                  |
+| Overhead       | Higher                  | Lower                    |
+| Speed/latency  | Generally more overhead | Generally lower overhead |
+| Data unit      | Segment                 | Datagram                 |
+
+
 
 
 
