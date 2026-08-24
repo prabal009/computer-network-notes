@@ -40440,6 +40440,487 @@ To achieve true 5-Nines, you don't just have two routers; you have two _entire 
     
 - **Active/Active:** Both data centers handle 50% of the traffic simultaneously. If Data Center A suddenly vanishes, an **Anycast** routing protocol (BGP) withdraws A's IP advertisements, and the internet automatically routes 100% of the traffic to Data Center B within **3 to 5 seconds**.
 
+
+
+
+# Terminal commands
+
+
+ssh username@ip add     -   to make a linux terminal
+ls
+ls -l
+ls -al       -   shows all files including hidden ones in good format
+pwd
+cd
+touch file.txt             -          to make a file
+touch file{1..10}
+touch -d tomorrow file.txt          -          create a file for the future
+echo "hello" > hi.txt
+nano file.txt
+vim file.txt
+cat file.txt
+shred file.txt                           -                encrypts a file
+mkdir file
+cp
+mv
+rm file.txt
+rmdir directory
+rm -r directory
+ln -s file.txt  alinkfortxtfile                  -         to make a link for the file
+clear
+whoami
+sudo useradd prabal
+su pablo                      -                   to switch user
+exit
+sudo passwd prabal               -       to change the password
+sudo apt update   
+sudo apt install finger
+finger pablo                 -              to check on the another user
+man finger              -                to know about the use of anything
+whatis finger
+wget link             -                to download anythign from internet
+curl url > lol.txt
+zip lol.zip >lol.lol
+unzip lol.zip
+less file.txt
+head file.txt
+tail file.txt
+cmp file1 file2
+cat file.txt | sort
+chmod +x file.sh                       -                  to make a file executable
+chown pablo file.txt
+ifconfig
+ip address | grep eth0
+awk 
+resolvectl status                       -           to get the ip of dns server
+ping link
+ping -c 5 link
+ping -c 5 -s 500 link
+tracerout link
+netstat
+sudo ufw allow 80
+ufw status
+sudo ufw enable
+uname
+uname -a
+sudo apt install neofetch
+neofetch
+cal
+free                          -                      shows the storage of system
+df
+df -H
+ps
+ps -aux
+top
+htop
+pkill -f file                -             to kill a prossecc without knowing proccess id
+sudo systemctl start apche2-                to restart services
+sudo systemctl status apche2
+restart
+history
+sudo reboot
+sudo shutdown -h now
+
+## FILE SYSTEM
+
+The root directory (/) from this all files and folders descend ...../root is just a mini folder inside of it
+
+/bin contains commands like ls cp mv cat , it is critical for trouble shooting
+
+/sbin (system binaries) mount fsck shutdown 
+
+/lib (library) divided into lib 32 , lib 64
+
+ /usr (unix system resources) holds non essential software
+
+/boot contains all file that our system need to boot
+
+/dev  (/dev/sda shows first hardrive)
+
+/etc  contains system configuration files
+
+/home  
+
+/media contains removable devices
+
+/mnt for mounting file systems
+
+/proc virtual file system , shows all the processes
+
+/sys  represent info about all the devices
+
+/ run shows the temporary one time run data
+
+/srv here all the servers and services are stored
+
+/var here all the file are stored that change during system operation
+
+/tmp here all the temporary files go
+
+/opt here all the optional and third party software are stored , it is safe place wihtout interfering with core system files
+
+
+# FUNCFACT COMMANDS (LINUX,WINDOWS)
+
+# LINUX
+sudo lshw - for broad system overview
+lscpu - for cpu
+free - h  -  for ram
+lsblk -  for storage disk
+sudo dmidecode --type bios    -  for bios
+cat /etc/os.release   -  for os
+uname -a    - for kernel
+ip addr - for netwrok info
+ip link - for interfaces
+ip route - for routing
+lsusb - for usb device
+
+
+# WINDOWS
+systeminfo - for almost everythign
+wmic cpu get name - for cpu
+Get-Disk - for storage
+Get-Volume - for partitions
+ipconfig /all  - network
+Get-NetAdapter - for network adapters
+route print - for routing table
+winver - for windows version
+tasklist - for proccesses 
+sc query - for services
+
+
+
+# LINUX USER AND GROUP COMMANDS
+
+whoami - username
+id - shows uid 
+groups - shows groups your memeber of 
+who - showscurrently logged in users
+w - shows logged in user and what they are doing
+users
+logname 
+last - shows  prev logins
+lastlog - shows last login of each user
+
+
+sudo useradd john
+sudo useradd - m john - also creates a home directory 
+sudo userdel john 
+sudo userdel -m john - delete user along with their home directory
+sudo usermod -l newname oldname   - change username
+passwd - set change password 
+sudo passwd john - change another users passwrod
+sudo passwd -l john - lock account
+sudo passwd -u john - unlock account
+sudo passwd -d john - delete password
+
+
+sudo chage -l john - view pasword and aging info
+sudo chage -M 90 john - set password expiration
+sudo chage -m 7 john - set min password age
+sudo chage -d 0 john  - force password change on next login
+
+
+getent group - list groups 
+getent group sudo - get a paticular group
+groups john - check users groups
+sudo groupdel  developers - deleting a group
+sudo usermod -aG developers john  - add user to group 
+sudo gpasswd -d john developers
+gpasswd - manages group memeber and passwords
+
+getent passwd - get users
+getent passwd john - find specific user
+getent group - get group
+getent group sudo - get a specific group
+
+id - uid and guid
+id -u - only uid
+id -u john - another users id 
+id -g - guid
+
+
+su john - switch user 
+su ~ - witch to root
+sudo -l - check sudo permissions
+
+ps -u john - process of particular user
+
+sudo chown john file.txt - change ownership
+sudo chgrp developers file.txt
+
+
+# LINUX FILE PERMISSION COMMMANDS
+
+ ls -l  - view permissions
+ stat file.txt  - show detailed permissions and ownership
+chmod u+x script.sh - give owner executing permission
+chmod u-x script.sh - remove excute
+chmod g+w file.txt - allow group to write
+g-w - remove group to write
+chmod o+r file.txt - other read
+o-rwx - remove others permissions
+chmod a+x script.sh - give everyone execute
+sudo chown john file.txt - change owner
+chgrp - change group
+umask - controls defualt permission for newly created file
+umask 022
+getfacl file.txt - check acls
+setfacl file.txt - 
+test -e file.txt - check whether file exists
+test -r file.txt - check if readable 
+-w - check if writable
+-x - check if executable
+
+
+
+# LINUX BASH COMMANDS
+pwd
+ls
+cd
+pushd
+popd 
+dirs
+
+ls -l
+ls -a
+ls -la
+ls -lh
+
+
+##### FILE OPERATIONS
+touch 
+cp 
+mv
+rm
+mkdir
+rmdir
+install
+ln
+readlink
+rename
+
+##### READING FILES
+cat 
+less
+more
+head
+tail
+nl
+od
+xxd
+strings
+file
+
+text processing 
+
+grep
+sed
+awk
+cut
+sort
+uniq
+tr
+wc
+tee
+paste
+join 
+comm
+diff
+cmp
+xargs
+fmt
+fold
+
+
+SEARCHING
+find 
+locate
+which
+whereis
+type
+command -v
+
+PERMISSIONS
+chmod 
+chown
+chgrp
+umask
+getfacl
+setfacl
+lsattr
+chattr
+
+
+USER AND GROUPS
+whoami
+id
+groups
+who
+w
+users
+last
+lastlog
+useradd
+usermod 
+userdel
+adduser
+passwd
+chage
+groupadd
+groupdel
+gpasswd
+getent
+su
+sudo
+
+
+
+PROCCESSES
+ps
+top
+htop
+pgrep
+pkill
+kill
+killalll
+jobs
+bg
+fg
+nohup
+nice
+renice
+wait
+sleep
+
+
+
+PROCCESS INFO
+ps
+pstree
+pidof
+pgrep
+lsof
+fuser
+
+
+JOBS AND SHELL PROCESSES
+jobs 
+bg
+fg
+disown
+wait
+suspend
+kill
+
+
+ENVIRONMENT VARIABLES
+env
+printev
+export
+unset
+set
+declare
+
+
+SHELL COMMANDS
+declare 
+local 
+readonly
+let
+
+
+
+COMMAND HISTORY
+history 
+fc
+
+
+ALIASING
+alias
+unalias
+
+# LINUX BASH COMMANDS
+contains basic and built ins
+echo 
+printf
+read
+cd
+pwd 
+alias unalias
+ls
+pushd
+touch 
+cp 
+mv
+rm
+cat
+tac
+less
+more
+grep 
+sed 
+awk
+cut
+sort
+find
+locate
+which
+chmod 
+chown
+chgrp
+whoami
+id
+groups
+who
+users
+ps
+top
+htop
+pgrep
+jobs
+env
+printenv
+history
+fc
+ip
+ss
+ping
+traceroute
+tracepath
+dig nslookup
+ip link
+ip addr
+uname
+hostname
+hostnamectl
+journalctl
+date
+cal
+timedatectl
+clear
+reset
+tput
+
+
+# LINUX PROCESS COMMANDS
+ps - current process
+ps -u - processes belonging to you
+ps -e - all processes
+pgrep firefox
+pidof firefox - find pid of a program
+pstree - shows processes as a tree
+
+
+# LINUX SSH COMMANDS
+ssh username@ ip - connect to a remote machine
+
+# LINUX CRON COMMANDS
+crontab -l - view cron jobs of yours
+crontab -e - edit your cron jobs
+
+
+
     </pre>
 
 </body>
