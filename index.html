@@ -40919,6 +40919,114 @@ ssh username@ ip - connect to a remote machine
 crontab -l - view cron jobs of yours
 crontab -e - edit your cron jobs
 
+whoami
+dir  -  works same as ls 
+dir desktop - to view the file inside the folder desktop
+get-childitem c:\ -force    -  to view the hidden files also in c directory
+clear
+cd desktop
+cd .. - to take back
+cd \  - to directly go back to the root folder
+tree - gives a fun view of your current directory
+
+
+CREATING A NEW USER
+
+$password = read-host -asSecureString
+(enter password)
+new -localuser -name "austin" -fullname "austin singh" -password $password
+
+or else follow gui through computer management
+
+remove -localuser -name "austin"
+
+you can switch between user with ctrl+alt+delete
+you can also switch between users through lock screen
+
+or just type
+new-localuser
+
+get-localgroupmember -name users
+get-localgroupmember -name administrators
+add-localgroupmember -group administrator  -member bill
+
+doing things through terminal like managing the permission of differet uses
+open terminal as admin
+mkdir  goodstuff
+cd goodstuff
+new-item yep.txt
+cd ..
+icacls goodstuff
+icacls goodstuff /grant austin:r
+icacls goodstuff
+icacls goodstuff /remove austin
+icacls goodstuff --% /grant austin:(oi)(ci)rw
+
+USER ACCOUNT CONTROL
+
+CONTROL NETWORK
+
+EXPLORING SYSTEM CONFIGURATION
+
+Computer management,
+task schedule,
+task schedule library
+
+WINDOWS SECURITY
+
+SYSTEM INFORMATION,
+hardware res,
+components,
+through terminal as admin do like this
+misinfo32 /report ./myreport
+then search it as a file in file explorer
+
+DEVICE MANAGER - for managing drivers
+
+REGISTRY EDITOR,
+run as admin
+
+ipconfig /all
+ipconfig /release
+ipconfig /renew
+
+ipconfig /all | findstr DNS
+ipconfig /displaydns | clip
+ipconfig /flushdns
+
+nslookup networkchuck.com
+cls
+
+getmac /v
+
+powercfg /energy
+powercfg /batteryreport
+
+assoc
+
+chkdsk /f
+
+sfc /scannow
+
+netsh wlan show wlanreport
+netsh wlan show interface
+
+ping -t networkchuck.com   -    continuos ping
+
+tracert -d networkchuck.com    -   to trace the route
+
+netstate
+netstate -af
+netstat -o
+
+route print
+route add
+route delete
+
+
+
+
+
 
 
     </pre>
